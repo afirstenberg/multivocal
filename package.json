@@ -1,0 +1,33 @@
+{
+  "name": "multivocal",
+  "version": "0.0.1",
+  "description": "A node.js library to assist with building best practice, configuration driven, Actions for the Google Assistant.",
+  "main": "src/multivocal.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/afirstenberg/multivocal.git"
+  },
+  "keywords": [
+    "aog",
+    "actions-on-google",
+    "voice"
+  ],
+  "author": "Allen \"Prisoner\" Firstenberg",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/afirstenberg/multivocal/issues"
+  },
+  "homepage": "https://github.com/afirstenberg/multivocal#readme",
+  "dependencies": {
+    "actions-on-google": "^1.8.0",
+    "handlebars": "^4.0.11",
+    "handlebars-helpers": "^0.10.0"
+  }
+}
