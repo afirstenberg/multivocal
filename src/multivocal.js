@@ -65,8 +65,8 @@ var buildEnv = function( request, response ){
   var env = {
     App: new App({request, response}),
     Body: request.body,
-    Request: request,
-    Response: response
+    Req: request,
+    Res: response
   };
 
   return loadConfig( env )
@@ -193,7 +193,7 @@ var addSuffix = function( env ){
   }
 
   var responseNames = ['Suffix/Default'];
-  var responseField = 'responseSuffix';
+  var responseField = 'ResponseSuffix';
   var responseDefault = {
     TemplateEnvMap: {
       "Template": "Suffix"
@@ -264,8 +264,8 @@ var buildMessageContent = function( env, envName, template ){
 };
 
 var buildMessage = function( env ){
-  return buildMessageContent( env, 'ssml', '{{#ssml Voice}}{{{Msg}}} {{{Suffix}}}{{/ssml}}' )
-    .then( env => buildMessageContent( env, 'txt', '{{{Msg}}} {{{Suffix}}}') );
+  return buildMessageContent( env, 'Ssml', '{{#ssml Voice}}{{{Msg}}} {{{Suffix}}}{{/ssml}}' )
+    .then( env => buildMessageContent( env, 'Txt', '{{{Msg}}} {{{Suffix}}}') );
 };
 
 /**===================================================================*/
