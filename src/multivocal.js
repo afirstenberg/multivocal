@@ -91,11 +91,10 @@ var loadConfig = function( env ){
 
 var loadVoice = function( env ){
   var sessionData = env.App.data;
-  var voices;
-  var size;
+  var voices = env.Config.Local['en'].Voice;
+  var size = voices.length;
+  env.Voices = voices;
   if( env.RequestedVoiceName ){
-    voices= env.Config.Voice;
-    size = voices.length;
     for( var co=0; co<size; co++ ){
       var voice = voices[co];
       if( voice.Name === env.requestedVoiceName ){
@@ -107,8 +106,6 @@ var loadVoice = function( env ){
     env.Voice = sessionData.Voice;
 
   } else {
-    voices = env.Config.Voice;
-    size = voices.length;
     var index = Math.floor( Math.random() * size );
     env.Voice = voices[index];
   }
@@ -137,7 +134,7 @@ var addActionHandler = function( actionName, func ){
 exports.addActionHandler = addActionHandler;
 
 var handleDefault = function( env ){
-  var responseNames = [`Response/${env.Intent}`, `Response/${env.Action}`, 'Response/Default'];
+  var responseNames = [`Local/en/Response/${env.Intent}`, `Local/en/Response/${env.Action}`, 'Local/en/Response/Default'];
   return Response.get( env, responseNames );
 };
 handlers['DEFAULT'] = handleDefault;
@@ -192,7 +189,7 @@ var addSuffix = function( env ){
     return Promise.resolve( env );
   }
 
-  var responseNames = ['Suffix/Default'];
+  var responseNames = ['Local/en/Suffix/Default'];
   var responseField = 'ResponseSuffix';
   var responseDefault = {
     TemplateEnvMap: {
