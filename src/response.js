@@ -45,21 +45,22 @@ var getResponses = function( env, responseNames ){
     path = responseNames[co];
     if( path ){
       pathElements = path.split('/');
-      ret = env.config;
+      ret = env.Config;
       for( var c1=0; c1<pathElements.length && ret; c1++ ){
         name = pathElements[c1];
         ret = ret[name];
       }
     }
   }
-  console.log( 'Response getResponses name', responseNames, '->', path );
+  console.log( 'Response getResponses name', responseNames, '->', path, '=', ret );
   return Promise.resolve( ret );
 };
 
 var filterResponses = function( env, allResponses ){
   var ret = [];
 
-  for( var co=0; co<allResponses.length; co++ ){
+  var len = allResponses ? allResponses.length : 0;
+  for( var co=0; co<len; co++ ){
     var response = allResponses[co];
     if( typeof response !== 'object' ){
       // If we just have the response, add it to the list
@@ -90,6 +91,10 @@ var filterResponses = function( env, allResponses ){
 
 var pickResponse = function( responses ){
   var size = responses.length;
+  if( size == 0 ){
+    return Promise.resolve( {} );
+  }
+
   var index = Math.floor( Math.random() * size );
   console.log( 'Response pickResponse index', index );
   return Promise.resolve( responses[index] );
@@ -128,7 +133,7 @@ var executeMessages = function( env, response, map, templateExec ){
     var templateName = keys[co];
 
     var template = response[templateName];
-    if( template ){
+    if( template !== undefined ){
       var resultValue = templateExec( template, env );
 
       var resultName = map[templateName];

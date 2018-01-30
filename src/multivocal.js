@@ -92,6 +92,15 @@ var loadConfig = function( env ){
 var loadVoice = function( env ){
   var sessionData = env.App.data;
   var voices = env.Config.Local['und'].Voice;
+
+  if( !voices ){
+    voices = [
+      {
+        Name: 'Default'
+      }
+    ]
+  }
+
   var size = voices.length;
   env.Voices = voices;
   if( env.RequestedVoiceName ){
@@ -196,8 +205,13 @@ var addSuffix = function( env ){
       "Template": "Suffix"
     }
   };
-  return Response.get( env, responseNames, responseField, responseDefault );
-
+  return Response.get( env, responseNames, responseField, responseDefault )
+    .then( env => {
+      if( !env.Suffix ){
+        env.Suffix = '';
+      }
+      return Promise.resolve( env );
+    });
 };
 
 /**===================================================================*/
