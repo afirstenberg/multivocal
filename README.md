@@ -56,7 +56,7 @@ We can roughly break this into three parts:
    This uses the Firebase Cloud Functions registration method to declare the
    function, but anything that can pass an express-like `req` and `res` object
    to `Multivocal.process()` will work fine. (These include Google Cloud
-   Functions and anything running express.js.
+   Functions and anything running express.js.)
 
 ## Features
 
@@ -65,7 +65,8 @@ We can roughly break this into three parts:
 Although there are some exceptions, multivocal reserves the following naming
 conventions as things that will be defined for the library. These names are
 found in the configuration object, in properties in objects, and in Dialogflow
-configuration. You should not use them for forward compatibility purposes:
+configuration. In order to maintain forward compatibility, you shouldn't
+use things named this way unless they've been documented:
 
 * Names starting with a Capital Letter 
   (Response, Action, etc)
