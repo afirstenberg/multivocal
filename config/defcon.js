@@ -1,4 +1,4 @@
-{
+module.exports = {
   "Local": {
     "und": {
       "Suffix": {
@@ -181,4 +181,4 @@
       "Default": false
     }
   }
-}
+};
