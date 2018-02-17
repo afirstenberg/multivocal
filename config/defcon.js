@@ -159,7 +159,7 @@ module.exports = {
       ]
     },
     "Ssml": {
-      "Template": "{{#ssml Voice}}{{{Msg}}} {{{Suffix}}}{{/ssml}}"
+      "Template": "{{#Ssml Voice}}{{{Msg}}} {{{Suffix}}}{{/Ssml}}"
     },
     "Txt": {
       "Template": "{{{Msg}}} {{{Suffix}}}"
