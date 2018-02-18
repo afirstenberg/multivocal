@@ -125,8 +125,6 @@ use things named this way unless they've been documented:
 
 #### Suggestion chips
 
-(Work in progress)
-
 #### Lists and Options
 
 (Work in progress)

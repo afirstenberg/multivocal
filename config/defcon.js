@@ -95,7 +95,8 @@ module.exports = {
       "Base": {
         "TemplateEnvMap": {
           "Template": "Msg",
-          "TemplateCard": "Card"
+          "TemplateCard": "Card",
+          "TemplateSuggestions": "Suggestions"
         }
       }
     },

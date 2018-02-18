@@ -18,6 +18,13 @@ module.exports = {
     ]
   },
   'Card': 'data/google/richResponse/items[+]/basicCard',
+  'Suggestions': {
+    Target: 'data/google/richResponse/suggestions',
+    Value:
+      '{{#each Suggestions}}'+
+      '{{Set "_This[+]/title" this}}'+
+      '{{/each}}'
+  },
   'User/State':{
     Target: 'data/google/userStorage',
     ValueType: 'string'

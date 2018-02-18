@@ -7,7 +7,8 @@ var env = {
       c: 1,
       d: 2
     }
-  }
+  },
+  arr: [2,4,6,10]
 };
 
 Util.setObjPath( env, 'm/n[+]/a', 1 );
@@ -25,4 +26,13 @@ var t = [
 
 var v = Template.eval( t, env );
 console.log( v );
-console.log( JSON.stringify(env,null,1) );
+
+t = [
+  '{{#each arr}}',
+  '{{Set "_This[+]/title" this}}',
+  '{{/each}}'
+];
+var a = Template.eval( t, env );
+console.log(a);
+
+//console.log( JSON.stringify(env,null,1) );
