@@ -19,6 +19,7 @@ module.exports = {
   },
   'Card': 'data/google/richResponse/items[+]/basicCard',
   'Suggestions': {
+    Criteria: '{{and (isArray Suggestions) (length Suggestions)}}',
     Target: 'data/google/richResponse/suggestions',
     Value:
       '{{#each Suggestions}}'+
