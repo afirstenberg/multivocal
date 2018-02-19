@@ -18,14 +18,14 @@ module.exports = {
   "Setting": {
     "Intent": {
       "Path": [
-        "Context/multivocal_permission/properties/intent",
+        "Context/multivocal_permission/parameters/intentName",
         "Body/result/metadata/intentName"
       ],
       "Template": "Intent.{{IntentName}}"
     },
     "Action": {
       "Path": [
-        "Context/multivocal_permission/properties/action",
+        "Context/multivocal_permission/parameters/actionName",
         "Body/result/action"
       ],
       "Template": "Action.{{ActionName}}"
