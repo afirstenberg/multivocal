@@ -159,11 +159,20 @@ module.exports = {
         "DefCon/Local/und/Voice"
       ]
     },
+    "NoSuffixNeeded": {
+      "Criteria":{
+        "Terms": [
+          "{{EndsWith Msg.Ssml '?'}}",
+          "{{Response.ShouldClose}}"
+        ],
+        "Op": "or"
+      }
+    },
     "Ssml": {
-      "Template": "{{#Ssml Voice}}{{{Msg}}} {{{Suffix}}}{{/Ssml}}"
+      "Template": "{{#Ssml Voice}}{{{Msg.Ssml}}} {{{Suffix.Ssml}}}{{/Ssml}}"
     },
     "Txt": {
-      "Template": "{{{Msg}}} {{{Suffix}}}"
+      "Template": "{{{First Msg.Txt Msg.Ssml}}} {{{First Suffix.Txt Suffix.Ssml}}}"
     },
     "Context": {
       "PathList": [
