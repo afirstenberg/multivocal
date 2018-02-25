@@ -117,6 +117,8 @@ use things named this way unless they've been documented:
 
 #### Conditions
 
+#### Base responses and references
+
 ### Sending
 
 #### Message
@@ -126,8 +128,6 @@ use things named this way unless they've been documented:
 #### Suggestion chips
 
 #### Lists and Options
-
-(Work in progress)
 
 ### Voices
 
