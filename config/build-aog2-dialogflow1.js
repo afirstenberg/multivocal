@@ -31,7 +31,7 @@ module.exports = {
     Target: 'data/google/systemIntent/data/{{Msg.Option.SelectType}}Select/items',
     Value:
       '{{#each Msg.Option.Items}}'+
-        '{{#Set "_This[+]/optionInfo/key"}}OPTION_{{@index}}{{/Set}}'+
+        '{{#Set "_This[+]/optionInfo/key"}}{{Setting "Option/Prefix"}}{{@index}}{{/Set}}'+
         '{{Set "_This[=]/title"                   this.Title}}'+
         '{{Set "_This[=]/description"             this.Body}}'+
         '{{#if (and this.ImageUrl this.ImageText)}}'+

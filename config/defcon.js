@@ -51,6 +51,12 @@ module.exports = {
       ],
       "Default": {}
     },
+    "Option": {
+      "Path": [
+        "Body/originalRequest/data/inputs[0]/arguments[0]/textValue"
+      ],
+      "Prefix": "OPTION_"
+    },
     "Requirements": {
       "Path": [
         "Config/Local/{{Locale}}/Requirements/{{Intent}}",

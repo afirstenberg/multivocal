@@ -28,6 +28,7 @@
   "dependencies": {
     "actions-on-google": "^1.8.0",
     "handlebars": "^4.0.11",
-    "handlebars-helpers": "^0.10.0"
+    "handlebars-helpers": "^0.10.0",
+    "object-assign-deep": "^0.3.1"
   }
 }
