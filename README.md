@@ -85,6 +85,10 @@ use things named this way unless they've been documented:
 
 ### Processing, the Environment, and Paths
 
+#### Platform detection
+
+(Work in progress)
+
 ### Environment builders
 
 #### Adding your own builder
@@ -105,6 +109,10 @@ use things named this way unless they've been documented:
 
 (Work in progress)
 
+##### Action: repeat
+
+(Work in progress)
+
 ### Handlers
 
 #### Built-in handlers
@@ -117,7 +125,13 @@ use things named this way unless they've been documented:
 
 #### Conditions
 
-#### Base responses and references
+#### Base responses
+
+Base/Ref
+
+Base/Set
+
+Base/Condition
 
 ### Sending
 
@@ -129,6 +143,12 @@ use things named this way unless they've been documented:
 
 #### Lists and Options
 
+#### Link out
+
+(Link out suggestion - work in progress)
+
+(Link out/to Android app prompt - work in progress)
+
 ### Voices
 
 ### Contexts
@@ -139,6 +159,8 @@ use things named this way unless they've been documented:
 
 (Request surface feature - work in progress)
 
+(Requesting place by name - work in progress)
+
 (Authorization - work in progress)
 
 (Adding own requirements - work in progress)
@@ -146,6 +168,10 @@ use things named this way unless they've been documented:
 ### Counters
 
 (Work in progress)
+
+### Analytics
+
+(Future work)
 
 ## Questions
 
