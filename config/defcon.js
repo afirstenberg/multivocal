@@ -39,12 +39,15 @@ module.exports = {
       ],
       "Default": "und"
     },
-    "HandlerNames": [
-      "{{Intent}}",
-      "{{Action}}",
-      "{{Default}}",
-      "Default"
-    ],
+    "Handler": {
+      "Names": [
+        "{{Intent}}",
+        "{{Action}}",
+        "{{Default}}",
+        "Default"
+      ],
+      "Counter": "Handler.{{HandlerName}}"
+    },
     "Parameters": {
       "Path": [
         "Body/result/parameters"
@@ -139,6 +142,18 @@ module.exports = {
       "State": {
         "Path": [
           "Context/multivocal_session/parameters/state"
+        ],
+        "Default": "{}"
+      },
+      "Counter": {
+        "Path": [
+          'Context/multivocal_session/parameters/counter'
+        ],
+        "Default": "{}"
+      },
+      "Consecutive": {
+        "Path": [
+          'Context/multivocal_session/parameters/consecutive'
         ],
         "Default": "{}"
       }

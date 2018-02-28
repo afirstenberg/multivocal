@@ -167,7 +167,37 @@ Base/Condition
 
 ### Counters
 
-(Work in progress)
+Session/Counter
+
+Session/Consecutive
+
+#### Counters set by the system
+
+The system will increment the following Counters as part of the Default
+handler, just before the Response is computed:
+
+* the handler name, prefixed by 'Handler.'
+* the Action
+* the Intent
+* the Outent
+* NumVisits
+
+#### Adding your own counter
+
+In your handler, you can add a counter name to the array at the `Counter`
+environment path. The appropriate counters will be
+incremented as part of the Default handler just before the Response is
+computed.
+
+Multivocal generally does something like
+
+    Util.setObjPath( env, 'Counter[+]', counterName );
+    
+You can't check the `Counter` path to see
+if the counter will be incremented since this may take place
+after your Builder or Handler runs.
+It is safe to add the name more than once - the counter will only be
+incremented once per request.
 
 ### Analytics
 
