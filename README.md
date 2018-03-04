@@ -83,6 +83,10 @@ use things named this way unless they've been documented:
 
 (Work in progress)
 
+#### Merged configuration
+
+#### Default and Suggested configurations
+
 ### Processing, the Environment, and Paths
 
 #### Platform detection
@@ -90,6 +94,40 @@ use things named this way unless they've been documented:
 (Work in progress)
 
 ### Environment builders
+
+Environment settings built:
+
+* Locale
+
+* Lang
+
+* Parameter
+
+* Context
+
+* User/State
+
+* Session/State
+
+* Session/Counter
+
+* Session/Consecutive
+
+* Option
+
+* Session/Feature
+
+* User/Feature
+
+* Intent
+
+* IntentName
+
+* Action
+
+* ActionName
+
+* Default
 
 #### Adding your own builder
 
@@ -101,13 +139,15 @@ use things named this way unless they've been documented:
 
 ##### Action: welcome
 
+Increments the `User/State/NumVisits` environment value.
+
 ##### Action: quit
 
 ##### Intent: input.none
 
 ##### Intent: input.unknown
 
-(Work in progress)
+##### Action: input.unknown
 
 ##### Action: repeat
 
@@ -127,21 +167,47 @@ use things named this way unless they've been documented:
 
 #### Base responses
 
-Base/Ref
+Response settings:
 
-Base/Set
+* Base/Ref
 
-Base/Condition
+* Base/Set
+
+* Base/Condition
 
 ### Sending
 
 #### Message
+
+Environment settings:
+
+* Msg/Ssml
 
 #### Cards
 
 #### Suggestion chips
 
 #### Lists and Options
+
+Environment settings:
+
+* Msg/Option/SelectType
+
+    Should be either "list" or "carousel". (TODO: Enforce this.)
+
+* Msg/Option/Title
+
+* Msg/Option/Items
+
+    There must be at least 2 items. (TODO: Enforce or adapt this.)
+
+    * Msg/Options/Items[]/Title
+
+    * Msg/Options/Items[]/Body
+
+    * Msg/Options/Items[]/ImageUrl
+
+    * Msg/Options/Items[]/ImageText
 
 #### Link out
 
@@ -181,6 +247,9 @@ handler, just before the Response is computed:
 * the Intent
 * the Outent
 * NumVisits
+
+Additionally, the `User/State/NumVisits` environment value is incremented
+as part of the `Action.welcome` handler by default
 
 #### Adding your own counter
 
