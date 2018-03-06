@@ -190,7 +190,8 @@ module.exports = {
       }
     },
     "Ssml": {
-      "Template": "{{#Ssml Voice}}{{{Msg.Ssml}}} {{{Suffix.Ssml}}}{{/Ssml}}"
+      "Template": "{{#Ssml Voice}}{{{Msg.Ssml}}} {{{Suffix.Ssml}}}{{/Ssml}}",
+      "Remember": "{{Msg.Ssml}} {{Suffix.Ssml}}"
     },
     "Txt": {
       "Template": "{{{First Msg.Txt Msg.Ssml}}} {{{First Suffix.Txt Suffix.Ssml}}}"
@@ -199,6 +200,7 @@ module.exports = {
       "PathList": [
         "Requirements/Context",
         "Send/Session",
+        "Send/Remember",
         "Response/Context",
         "ResponseSuffix/Context"
       ]
