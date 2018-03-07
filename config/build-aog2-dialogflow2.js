@@ -1,10 +1,12 @@
 module.exports = {
-  /*
-  'Send/ContextList': 'outputContexts',
-  */
-  'Send': {
-    Target: 'source',
-    Value:  'ACTIONS_ON_GOOGLE'
+  'Send/ContextList': {
+    Target: 'outputContexts',
+    Value:
+      '{{#each Send.ContextList}}'+
+        '{{#Set "_This[+]/name"}}{{@root.Body.session}}/contexts/{{this.name}}{{/Set}}'+
+        '{{Set  "_This[=]/lifespanCount" this.lifespan}}'+
+        '{{Set  "_This[=]/parameters"    this.parameters}}'+
+      '{{/each}}'
   },
   'Send/ShouldClose': {
     Target: 'payload/google/expectUserResponse',
