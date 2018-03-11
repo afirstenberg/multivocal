@@ -35,6 +35,42 @@ module.exports = {
     "Default": {
       "Template": "Default"
     },
+    "Platform": {
+      "RuleCriteria": {
+        "IsDialogflow": {
+          "Terms":[
+            "{{isTruthy Body.originalRequest}}",
+            "{{isTruthy Body.originalDetectIntentRequest}}"
+          ],
+          "Op": "or"
+        },
+        "DialogflowVersion": [
+          "{{#if Platform.IsDialogflow}}",
+            "{{#if (isTruthy Body.originalRequest)}}",
+              "1",
+            "{{else}}",
+              "2",
+            "{{/if}}",
+          "{{/if}}"
+        ],
+        "ActionsSDKVersion": "{{Val 'Req/headers/google-assistant-api-version'}}",
+        "IsActionsSDK": "{{isTruthy Platform.ActionsSDKVersion}}",
+        "IsActionsOnGoogle": {
+          "Terms":[
+            "{{eq Body.originalRequest.source             'google'}}",
+            "{{eq Body.originalDetectIntentRequest.source 'google'}}",
+            "{{Platform.IsActionsSDK}}"
+          ],
+          "Op": "or"
+        },
+        "ActionsOnGoogleVersion": [
+          "{{#if (isTruthy Platform.IsActionsSDK)}}{{Platform.ActionsSDKVersion}}",
+          "{{else if (eq Platform.DialogflowVersion '1')}}{{Body.originalRequest.version}}",
+          "{{else}}{{Body.originalDetectIntentRequest.version}}",
+          "{{/if}}"
+        ]
+      }
+    },
     "Locale": {
       "Path": [
         "Body/originalRequest/data/user/locale",
