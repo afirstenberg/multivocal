@@ -19,23 +19,62 @@ module.exports = {
     "Intent": {
       "Path": [
         "Context/multivocal_permission/parameters/intentName",
-        "Body/result/metadata/intentName"
+        "Body/result/metadata/intentName",
+        "Body/queryResult/intent/displayName"
       ],
       "Template": "Intent.{{IntentName}}"
     },
     "Action": {
       "Path": [
         "Context/multivocal_permission/parameters/actionName",
-        "Body/result/action"
+        "Body/result/action",
+        "Body/queryResult/action"
       ],
       "Template": "Action.{{ActionName}}"
     },
     "Default": {
       "Template": "Default"
     },
+    "Platform": {
+      "RuleCriteria": {
+        "IsDialogflow": {
+          "Terms":[
+            "{{isTruthy Body.originalRequest}}",
+            "{{isTruthy Body.originalDetectIntentRequest}}"
+          ],
+          "Op": "or"
+        },
+        "DialogflowVersion": [
+          "{{#if Platform.IsDialogflow}}",
+            "{{#if (isTruthy Body.originalRequest)}}",
+              "1",
+            "{{else}}",
+              "2",
+            "{{/if}}",
+          "{{/if}}"
+        ],
+        "ActionsSDKVersion": "{{Val 'Req/headers/google-assistant-api-version'}}",
+        "IsActionsSDK": "{{isTruthy Platform.ActionsSDKVersion}}",
+        "IsActionsOnGoogle": {
+          "Terms":[
+            "{{eq Body.originalRequest.source             'google'}}",
+            "{{eq Body.originalDetectIntentRequest.source 'google'}}",
+            "{{Platform.IsActionsSDK}}"
+          ],
+          "Op": "or"
+        },
+        "ActionsOnGoogleVersion": [
+          "{{#if (isTruthy Platform.IsActionsSDK)}}{{Platform.ActionsSDKVersion}}",
+          "{{else if (eq Platform.DialogflowVersion '1')}}{{Body.originalRequest.version}}",
+          "{{else}}{{Body.originalDetectIntentRequest.version}}",
+          "{{/if}}"
+        ]
+      }
+    },
     "Locale": {
       "Path": [
-        "Body/originalRequest/data/user/locale"
+        "Body/originalRequest/data/user/locale",
+        "Body/originalDetectIntentRequest/user/locale"
       ],
       "Default": "und"
     },
@@ -50,13 +89,22 @@ module.exports = {
     },
     "Parameters": {
       "Path": [
-        "Body/result/parameters"
+        "Body/result/parameters",
+        "Body/queryResult/parameters"
+      ],
+      "Default": {}
+    },
+    "Contexts": {
+      "Path": [
+        "Body/result/contexts",
+        "Body/queryResult/outputContexts"
       ],
       "Default": {}
     },
     "Option": {
       "Path": [
-        "Body/originalRequest/data/inputs[0]/arguments[0]/textValue"
+        "Body/originalRequest/data/inputs[0]/arguments[0]/textValue",
+        "Body/originalDetectIntentRequest/inputs[0]/arguments[0]/textValue"
       ],
       "Prefix": "OPTION_"
     },
@@ -76,12 +124,18 @@ module.exports = {
         {
           "Permission": "NAME",
           "Target":     "User/Name",
-          "Source":     "Body/originalRequest/data/user/profile/givenName"
+          "Source":     [
+            "Body/originalRequest/data/user/profile/givenName",
+            "Body/originalDetectIntentRequest/user/profile/givenName"
+          ]
         },
         {
           "Permission": "DEVICE_PRECISE_LOCATION",
           "Target":     "Session/Location",
-          "Source":     "Body/originalRequest/data/device/location/coordinates"
+          "Source":     [
+            "Body/originalRequest/data/device/location/coordinates",
+            "Body/originalDetectIntentRequest/device/location/coordinates"
+          ]
         }
       ]
     },
@@ -135,7 +189,8 @@ module.exports = {
     "Session": {
       "Feature": {
         "Path": [
-          "Body/originalRequest/data/surface"
+          "Body/originalRequest/data/surface",
+          "Body/originalDetectIntentRequest/surface"
         ],
         "Default": []
       },
@@ -161,13 +216,15 @@ module.exports = {
     "User": {
       "Feature": {
         "Path": [
-          "Body/originalRequest/data/availableSurfaces"
+          "Body/originalRequest/data/availableSurfaces",
+          "Body/originalDetectIntentRequest/availableSurfaces"
         ],
         "Default": []
       },
       "State": {
         "Path": [
-          "Body/originalRequest/data/user/userStorage"
+          "Body/originalRequest/data/user/userStorage",
+          "Body/originalDetectIntentRequest/user/userStorage"
         ],
         "Default": "{}"
       }

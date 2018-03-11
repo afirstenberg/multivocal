@@ -97,6 +97,8 @@ use things named this way unless they've been documented:
 
 Environment settings built:
 
+* Platform
+
 * Locale
 
 * Lang
@@ -283,5 +285,12 @@ incremented once per request.
 ### Does multivocal work with Alexa?
 
 ### What version of Dialogflow does multivocal work with?
+
+Right now, multivocal primarily targets Dialogflow version 1.
+
+There is support for version 2 (it reports the version in the 
+environment setting `Platform.DialogflowVersion` and there is a
+JSON formatter that creates output for it), but this isn't the
+primary development target, so it may not have been as fully tested.
 
 ### Does multivocal work with the Action SDK?
