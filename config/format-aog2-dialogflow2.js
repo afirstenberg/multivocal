@@ -64,6 +64,15 @@ module.exports = {
       Target: 'payload/google/systemIntent/intent',
       Value: 'actions.intent.OPTION'
     },
+    'Msg/Audio': {
+      Target: 'payload/google/richResponse/items[+]/mediaResponse/mediaType',
+      Value: 'AUDIO'
+    },
+    'Msg/Audio/Url':      'payload/google/richResponse/items[=]/mediaResponse/mediaObjects[+]/contentUrl',
+    'Msg/Audio/Title':    'payload/google/richResponse/items[=]/mediaResponse/mediaObjects[=]/name',
+    'Msg/Audio/Body':     'payload/google/richResponse/items[=]/mediaResponse/mediaObjects[=]/description',
+    'Msg/Audio/IconUrl':  'payload/google/richResponse/items[=]/mediaResponse/mediaObjects[=]/icon/url',
+    'Msg/Audio/ImageUrl': 'payload/google/richResponse/items[=]/mediaResponse/mediaObjects[=]/largeImage/url',
     'User/State':{
       Target: 'payload/google/userStorage',
       ValueType: 'string'
