@@ -108,6 +108,14 @@ module.exports = {
       ],
       "Prefix": "OPTION_"
     },
+    "MediaStatus": {
+      "Inputs": {
+        "Path": [
+          "Body/originalRequest/data/inputs",
+          "Body/originalDetectIntentRequest/inputs"
+        ]
+      }
+    },
     "Requirements": {
       "Path": [
         "Config/Local/{{Locale}}/Requirements/{{Intent}}",

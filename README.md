@@ -91,8 +91,6 @@ use things named this way unless they've been documented:
 
 #### Platform detection
 
-(Work in progress)
-
 ### Environment builders
 
 Environment settings built:
@@ -116,6 +114,8 @@ Environment settings built:
 * Session/Consecutive
 
 * Option
+
+* MediaStatus
 
 * Session/Feature
 
@@ -216,6 +216,20 @@ Environment settings:
 (Link out suggestion - work in progress)
 
 (Link out/to Android app prompt - work in progress)
+
+#### Media
+
+Environment settings:
+
+* Audio/Url
+
+* Audio/Title
+
+* Audio/Body
+
+* Audio/IconUrl
+
+* Audio/ImageUrl
 
 ### Voices
 
