@@ -81,7 +81,7 @@ use things named this way unless they've been documented:
 
 #### Firebase realtime database configuration
 
-(Work in progress)
+(TODO: Firebase DB integration - Work in progress)
 
 #### Merged configuration
 
@@ -137,7 +137,7 @@ Environment settings built:
 
 #### Standard Dialogflow Intents/Actions
 
-(Work in progress to rename these and provide Dialogflow zip)
+(TODO: Work in progress to provide Dialogflow zip)
 
 ##### Action: welcome and multivocal.welcome
 
@@ -158,8 +158,6 @@ after doing response processing.
 
 Sets the `Response/ShouldRepeat` environment setting to true
 after doing response processing.
-
-(Work in progress)
 
 ### Handlers
 
@@ -205,6 +203,8 @@ Environment settings:
 * Msg/Option/SelectType
 
     Should be either "list" or "carousel". (TODO: Enforce this.)
+    
+    (TODO: Browsing Carousel support)
 
 * Msg/Option/Title
 
@@ -222,9 +222,9 @@ Environment settings:
 
 #### Link out
 
-(Link out suggestion - work in progress)
+(TODO: Link out suggestion - work in progress)
 
-(Link out/to Android app prompt - work in progress)
+(TODO: Link out/to Android app prompt - work in progress)
 
 #### Media
 
@@ -248,13 +248,13 @@ Environment settings:
 
 ### Requirements and Requests
 
-(Request surface feature - work in progress)
+(TODO: Request surface feature - work in progress)
 
-(Requesting place by name - work in progress)
+(TODO: Requesting place by name - work in progress)
 
-(Authorization - work in progress)
+(TODO: Authorization - work in progress)
 
-(Adding own requirements - work in progress)
+(TODO: Adding own requirements - work in progress)
 
 ### Counters
 
