@@ -249,17 +249,17 @@ module.exports = {
       "Criteria":{
         "Terms": [
           "{{EndsWith Msg.Ssml '?'}}",
-          "{{Response.ShouldClose}}"
+          "{{Response.ShouldClose}}",
+          "{{Response.ShouldRepeat}}"
         ],
         "Op": "or"
       }
     },
     "Ssml": {
-      "Template": "{{#Ssml Voice}}{{{Msg.Ssml}}} {{{Suffix.Ssml}}}{{/Ssml}}",
-      "Remember": "{{Msg.Ssml}} {{Suffix.Ssml}}"
+      "Template": "{{{First Msg.Ssml Msg.Text}}} {{{First Suffix.Ssml Suffix.Text}}}"
     },
-    "Txt": {
-      "Template": "{{{First Msg.Txt Msg.Ssml}}} {{{First Suffix.Txt Suffix.Ssml}}}"
+    "Text": {
+      "Template": "{{{First Msg.Text Msg.Ssml}}} {{{First Suffix.Text Suffix.Ssml}}}"
     },
     "Context": {
       "PathList": [

@@ -21,12 +21,13 @@ module.exports = {
       Value: '{{not Send.ShouldClose}}',
       ValueType: 'boolean'
     },
-    'Ssml': {
+    'Send/Ssml': {
       Target: [
         'payload/google/richResponse/items[0]/simpleResponse/ssml'
-      ]
+      ],
+      Value: '{{#Ssml Voice}}{{{Send.Ssml}}}{{/Ssml}}'
     },
-    'Txt': {
+    'Send/Text': {
       Target: [
         'payload/google/richResponse/items[0]/simpleResponse/displayText'
       ]

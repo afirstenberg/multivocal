@@ -13,17 +13,27 @@ module.exports = {
       Value: '{{not Send.ShouldClose}}',
       ValueType: 'boolean'
     },
-    'Ssml': {
+    'Send/Ssml': {
       Target: [
         'data/google/richResponse/items[0]/simpleResponse/ssml',
         'speech'
-      ]
+      ],
+      Value: '{{#Ssml Voice}}{{{Send.Ssml}}}{{/Ssml}}'
     },
-    'Txt': {
+    'Send/Text': {
       Target: [
         'data/google/richResponse/items[0]/simpleResponse/displayText',
         'displayText'
       ]
+    },
+    'Context/multivocal_repeat/parameters/Ssml': {
+      Criteria: '{{Response.ShouldRepeat}}',
+      Target: 'data/google/richResponse/items[+]/simpleResponse/ssml',
+      Value: '{{#Ssml Voice}}{{{Context.multivocal_repeat.parameters.Ssml}}}{{/Ssml}}'
+    },
+    'Context/multivocal_repeat/parameters/Text': {
+      Criteria: '{{Response.ShouldRepeat}}',
+      Target: 'data/google/richResponse/items[=]/simpleResponse/displayText'
     },
     'Msg/Card': 'data/google/richResponse/items[+]/basicCard',
     'Msg/Suggestions': {

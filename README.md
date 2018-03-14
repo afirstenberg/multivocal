@@ -139,11 +139,14 @@ Environment settings built:
 
 (Work in progress to rename these and provide Dialogflow zip)
 
-##### Action: welcome
+##### Action: welcome and multivocal.welcome
 
 Increments the `User/State/NumVisits` environment value.
 
-##### Action: quit
+##### Action: quit and multivocal.quit
+
+Sets the `Response/ShouldQuit` environment setting to true
+after doing response processing.
 
 ##### Intent: input.none
 
@@ -151,7 +154,10 @@ Increments the `User/State/NumVisits` environment value.
 
 ##### Action: input.unknown
 
-##### Action: repeat
+##### Action: repeat and multivocal.repeat
+
+Sets the `Response/ShouldRepeat` environment setting to true
+after doing response processing.
 
 (Work in progress)
 
@@ -184,6 +190,9 @@ Response settings:
 Environment settings:
 
 * Msg/Ssml
+* Msg/Text
+* Suffix/Ssml
+* Suffix/Text
 
 #### Cards
 
