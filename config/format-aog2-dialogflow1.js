@@ -44,27 +44,50 @@ module.exports = {
         '{{Set "_This[+]/title" this}}'+
       '{{/each}}'
     },
-    'Msg/Option/Title': 'data/google/systemIntent/data/{{Msg.Option.SelectType}}Select/title',
+    'Msg/Option/Type': {
+      TargetEnv: 'Send/Option',
+      Value:
+        '{{#if (and (eq Msg.Option.Type "carousel") Msg.Option.Items.[0].Url)}}'+
+          '{{Set "_This/Path" "richResponse/items[+]"}}'+
+          '{{Set "_This/Type" "carouselBrowse"}}'+
+          '{{Set "_This/IsRichResponse" true}}'+
+        '{{else if (eq Msg.Option.Type "carousel")}}'+
+          '{{Set "_This/Path" "systemIntent/data"}}'+
+          '{{Set "_This/Type" "carouselSelect"}}'+
+          '{{Set "_This/IsSystemIntent" true}}'+
+        '{{else}}'+
+          '{{Set "_This/Path" "systemIntent/data"}}'+
+          '{{Set "_This/Type" "listSelect"}}'+
+          '{{Set "_This/IsSystemIntent" true}}'+
+        '{{/if}}'
+    },
+    'Msg/Option/Title': 'data/google/{{Send.Option.Path}}/{{Send.Option.Type}}/title',
     'Msg/Option/Items': {
-      Target: 'data/google/systemIntent/data/{{Msg.Option.SelectType}}Select/items',
+      Target: 'data/google/{{Send.Option.Path}}/{{Send.Option.Type}}/items',
       Value:
       '{{#each Msg.Option.Items}}'+
-        '{{#Set "_This[+]/optionInfo/key"}}{{Setting "Option/Prefix"}}{{@index}}{{/Set}}'+
-        '{{Set "_This[=]/title"                   this.Title}}'+
+        '{{Set "_This[+]/title"                   this.Title}}'+
         '{{Set "_This[=]/description"             this.Body}}'+
+        '{{#if (Val "Send/Option/IsSystemIntent")}}'+
+          '{{#Set "_This[=]/optionInfo/key"}}{{Setting "Option/Prefix"}}{{@index}}{{/Set}}'+
+        '{{/if}}'+
         '{{#if (and this.ImageUrl this.ImageText)}}'+
           '{{Set "_This[=]/image/url"               this.ImageUrl}}'+
           '{{Set "_This[=]/image/accessibilityText" this.ImageText}}'+
         '{{/if}}'+
+        '{{#if (Val "Send/Option/IsRichResponse")}}'+
+          '{{Set "_This[=]/openUrlAction/url"       this.Url}}'+
+          '{{Set "_This[=]/footer"                  this.Footer}}'+
+        '{{/if}}'+
       '{{/each}}'
     },
     'Msg/Option/SelectType/Type': {
-      Criteria: '{{Msg.Option}}',
+      Criteria: '{{Send.Option.IsSystemIntent}}',
       Target: 'data/google/systemIntent/data/@type',
       Value: 'type.googleapis.com/google.actions.v2.OptionValueSpec'
     },
     'Msg/Option/SelectType/Intent': {
-      Criteria: '{{Msg.Option}}',
+      Criteria: '{{Send.Option.IsSystemIntent}}',
       Target: 'data/google/systemIntent/intent',
       Value: 'actions.intent.OPTION'
     },

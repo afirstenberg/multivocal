@@ -200,12 +200,10 @@ Environment settings:
 
 Environment settings:
 
-* Msg/Option/SelectType
+* Msg/Option/Type
 
-    Should be either "list" or "carousel". (TODO: Enforce this.)
+    Should be either "list" or "carousel".
     
-    (TODO: Browsing Carousel support)
-
 * Msg/Option/Title
 
 * Msg/Option/Items
@@ -219,6 +217,12 @@ Environment settings:
     * Msg/Options/Items[]/ImageUrl
 
     * Msg/Options/Items[]/ImageText
+    
+    * Msg/Option/Items[]/Footer
+        (for Browsing Carousel only)
+    
+    * Msg/Options/Items[]/Url
+        (for Browsing Carousel only)
 
 #### Link out
 
