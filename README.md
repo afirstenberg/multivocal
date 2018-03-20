@@ -10,7 +10,9 @@ based action built on Firebase Cloud Functions is straightforward with just
 a little boilerplate.
 
 ```javascript
-const Config = require('multivocal/lib/config-simple')({
+const Multivocal = require('multivocal');
+
+new Multivocal.Config.Simple({
   Local: {
     und: {
       Response: {
@@ -27,9 +29,6 @@ const Config = require('multivocal/lib/config-simple')({
   }
 });
 
-const Multivocal = require('multivocal');
-Multivocal.addConfig( Config );
-
 const functions = require('firebase-functions');
 exports.webhook = functions.https.onRequest( (req,res) => {
     Multivocal.process( req, res );
@@ -38,7 +37,9 @@ exports.webhook = functions.https.onRequest( (req,res) => {
 
 We can roughly break this into three parts:
 
-1.  Build our configuration.  
+1.  Load the multivocal library.
+
+2.  Build our configuration.  
    
     We'll use a simple configuration object that takes the JSON for the configuration.
    
@@ -51,9 +52,10 @@ We can roughly break this into three parts:
    
     The `multivocal.welcome` Action is one that is provided by the standard
     Intents, and is called when the conversation begins.
+    
+    Building the configuration automatically adds it to Multivocal's
+    configuration.
    
-2.  Load the multivocal library and add this to the configuration.
-
 3.  Register the function to be called when a request comes in from Dialogflow
     and have multivocal process it.  
    
