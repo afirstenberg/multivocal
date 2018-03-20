@@ -74,7 +74,7 @@ module.exports = {
     "Locale": {
       "Path": [
         "Body/originalRequest/data/user/locale",
-        "Body/originalDetectIntentRequest/user/locale"
+        "Body/originalDetectIntentRequest/payload/user/locale"
       ],
       "Default": "und"
     },
@@ -104,7 +104,7 @@ module.exports = {
     "Option": {
       "Path": [
         "Body/originalRequest/data/inputs[0]/arguments[0]/textValue",
-        "Body/originalDetectIntentRequest/inputs[0]/arguments[0]/textValue"
+        "Body/originalDetectIntentRequest/payload/inputs[0]/arguments[0]/textValue"
       ],
       "Prefix": "OPTION_"
     },
@@ -112,7 +112,7 @@ module.exports = {
       "Inputs": {
         "Path": [
           "Body/originalRequest/data/inputs",
-          "Body/originalDetectIntentRequest/inputs"
+          "Body/originalDetectIntentRequest/payload/inputs"
         ]
       }
     },
@@ -134,7 +134,7 @@ module.exports = {
           "Target":     "User/Name",
           "Source":     [
             "Body/originalRequest/data/user/profile/givenName",
-            "Body/originalDetectIntentRequest/user/profile/givenName"
+            "Body/originalDetectIntentRequest/payload/user/profile/givenName"
           ]
         },
         {
@@ -142,7 +142,7 @@ module.exports = {
           "Target":     "Session/Location",
           "Source":     [
             "Body/originalRequest/data/device/location/coordinates",
-            "Body/originalDetectIntentRequest/device/location/coordinates"
+            "Body/originalDetectIntentRequest/payload/device/location/coordinates"
           ]
         }
       ]
@@ -198,7 +198,7 @@ module.exports = {
       "Feature": {
         "Path": [
           "Body/originalRequest/data/surface",
-          "Body/originalDetectIntentRequest/surface"
+          "Body/originalDetectIntentRequest/payload/surface"
         ],
         "Default": []
       },
@@ -225,14 +225,14 @@ module.exports = {
       "Feature": {
         "Path": [
           "Body/originalRequest/data/availableSurfaces",
-          "Body/originalDetectIntentRequest/availableSurfaces"
+          "Body/originalDetectIntentRequest/payload/availableSurfaces"
         ],
         "Default": []
       },
       "State": {
         "Path": [
           "Body/originalRequest/data/user/userStorage",
-          "Body/originalDetectIntentRequest/user/userStorage"
+          "Body/originalDetectIntentRequest/payload/user/userStorage"
         ],
         "Default": "{}"
       }
