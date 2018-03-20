@@ -14,9 +14,11 @@ const Config = require('multivocal/lib/config-simple')({
   Local: {
     und: {
       Response: {
-        Default: [
+        "Action.multivocal.welcome": [
           {
-            Template: "Hello World.",
+            Template: {
+              Text: "Hello world."
+            },
             ShouldClose: true
           }
         ]
@@ -26,7 +28,7 @@ const Config = require('multivocal/lib/config-simple')({
 });
 
 const Multivocal = require('multivocal');
-Multivocal.setConfig( Config );
+Multivocal.addConfig( Config );
 
 const functions = require('firebase-functions');
 exports.webhook = functions.https.onRequest( (req,res) => {
@@ -36,27 +38,29 @@ exports.webhook = functions.https.onRequest( (req,res) => {
 
 We can roughly break this into three parts:
 
-1. Build our configuration.  
+1.  Build our configuration.  
    
-   We'll use a simple configuration object that takes the JSON for the configuration.
+    We'll use a simple configuration object that takes the JSON for the configuration.
    
-   We need to define the _Default_ response, and we'll define it for the _undefined_
-   locale. This response says that for any incoming request that does not match
-   another defined Intent or Action, format the Template and use this as our message.
-   Furthermore, after we send this message, we should close the conversation.
+    We need to define the _Action.multivocal.welcome_ response, 
+    and we'll define it for the _undefined_
+    locale. This response says that for any incoming request that is for
+    the Action with the name `multivocal.welcome`, format the Template with
+    this text to use as our message.
+    Furthermore, after we send this message, we should close the conversation.
    
-   Since no other responses are defined for any other Intent or Action, in any
-   other locale, this will be the one called.
+    The `multivocal.welcome` Action is one that is provided by the standard
+    Intents, and is called when the conversation begins.
    
-2. Load the multivocal library and set the configuration.
+2.  Load the multivocal library and add this to the configuration.
 
-3. Register the function to be called when a request comes in from Dialogflow
-   and have multivocal process it.  
+3.  Register the function to be called when a request comes in from Dialogflow
+    and have multivocal process it.  
    
-   This uses the Firebase Cloud Functions registration method to declare the
-   function, but anything that can pass an express-like `req` and `res` object
-   to `Multivocal.process()` will work fine. (These include Google Cloud
-   Functions and anything running express.js.)
+    This uses the Firebase Cloud Functions registration method to declare the
+    function, but anything that can pass an express-like `req` and `res` object
+    to `Multivocal.process()` will work fine. (These include Google Cloud
+    Functions and anything running express.js.)
 
 ## Features
 
@@ -85,7 +89,7 @@ use things named this way unless they've been documented:
 
 #### Merged configuration
 
-#### Default and Suggested configurations
+#### Default and Standard configurations
 
 ### Processing, the Environment, and Paths
 

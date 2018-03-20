@@ -15,20 +15,20 @@ var baselibWelcome = {
 var baselibUnknown = {
   First: {
     Base: {Set: true},
-    Criteria: "{{eq (Val 'Session/Consecutive/Action.input.unknown') 1}}"
+    Criteria: "{{eq (Val 'Session/Consecutive/Action.multivocal.unknown') 1}}"
   },
 
   Repeat: {
     Base: {Set: true},
     Criteria: [
-      "{{gt (Val 'Session/Consecutive/Action.input.unknown') 1}}",
-      "{{lt (Val 'Session/Consecutive/Action.input.unknown') 3}}"
+      "{{gt (Val 'Session/Consecutive/Action.multivocal.unknown') 1}}",
+      "{{lt (Val 'Session/Consecutive/Action.multivocal.unknown') 3}}"
     ]
   },
 
   Final: {
     Base: {Set: true},
-    Criteria: "{{gte (Val 'Session/Consecutive/Action.input.unknown') 3}}",
+    Criteria: "{{gte (Val 'Session/Consecutive/Action.multivocal.unknown') 3}}",
     ShouldClose: true
   }
 };
@@ -38,6 +38,51 @@ var baselib = {
   Unknown: baselibUnknown
 };
 
+var undWelcome = [
+  {Base:{Ref: 'Config/BaseLib/Welcome/First'}},
+  "Welcome! What would you like to do?",
+
+  {Base:{Ref: 'Config/BaseLib/Welcome/Returning'}},
+  "Welcome back! What would you like to do?"
+];
+
+var undUnknown = [
+  {Base:{Ref: 'Config/BaseLib/Unknown/First'}},
+  "I'm sorry, I didn't get that.",
+
+  {Base:{Ref: 'Config/BaseLib/Unknown/Repeat'}},
+  "I'm sorry, but I'm not sure I understand.",
+
+  {Base:{Ref: 'Config/BaseLib/Unknown/Final'}},
+  "I still didn't understand. Perhaps another time."
+];
+
+var undRepeat = [
+  "I said:"
+];
+
+var undQuit = [
+  "Thanks for visiting! Hope to see you again."
+];
+
+var undDefault = [
+  "Oh dear! I seem to be very confused."
+];
+
 module.exports = {
-  BaseLib: baselib
+  Meta: {
+    Name: 'Standard'
+  },
+  BaseLib: baselib,
+  Local: {
+    und: {
+      Response: {
+        "Action.multivocal.welcome": undWelcome,
+        "Action.multivocal.unknown": undUnknown,
+        "Action.multivocal.repeat":  undRepeat,
+        "Action.multivocal.quit":    undQuit,
+        "Default":                   undDefault
+      }
+    }
+  }
 };
