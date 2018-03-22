@@ -1,7 +1,77 @@
 # multivocal
 A node.js library to assist with building best practice, configuration driven, Actions for the Google Assistant.
 
-## Why multivocal?
+## What is multivocal?
+
+Multivocal is a library that tries to bring a new approach to helping
+you write webhooks for the Google Assistant (and, hopefully someday,
+other voice agents and bots).
+
+### Why multivocal?
+
+We found that the traditional method of building a webhook suffered from
+several problems:
+
+* There was lots of boilerplate code required to get very simple things
+  to work.
+* Best practices for handling no input, repeated bad input, welcoming
+  users, prompting users, varying responses, and other conversational 
+  components add even more code.
+* All this additional code is beyond the actual logic we want to implement.
+* The text for responses were often mixed in with the business logic,
+  making it difficult to add new language support or change the possible
+  responses.
+  
+As we developed more and more Actions, we began to want a library that
+met a few goals:
+
+1. Reduce boilerplate as much as possible.
+2. Use sane defaults and make it easy to override those defaults.
+3. Our code should be focused on the results - not how to transmit those
+   results.
+4. Responses to the user should be configuration driven, allowing us to
+   easily add and modify responses that incorporate the results from
+   our business logic.
+
+That evolved into Multivocal.
+
+### When does it make sense to use multivocal?
+
+We think it makes sense for any application you're writing with
+Dialogflow for the Google Assistant (Actions-on-Google). We hope to
+expand this so it make sense to use for the Action SDK (without
+Dialogflow), for other platforms that use Dialogflow, and for the
+Amazon Alexa.
+
+Right now, it targets webhooks that run on the Firebase Cloud Functions
+platform, but it should work on any platform that uses Express-like
+handling.
+
+### Who is behind multivocal?
+
+Multivocal was started by Allen "Prisoner" Firstenberg, a Google
+Developer Expert and developer of several Actions for the Assistant.
+
+But multivocal is open source - we would love to see your contributions!
+
+### Where can I get multivocal?
+
+Source for multivocal is available at https://github.com/afirstenberg/multivocal.
+You can also find documentation there and at https://multivocal.info/
+
+There are sample projects (ranging from fairly sparse projects we use
+to test things out to more full-featured examples) and additional 
+documentation linked from https://multivocal.info/
+
+You can report bugs and issues at the github project page.
+
+### How do I install and use multivocal?
+
+You can install it using `npm install --save multivocal`.
+
+As for using Multivocal... well... that takes up much of the rest
+of this document, as well as other documentation available from github
+or at https://multivocal.info/
 
 ## Hello World
 
