@@ -83,15 +83,146 @@ use things named this way unless they've been documented:
 
 ### Configuration
 
-#### Simple JSON configuration
+#### Simple Object configuration
+
+Since most configuration is represented internally as JavaScript Object
+attributes, it makes sense to use a JavaScript Object as one form of
+configuration. You can add this configuration by creating a new
+`Multivocal.Config.Simple` object and passing in an Object with attributes.
+
+```
+var config = {
+  Local: {
+    und: {
+      Response: {
+        "Action.multivocal.welcome": [
+          {
+            Template: {
+              Text: "Hello world."
+            },
+            ShouldClose: true
+          }
+        ]
+      }
+    }
+  }
+};
+new Multivocal.Config.Simple( config );
+```
 
 #### Firebase realtime database configuration
 
-(TODO: Firebase DB integration - Work in progress)
+Firebase represents its entire realtime database as a JSON tree, with
+some restrictions on the values of the keys. The `Multivocal.Config.Firebase`
+configuration can treat any path in a database as an object to be used
+for configuration. You can specify the path in the configuration, or
+use the default of `multivocal`. If you're using Firebase Cloud Functions,
+you don't need to provide the firebase settings for initialization, otherwise
+you will need to provide settings that include, at least, a URL and
+credentials.
+
+The upside to using Firebase to store responses is that it is very
+easy to update the database (either manually or by uploading JSON)
+and the changes will be live immediately.
+
+One catch is that Firebase doesn't allow a period in the key value, so
+you need to replace them with underscores in Firebase. The configuration
+module will convert them to periods.
+
+For many uses, this should be sufficient:
+```
+new Multivocal.Config.Firebase();
+```
+
+If you need to specify configuration, the name of the firebase app,
+and/or the path to use for configuration, you may need something more
+like this:
+```
+var firebase = {
+  config: {
+    ...
+  },
+  name: undefined,            // Uses default Firebase app
+  path: 'config/multivocal'   // Defaults to 'multivocal'
+};
+new Multivocal.Config.Firebase( firebase );
+```
+
+#### Cloud Firestore configuration
+
+Firebase's Cloud Firestore database provides a way to store documents
+that contain attributes and values. Since these values can be object-like,
+a document maps very nicely to a JavaScript object. The `Multivocal.Config.Firestore`
+configuration treats a document (specified by a collection name and
+document name) as an object. It defaults to a collection name of `config`
+and a document name of `multivocal`. If you're using Firebase Cloud
+Functions, you don't need to provide the firebase settings for initialization,
+otherwise you will need to provide settings that include, at least, 
+connection information and credentials.
+
+The upside to using Firestore to store responses and configuration is
+that it is very easy to update the database (generally manually, or
+by using a program to upload JSON) and the changes will be live immediately.
+
+Unlike the Firebase Realtime Database, Firestore allows for attribute
+names with periods.
+
+For many uses, this should be sufficient:
+```
+new Multivocal.Config.Firestore()
+```
+
+If you need to specify configuration, the name of the firebase app,
+the collection, and/or the document, you may need something more
+like this:
+```
+var firestore = {
+  config: {
+    ...
+  },
+  name: undefined,            // Uses default Firebase app
+  collection: 'stuff',        // Uses 'config' by default
+  document:   'mv'            // Uses 'multivocal' by default
+};
+new Multivocal.Config.Firestore( firestore );
+```
 
 #### Merged configuration
 
+There is also a configuration which takes a list of other configuration
+objects and merges them, with latter configurations overriding earlier
+ones. This is a deep merge, so it can be used to change specific fields.
+
+This is primarily used internally to get the configuration available
+when Multivocal is called.
+
+#### Adding your own configuration source
+
+If none of these suit your needs, you can create a class whose instances
+do get the configuration from whatever source you need. The only requirement
+is that it have a method `get()` which returns a Promise that resolves
+to an object with attributes. This object should be an instance that
+is different than one returned by any other call to `get()`. (In the
+event it is modified.)
+
+You register the configuration instance by calling `Multivocal.addConfig()`. 
+The built-in configuration classes do this for you as part of creating
+the instance, and you may wish to adopt this model as well.
+
 #### Default and Standard configurations
+
+Multivocal installs two configuration instances when it starts up.
+
+The default configuration is available in the DefCon environment setting.
+It contains "last resort" values and default settings. You **should not**
+touch this environment setting - you can override everything in your own
+configurations.
+
+The standard configuration is loaded as the first configuration and
+contains some basic phrases and tools. You typically don't want to
+eliminate it, but it is possible if needed.
+
+(TODO: Point to more complete documentation elsewhere)
 
 ### Processing, the Environment, and Paths
 
