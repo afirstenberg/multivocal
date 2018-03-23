@@ -7,63 +7,89 @@ module.exports = {
     Op: "and"
   },
   tasks: {
+    'Platform/IsDialogflow':{
+      TargetEnv: 'Send/Data',
+      Value: 'data/google'
+    },
     'Send/ContextList': 'contextOut',
     'Send/ShouldClose': {
-      Target: 'data/google/expectUserResponse',
+      Target: '{{Send/Data}}/expectUserResponse',
       Value: '{{not Send.ShouldClose}}',
       ValueType: 'boolean'
     },
     'Send/Ssml': {
       Target: [
-        'data/google/richResponse/items[0]/simpleResponse/ssml',
+        '{{Send/Data}}/richResponse/items[0]/simpleResponse/ssml',
         'speech'
       ],
       Value: '{{#Ssml Voice}}{{{Send.Ssml}}}{{/Ssml}}'
     },
     'Send/Text': {
       Target: [
-        'data/google/richResponse/items[0]/simpleResponse/displayText',
+        '{{Send/Data}}/richResponse/items[0]/simpleResponse/displayText',
         'displayText'
       ]
     },
     'Context/multivocal_repeat/parameters/Ssml': {
       Criteria: '{{Response.ShouldRepeat}}',
-      Target: 'data/google/richResponse/items[+]/simpleResponse/ssml',
+      Target: '{{Send/Data}}/richResponse/items[+]/simpleResponse/ssml',
       Value: '{{#Ssml Voice}}{{{Context.multivocal_repeat.parameters.Ssml}}}{{/Ssml}}'
     },
     'Context/multivocal_repeat/parameters/Text': {
       Criteria: '{{Response.ShouldRepeat}}',
-      Target: 'data/google/richResponse/items[=]/simpleResponse/displayText'
-    },
-    'Msg/Card': 'data/google/richResponse/items[+]/basicCard',
-    'Msg/Suggestions': {
-      Criteria: '{{and (isArray Msg.Suggestions) (length Msg.Suggestions)}}',
-      Target: 'data/google/richResponse/suggestions',
-      Value:
-      '{{#each Msg.Suggestions}}'+
-        '{{Set "_This[+]/title" this}}'+
-      '{{/each}}'
+      Target: '{{Send/Data}}/richResponse/items[=]/simpleResponse/displayText'
     },
     'Msg/Option/Type': {
       TargetEnv: 'Send/Option',
+      Debug: 'isArray={{isArray Msg.Option.Items}} eq1={{equalsLength Msg.Option.Items 1}}',
       Value:
-        '{{#if (and (eq Msg.Option.Type "carousel") Msg.Option.Items.[0].Url)}}'+
+        '{{#if (and (isArray Msg.Option.Items) (equalsLength Msg.Option.Items 1))}}'+
+          '{{Set "_This/IsSingular" true}}'+
+          '{{Set "Send/Card" Msg.Option.Items.[0]}}'+
+        '{{else if (and (eq Msg.Option.Type "carousel") Msg.Option.Items.[0].Url)}}'+
           '{{Set "_This/Path" "richResponse/items[+]"}}'+
           '{{Set "_This/Type" "carouselBrowse"}}'+
           '{{Set "_This/IsRichResponse" true}}'+
+          '{{Set "_This/IsPlural" true}}'+
         '{{else if (eq Msg.Option.Type "carousel")}}'+
           '{{Set "_This/Path" "systemIntent/data"}}'+
           '{{Set "_This/Type" "carouselSelect"}}'+
           '{{Set "_This/IsSystemIntent" true}}'+
+          '{{Set "_This/IsPlural" true}}'+
         '{{else}}'+
           '{{Set "_This/Path" "systemIntent/data"}}'+
           '{{Set "_This/Type" "listSelect"}}'+
           '{{Set "_This/IsSystemIntent" true}}'+
+          '{{Set "_This/IsPlural" true}}'+
         '{{/if}}'
     },
-    'Msg/Option/Title': 'data/google/{{Send.Option.Path}}/{{Send.Option.Type}}/title',
+    'Send/Card':{
+      Debug: '{{JSONstringify Send.Option}}',
+      Target: '{{Send/Data}}/richResponse/items[+]/basicCard',
+      Value: {}
+    },
+    'Send/Card/Title':{
+      Criteria: '{{Send.Card}}',
+      Target: '{{Send/Data}}/richResponse/items[=]/basicCard/title',
+      Value: '{{First Msg.Option.Title Send.Card.Title}}'
+    },
+    'Send/Card/Body':        '{{Send/Data}}/richResponse/items[=]/basicCard/formattedText',
+    'Send/Card/ImageUrl':    '{{Send/Data}}/richResponse/items[=]/basicCard/image/url',
+    'Send/Card/ImageText':   '{{Send/Data}}/richResponse/items[=]/basicCard/image/accessibilityText',
+    'Send/Card/ImageBorder': '{{Send/Data}}/richResponse/items[=]/basicCard/imageDisplayOptions',
+    'Send/Card/Url':{
+      Target: '{{Send/Data}}/richResponse/items[=]/basicCard/buttons[+]',
+      Value:
+        '{{Set "_This/openUrlAction/url" Send.Card.Url}}'+
+        '{{Set "_This/title" (First Send.Card.Title Send.Card.Footer "Visit")}}'
+    },
+    'Msg/Option/Title': {
+      Criteria: '{{Send.Option.IsPlural}}',
+      Target: '{{Send/Data}}/{{Send.Option.Path}}/{{Send.Option.Type}}/title'
+    },
     'Msg/Option/Items': {
-      Target: 'data/google/{{Send.Option.Path}}/{{Send.Option.Type}}/items',
+      Criteria: '{{Send.Option.IsPlural}}',
+      Target: '{{Send/Data}}/{{Send.Option.Path}}/{{Send.Option.Type}}/items',
       Value:
       '{{#each Msg.Option.Items}}'+
         '{{Set "_This[+]/title"                   this.Title}}'+
@@ -83,27 +109,35 @@ module.exports = {
     },
     'Msg/Option/SelectType/Type': {
       Criteria: '{{Send.Option.IsSystemIntent}}',
-      Target: 'data/google/systemIntent/data/@type',
+      Target: '{{Send/Data}}/systemIntent/data/@type',
       Value: 'type.googleapis.com/google.actions.v2.OptionValueSpec'
     },
     'Msg/Option/SelectType/Intent': {
       Criteria: '{{Send.Option.IsSystemIntent}}',
-      Target: 'data/google/systemIntent/intent',
+      Target: '{{Send/Data}}/systemIntent/intent',
       Value: 'actions.intent.OPTION'
     },
     'Msg/Audio': {
-      Target: 'data/google/richResponse/items[+]/mediaResponse/mediaType',
+      Target: '{{Send/Data}}/richResponse/items[+]/mediaResponse/mediaType',
       Value: 'AUDIO'
     },
-    'Msg/Audio/Url':      'data/google/richResponse/items[=]/mediaResponse/mediaObjects[+]/contentUrl',
-    'Msg/Audio/Title':    'data/google/richResponse/items[=]/mediaResponse/mediaObjects[=]/name',
-    'Msg/Audio/Body':     'data/google/richResponse/items[=]/mediaResponse/mediaObjects[=]/description',
-    'Msg/Audio/IconUrl':  'data/google/richResponse/items[=]/mediaResponse/mediaObjects[=]/icon/url',
-    'Msg/Audio/ImageUrl': 'data/google/richResponse/items[=]/mediaResponse/mediaObjects[=]/largeImage/url',
+    'Msg/Audio/Url':      '{{Send/Data}}/richResponse/items[=]/mediaResponse/mediaObjects[+]/contentUrl',
+    'Msg/Audio/Title':    '{{Send/Data}}/richResponse/items[=]/mediaResponse/mediaObjects[=]/name',
+    'Msg/Audio/Body':     '{{Send/Data}}/richResponse/items[=]/mediaResponse/mediaObjects[=]/description',
+    'Msg/Audio/IconUrl':  '{{Send/Data}}/richResponse/items[=]/mediaResponse/mediaObjects[=]/icon/url',
+    'Msg/Audio/ImageUrl': '{{Send/Data}}/richResponse/items[=]/mediaResponse/mediaObjects[=]/largeImage/url',
+    'Msg/Suggestions': {
+      Criteria: '{{and (isArray Msg.Suggestions) (length Msg.Suggestions)}}',
+      Target: '{{Send/Data}}/richResponse/suggestions',
+      Value:
+      '{{#each Msg.Suggestions}}'+
+      '{{Set "_This[+]/title" this}}'+
+      '{{/each}}'
+    },
     'User/State':{
-      Target: 'data/google/userStorage',
+      Target: '{{Send/Data}}/userStorage',
       ValueType: 'string'
     },
-    'Requirements/Intent':'data/google/systemIntent'
+    'Requirements/Intent':'{{Send/Data}}/systemIntent'
   }
 };

@@ -399,11 +399,9 @@ Environment settings:
 * Suffix/Ssml
 * Suffix/Text
 
-#### Cards
-
 #### Suggestion chips
 
-#### Lists and Options
+#### Lists, Options, and Cards
 
 Environment settings:
 
@@ -415,7 +413,7 @@ Environment settings:
 
 * Msg/Option/Items
 
-    There must be at least 2 items. (TODO: Enforce or adapt this.)
+    There must be at least 2 items. (If not, this gets turned into a card.)
 
     * Msg/Options/Items[]/Title
 
@@ -425,11 +423,15 @@ Environment settings:
 
     * Msg/Options/Items[]/ImageText
     
+    * Msg/Options/Items[]/ImageBorder
+        (for Card only)
+        If set, should be one of: "DEFAULT", "WHITE", "CROPPED"
+    
     * Msg/Option/Items[]/Footer
         (for Browsing Carousel only)
     
     * Msg/Options/Items[]/Url
-        (for Browsing Carousel only)
+        (for Browsing Carousel and Card only)
 
 #### Link out
 
