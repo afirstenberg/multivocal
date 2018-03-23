@@ -401,6 +401,12 @@ Environment settings:
 
 #### Suggestion chips
 
+Environment settings:
+
+* Msg/Suggestions
+
+    An array of strings. Each string becomes a suggestion chip text.
+
 #### Lists, Options, and Cards
 
 Environment settings:
@@ -443,15 +449,15 @@ Environment settings:
 
 Environment settings:
 
-* Audio/Url
+* Msg/Audio/Url
 
-* Audio/Title
+* Msg/Audio/Title
 
-* Audio/Body
+* Msg/Audio/Body
 
-* Audio/IconUrl
+* Msg/Audio/IconUrl
 
-* Audio/ImageUrl
+* Msg/Audio/ImageUrl
 
 ### Voices
 
