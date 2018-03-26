@@ -350,6 +350,8 @@ Environment settings built:
 
 Increments the `User/State/NumVisits` environment value.
 
+(TODO: Handle (possibly short-circuit?) Google's health check ping)
+
 ##### Action: quit and multivocal.quit
 
 Sets the `Response/ShouldQuit` environment setting to true
@@ -515,6 +517,8 @@ incremented once per request.
 ### Analytics
 
 (Future work)
+
+(TODO: Don't send Google's healthcheck ping for analytics)
 
 ## Questions
 
