@@ -99,10 +99,7 @@ new Multivocal.Config.Simple({
   }
 });
 
-const functions = require('firebase-functions');
-exports.webhook = functions.https.onRequest( (req,res) => {
-    Multivocal.process( req, res );
-});
+exports.webhook = Multivocal.processFirebaseWebhook;
 ```
 
 We can roughly break this into three parts:
@@ -127,13 +124,15 @@ We can roughly break this into three parts:
     configuration.
    
 3.  Register the function to be called when a request comes in from Dialogflow
-    and have multivocal process it.  
-   
-    This uses the Firebase Cloud Functions registration method to declare the
-    function, but anything that can pass an express-like `req` and `res` object
-    to `Multivocal.process()` will work fine. (These include Google Cloud
-    Functions and anything running express.js.)
-
+    and have multivocal process it.
+    
+    In this case, we're using the Firebase webhook processor to process
+    from Firebase Cloud Functions, but there are also processors for 
+    Google Cloud Functions (which are slightly different), an Express
+    function, or if you're using AWS Lambda. If you're using something
+    else, you can build the environment yourself, call the processing,
+    and send the JSON response.
+    
 ## Features
 
 ### Naming Convention
