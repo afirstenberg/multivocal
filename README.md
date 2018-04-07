@@ -293,6 +293,10 @@ eliminate it, but it is possible if needed.
 
 (TODO: Point to more complete documentation elsewhere)
 
+### Pre-Processing and Prerequisites
+
+(TODO: Work in progress)
+
 ### Processing, the Environment, and Paths
 
 #### Platform detection
@@ -513,7 +517,11 @@ after your Builder or Handler runs.
 It is safe to add the name more than once - the counter will only be
 incremented once per request.
 
-### Analytics
+### Post-processing
+
+(TODO: Work in progress)
+
+#### Analytics
 
 (Future work)
 
@@ -521,15 +529,66 @@ incremented once per request.
 
 ## Questions
 
-### Does multivocal work on Google Cloud Platform?
+### Platforms
 
-### Does multivocal work with Express.js?
+#### Does multivocal work with Firebase Cloud Functions?
 
-### Does multivocal work with AWS Lambda?
+Yes. In your index.js file, you would have something like
+
+    exports.webhook = Multivocal.processFirebaseWebhook;
+    
+and your Dialogflow webhook would be set to the URL that calls this.
+
+#### Does multivocal work on Google Cloud Platform?
+
+It depends. If you're using Google Cloud Functions, then your index.js
+file would have a line
+
+    exports.webhook = Multivocal.processGCFWebhook;
+    
+and your Dialogflow webhook would be set to the URL that calls this.
+
+If you're doing this some other way (using App Engine, Compute Engine,
+or a Docker or Kubernetes image - any of which can run node.js), 
+then it depends on what framework you're using to handle HTTPS requests.
+We've tested with Express.js (see the next question).
+
+#### Does multivocal work with Express.js?
+
+Yes. You'll want to have your Express app listen for POST requests at
+a particular route, and then send that to Multivocal for processing.
+
+There are lots of ways to structure your code, but the routing part
+of it might look something like this:
+
+    app.post( '/webhook', Multivocal.processExpressWebhook );
+    
+and you should set your Dialogflow webhook to the URL that would match
+this route.
+
+#### Does multivocal work with AWS Lambda?
+
+Yes, you can use the `Multivocal.processLambdaWebhook` function and
+have your Dialogflow webhook fulfillment set to an AWS API Gateway.
  
-### Does multivocal work with Alexa?
+#### Does multivocal work with Alexa?
 
-### What version of Dialogflow does multivocal work with?
+Not currently, but this is on our long-term roadmap.
+
+In theory, it shouldn't be **too** hard. In theory. The tasks involved
+pretty much boil down to:
+
+* Identifying the paths to use to get values for the environment builder.
+* Creating a formatter to save things in the correct format.
+* Finding a reasonable way to map Alexa concepts into the concepts
+    we're using (such as figuring out how to handle contexts).
+    
+Some of these tasks are the same as what needs to be done for the
+Actions SDK.
+
+(Are you interested in helping?)
+
+#### What version of Dialogflow does multivocal work with?
 
 Right now, multivocal primarily targets Dialogflow version 1.
 
@@ -538,4 +597,24 @@ environment setting `Platform.DialogflowVersion` and there is a
 JSON formatter that creates output for it), but this isn't the
 primary development target, so it may not have been as fully tested.
 
-### Does multivocal work with the Action SDK?
+#### Does multivocal work with the Action SDK?
+
+Not yet, but we would like to get support by version 1.0
+
+### Use, Licensing, and Contributions
+
+#### What license is multivocal under?
+
+Apache 2.0
+
+#### I've found a bug, how can I report it?
+
+Open an issue at https://github.com/afirstenberg/multivocal/issues
+
+#### I've got a fix for a bug or an improvement. How can I submit it?
+
+Make sure you've opened an issue for it first (and maybe discussed it
+with us), then submit the pull request at 
+https://github.com/afirstenberg/multivocal/pulls.
+
+Make sure you're ok with the license we'll be distirbuting it under.
