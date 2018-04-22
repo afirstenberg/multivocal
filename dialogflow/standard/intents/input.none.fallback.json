@@ -1,0 +1,35 @@
+{
+  "id": "98f69eb2-b277-46a9-8459-52c62717b479",
+  "name": "input.none.fallback",
+  "auto": false,
+  "contexts": [
+    "actions_intent_no_input"
+  ],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "multivocal.unknown",
+      "affectedContexts": [],
+      "parameters": [],
+      "messages": [
+        {
+          "type": 0,
+          "lang": "en",
+          "speech": []
+        }
+      ],
+      "defaultResponsePlatforms": {},
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": true,
+  "webhookForSlotFilling": false,
+  "lastUpdate": 1521253017,
+  "fallbackIntent": true,
+  "events": [
+    {
+      "name": "actions_intent_NO_INPUT"
+    }
+  ]
+}
