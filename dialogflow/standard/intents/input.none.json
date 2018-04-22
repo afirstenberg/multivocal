@@ -1,0 +1,33 @@
+{
+  "id": "bdda4da3-2955-43a5-a71b-90b21958fe63",
+  "name": "input.none",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "multivocal.unknown",
+      "affectedContexts": [],
+      "parameters": [],
+      "messages": [
+        {
+          "type": 0,
+          "lang": "en",
+          "speech": "I didn\u0027t hear anything."
+        }
+      ],
+      "defaultResponsePlatforms": {},
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": true,
+  "webhookForSlotFilling": false,
+  "lastUpdate": 1521233525,
+  "fallbackIntent": false,
+  "events": [
+    {
+      "name": "actions_intent_NO_INPUT"
+    }
+  ]
+}

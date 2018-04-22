@@ -347,11 +347,56 @@ Environment settings built:
 
 #### Adding your own builder
 
-### Intents and Actions
+### Intents, Actions, and Outents
+
+User actions in Dialogflow are represented by two things: The Intent
+name and the Action name. Multivocal uses these to determine which
+handler should be called to do any additional processing and what
+should be sent in response. Multivocal prefixes these with "Intent."
+and "Action." respectively and stores them in the following environment
+values:
+
+* ActionName
+    The action name provided from Dialogflow
+* Action
+    The action name prefixed with "Action."
+* IntentName
+    The intent name provided from Dialogflow
+* Intent
+    The Intent name prefixed with "Intent."
+
+Additionally, Multivocal defines the concept of an "Outent". You can
+set this environment setting in a handler to provide additional
+choices for responses which may be different than the default ones you
+provide for the intent or action. You do not need to prefix it with
+"Outent.", although you're allowed to do so. You're not required to set
+one at all, if if you do, it should be in the environment setting:
+
+* Outent
+
+Handlers and responses, and how Multivocal determines which ones to use,
+are described in their own sections below.
 
 #### Standard Dialogflow Intents/Actions
 
-(TODO: Work in progress to provide Dialogflow zip)
+A standard set of intents, handlers, and responses are included
+with Multivocal which handle most of the boilerplate tasks that you
+need to consider. There are two parts to these standard components, one
+is included when you initialize Multivocal, but the other requires you
+to import a standard set of Intents into Dialogflow:
+
+1. The standard handlers and responses (including a base library for
+your own responses) are setup when Multivocal is first initialized. You
+can override these behaviors with your own handlers and responses, but
+you should keep in mind what they do by default.
+
+2. There is a zipfile in `dialogflow/standard.zip` which contains the
+corresponding Dialogflow Intent configurations. All the action settings
+start with "multivocal.". You should *IMPORT* this zip file into
+Dialogflow. If you're starting a new project, you can then delete the
+older welcome and fallback intents. You'll also need to make sure the
+timezone, language, fulfillment URL, and other settings are correct
+for your project.
 
 ##### Action: welcome and multivocal.welcome
 
@@ -368,7 +413,7 @@ after doing response processing.
 
 ##### Intent: input.unknown
 
-##### Action: input.unknown
+##### Action: multivocal.unknown
 
 ##### Action: repeat and multivocal.repeat
 
