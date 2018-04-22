@@ -33,8 +33,20 @@ var baselibUnknown = {
   }
 };
 
+var baselibAbout = {
+  HasVersion: {
+    Base: {Set: true},
+    Criteria: "{{Config/Package/version}}"
+  },
+  NoVersion: {
+    Base: {Set:true},
+    Criteria: "{{not Config/Package/version}}"
+  }
+};
+
 var baselib = {
   Welcome: baselibWelcome,
+  About:   baselibAbout,
   Unknown: baselibUnknown
 };
 
@@ -44,6 +56,15 @@ var undWelcome = [
 
   {Base:{Ref: 'Config/BaseLib/Welcome/Returning'}},
   "Welcome back! What would you like to do?"
+];
+
+var undAbout = [
+  {Base:{Ref: "Config/BaseLib/About/HasVersion"}},
+  "This is {{Config/Package/name}} version {{Config/Package/version}}.",
+
+  {Base:{Ref: "Config/BaseLib/About/NoVersion"}},
+  "I'm just this great voice agent.",
+  "There isn't much to say."
 ];
 
 var undUnknown = [
@@ -78,6 +99,7 @@ module.exports = {
     und: {
       Response: {
         "Action.multivocal.welcome": undWelcome,
+        "Action.multivocal.about":   undAbout,
         "Action.multivocal.unknown": undUnknown,
         "Action.multivocal.repeat":  undRepeat,
         "Action.multivocal.quit":    undQuit,

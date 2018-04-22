@@ -1,6 +1,10 @@
 # multivocal
 A node.js library to assist with building best practice, configuration driven, Actions for the Google Assistant.
 
+*(This README is a work in progress, although it documents much of
+the platform, there are gaps. The intent is to have it completed
+by version 1.0.0.)*
+
 ## What is multivocal?
 
 Multivocal is a library that tries to bring a new approach to helping
@@ -370,6 +374,12 @@ after doing response processing.
 
 Sets the `Response/ShouldRepeat` environment setting to true
 after doing response processing.
+
+##### Action: multivocal.about
+
+Uses values from the `Config/Package` environment setting to respond
+to questions about the version. Typically you'll set `Config/Package`
+to the contents of your `package.json` file.
 
 ### Handlers
 
