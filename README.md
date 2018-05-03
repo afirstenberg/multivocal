@@ -448,6 +448,14 @@ Response settings:
 
 * Base/Condition
 
+#### Template functions
+
+#### Template special environment settings
+
+* _This
+
+* _Result
+
 ### Sending
 
 #### Message

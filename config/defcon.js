@@ -44,15 +44,14 @@ module.exports = {
           ],
           "Op": "or"
         },
-        "DialogflowVersion": [
-          "{{#if Platform.IsDialogflow}}",
-            "{{#if (isTruthy Body.originalRequest)}}",
-              "1",
-            "{{else}}",
-              "2",
-            "{{/if}}",
-          "{{/if}}"
-        ],
+        "DialogflowVersion":
+          "{{#if Platform.IsDialogflow}}"+
+            "{{#if (isTruthy Body.originalRequest)}}"+
+              "1"+
+            "{{else}}"+
+              "2"+
+            "{{/if}}"+
+          "{{/if}}",
         "ActionsSDKVersion": "{{Val 'Req/headers/google-assistant-api-version'}}",
         "IsActionsSDK": "{{isTruthy Platform.ActionsSDKVersion}}",
         "IsActionsOnGoogle": {
@@ -63,12 +62,11 @@ module.exports = {
           ],
           "Op": "or"
         },
-        "ActionsOnGoogleVersion": [
-          "{{#if (isTruthy Platform.IsActionsSDK)}}{{Platform.ActionsSDKVersion}}",
-          "{{else if (eq Platform.DialogflowVersion '1')}}{{Body.originalRequest.version}}",
-          "{{else}}{{Body.originalDetectIntentRequest.version}}",
+        "ActionsOnGoogleVersion":
+          "{{#if (isTruthy Platform.IsActionsSDK)}}{{Platform.ActionsSDKVersion}}"+
+          "{{else if (eq Platform.DialogflowVersion '1')}}{{Body.originalRequest.version}}"+
+          "{{else}}{{Body.originalDetectIntentRequest.version}}"+
           "{{/if}}"
-        ]
       }
     },
     "Locale": {
@@ -248,7 +246,7 @@ module.exports = {
     "NoSuffixNeeded": {
       "Criteria":{
         "Terms": [
-          "{{EndsWith Msg.Ssml '?'}}",
+          "{{EndsWith (join Msg.Ssml ' ') '?'}}",
           "{{Response.ShouldClose}}",
           "{{Response.ShouldRepeat}}"
         ],
@@ -256,10 +254,10 @@ module.exports = {
       }
     },
     "Ssml": {
-      "Template": "{{{First Msg.Ssml Msg.Text}}} {{{First Suffix.Ssml Suffix.Text}}}"
+      "Template": "{{{join (First Msg.Ssml Msg.Text) ' '}}} {{{join (First Suffix.Ssml Suffix.Text) ' '}}}"
     },
     "Text": {
-      "Template": "{{{First Msg.Text Msg.Ssml}}} {{{First Suffix.Text Suffix.Ssml}}}"
+      "Template": "{{{join (First Msg.Text Msg.Ssml) ' '}}} {{{join (First Suffix.Text Suffix.Ssml) ' '}}}"
     },
     "Context": {
       "PathList": [
