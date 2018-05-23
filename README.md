@@ -507,6 +507,25 @@ Environment settings:
     * Msg/Options/Items[]/Url
         (for Browsing Carousel and Card only)
 
+#### Table
+
+Environment settings:
+
+* Msg/Table/Title
+
+* Msg/Table/ImageUrl
+
+* Msg/Table/ImageText
+
+* Msg/Table/Headers
+
+    This is an array containing the column headers.
+
+* Msg/Table/Data
+
+    This must be an array containing the rows in the table. Each row
+    must be an array containing the cells (column by column) in that row.
+
 #### Link out
 
 (TODO: Link out suggestion - work in progress)
