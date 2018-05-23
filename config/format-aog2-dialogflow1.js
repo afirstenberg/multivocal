@@ -39,6 +39,7 @@ module.exports = {
       Criteria: '{{Response.ShouldRepeat}}',
       Target: '{{Send/Data}}/richResponse/items[=]/simpleResponse/displayText'
     },
+    'Send/Table': '{{Send/Data}}/richResponse/items[+]/tableCard',
     'Msg/Option/Type': {
       TargetEnv: 'Send/Option',
       Debug: 'isArray={{isArray Msg.Option.Items}} eq1={{equalsLength Msg.Option.Items 1}}',
@@ -47,10 +48,12 @@ module.exports = {
           '{{Set "_This/IsSingular" true}}'+
           '{{Set "Send/Card" Msg.Option.Items.[0]}}'+
         '{{else if (and (eq Msg.Option.Type "carousel") Msg.Option.Items.[0].Url)}}'+
-          '{{Set "_This/Path" "richResponse/items[+]"}}'+
-          '{{Set "_This/Type" "carouselBrowse"}}'+
-          '{{Set "_This/IsRichResponse" true}}'+
-          '{{Set "_This/IsPlural" true}}'+
+          '{{#if Session.Feature.WEB_BROWSER}}'+
+            '{{Set "_This/Path" "richResponse/items[+]"}}'+
+            '{{Set "_This/Type" "carouselBrowse"}}'+
+            '{{Set "_This/IsRichResponse" true}}'+
+            '{{Set "_This/IsPlural" true}}'+
+          '{{/if}}'+
         '{{else if (eq Msg.Option.Type "carousel")}}'+
           '{{Set "_This/Path" "systemIntent/data"}}'+
           '{{Set "_This/Type" "carouselSelect"}}'+
