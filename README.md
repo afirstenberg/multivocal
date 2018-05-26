@@ -345,6 +345,41 @@ Environment settings built:
 
 * Default
 
+#### User authentication
+
+Environment settings built (if appropriate):
+
+* User/IdNative
+
+    The ID provided by the platform.
+
+* User/Id
+
+    An ID which is guaranteed to be unique between different platforms
+    but maintain a 1:1 mapping with the native ID.
+
+* User/IsAuthenticated
+
+    True if *either* of the following are true:
+    * User/AuthToken has been set (TODO)
+    * User/IdentityToken has been set with a valid token
+
+* User/AuthToken
+
+    (TODO)
+
+* User/IdentityToken
+
+    If the platform provides an identity token (a signed JWT providing
+    profile and other assertions), then this will be the raw and
+    unverified token.
+
+* User/Profile
+
+    If the platform provides an identity token, and multivocal is able
+    to validate the token, then this contains the profile information
+    contained in the token.
+
 #### Adding your own builder
 
 ### Intents, Actions, and Outents

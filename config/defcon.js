@@ -220,6 +220,19 @@ module.exports = {
       }
     },
     "User": {
+      "Id": {
+        "Path": [
+          "Body/originalRequest/data/user/userId",
+          "Body/originalDetectIntentRequest/payload/user/userId"
+        ],
+        "Template": "google:{{User.IdNative}}"
+      },
+      "Profile":{
+        "Path": [
+          "Body/originalRequest/data/user/idToken",
+          "Body/originalDetectIntentRequest/payload/user/idToken"
+        ]
+      },
       "Feature": {
         "Path": [
           "Body/originalRequest/data/availableSurfaces",
