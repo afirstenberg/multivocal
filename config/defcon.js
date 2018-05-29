@@ -18,7 +18,7 @@ module.exports = {
   "Setting": {
     "Intent": {
       "Path": [
-        "Context/multivocal_permission/parameters/intentName",
+        "Context/multivocal_requirements/parameters/intentName",
         "Body/result/metadata/intentName",
         "Body/queryResult/intent/displayName"
       ],
@@ -26,7 +26,7 @@ module.exports = {
     },
     "Action": {
       "Path": [
-        "Context/multivocal_permission/parameters/actionName",
+        "Context/multivocal_requirements/parameters/actionName",
         "Body/result/action",
         "Body/queryResult/action"
       ],
