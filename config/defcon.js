@@ -227,6 +227,12 @@ module.exports = {
         ],
         "Template": "google:{{User.IdNative}}"
       },
+      "AccessToken":{
+        "Path": [
+          "Body/originalRequest/data/user/accessToken",
+          "Body/originalDetectIntentRequest/payload/user/accessToken"
+        ]
+      },
       "Profile":{
         "Path": [
           "Body/originalRequest/data/user/idToken",
