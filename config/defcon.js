@@ -222,10 +222,12 @@ module.exports = {
     "User": {
       "Id": {
         "Path": [
+          "User/State/UserId",
           "Body/originalRequest/data/user/userId",
           "Body/originalDetectIntentRequest/payload/user/userId"
         ],
-        "Template": "google:{{User.IdNative}}"
+        "State": "User/State/UserId",
+        "Template": "google:{{User.State.UserId}}"
       },
       "AccessToken":{
         "Path": [
