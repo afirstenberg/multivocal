@@ -18,7 +18,7 @@ module.exports = {
   "Setting": {
     "Intent": {
       "Path": [
-        "Context/multivocal_permission/parameters/intentName",
+        "Context/multivocal_requirements/parameters/intentName",
         "Body/result/metadata/intentName",
         "Body/queryResult/intent/displayName"
       ],
@@ -26,7 +26,7 @@ module.exports = {
     },
     "Action": {
       "Path": [
-        "Context/multivocal_permission/parameters/actionName",
+        "Context/multivocal_requirements/parameters/actionName",
         "Body/result/action",
         "Body/queryResult/action"
       ],
@@ -220,6 +220,27 @@ module.exports = {
       }
     },
     "User": {
+      "Id": {
+        "Path": [
+          "User/State/UserId",
+          "Body/originalRequest/data/user/userId",
+          "Body/originalDetectIntentRequest/payload/user/userId"
+        ],
+        "State": "User/State/UserId",
+        "Template": "google:{{User.State.UserId}}"
+      },
+      "AccessToken":{
+        "Path": [
+          "Body/originalRequest/data/user/accessToken",
+          "Body/originalDetectIntentRequest/payload/user/accessToken"
+        ]
+      },
+      "Profile":{
+        "Path": [
+          "Body/originalRequest/data/user/idToken",
+          "Body/originalDetectIntentRequest/payload/user/idToken"
+        ]
+      },
       "Feature": {
         "Path": [
           "Body/originalRequest/data/availableSurfaces",
