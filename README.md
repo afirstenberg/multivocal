@@ -1,5 +1,6 @@
 # multivocal
-A node.js library to assist with building best practice, configuration driven, Actions for the Google Assistant.
+A node.js library to assist with building best practice, configuration driven, 
+Actions for the Google Assistant.
 
 *(This README is a work in progress, although it documents much of
 the platform, there are gaps. The intent is to have it completed
@@ -198,9 +199,14 @@ The upside to using Firebase to store responses is that it is very
 easy to update the database (either manually or by uploading JSON)
 and the changes will be live immediately.
 
-One catch is that Firebase doesn't allow a period in the key value, so
-you need to replace them with underscores in Firebase. The configuration
-module will convert them to periods.
+One catch is that Firebase doesn't allow some characters in the key value, so
+you need to replace them with other values in Firebase and the system will
+convert them. Conversions done are:
+
+* underscore _ converted to period .
+* vertical bar | converted to forward slash /
+
+So the URL https://example.com/ would be written as https:||example_com|
 
 For many uses, this should be sufficient:
 ```
@@ -608,13 +614,93 @@ Environment settings:
 
 ### Requirements and Requests
 
-(TODO: Request surface feature - work in progress)
+Sometimes, responses need information that you will collect as part of your
+conversation with the user. You need to make sure you have the information
+in the environment before you give a result. 
+Multivocal can help you out by letting you set a
+*requirement* in the configuration for a response and automatically calling
+a *requester* function which will set things up to get you the values you
+need - typically by asking the user for this information. Some of the built-in
+requesters use a system provided helper to get this information.
 
-(TODO: Requesting place by name - work in progress)
+To indicate when you need a particular requirement to be met, you'll specify
+that in the `Requirements` section for a locale, which is setup similarly to
+the `Response` section. The key will be the Action/Intent/Default name, while
+the value will either be a string of the requirement, or an array of strings
+indicating all the required environment settings.
 
-(TODO: Authorization - work in progress)
+So to say that the "user.email" and "user.name" Intents require that the user
+be authenticated, we might have this in our configuration:
 
-(TODO: Adding own requirements - work in progress)
+```
+  "Local": {
+    "und": {
+      "Requirements": {
+        "Intent.user.email": "User/IsAuthenticated",
+        "Intent.user.name":  "User/IsAuthenticated"
+      }
+    }
+  }
+```
+
+#### Default requester changes to the environment
+
+Adds two new settings:
+
+* Requirements/RequestName
+* Requirements/Request
+
+Changes three settings. These are updated and prefixed with `Request.` and
+the request name followed by another dot.
+
+* Action
+* Intent
+* Default
+
+Stores the following in the `multivocal_requirements` context so the
+environment will be based on these when the requested value has been
+set:
+
+* action
+* actionName
+* intent
+* intentName
+
+#### Requesting user name
+
+Request name: `Permission`
+
+Requires: `User/Name`
+
+#### Requesting location
+
+Request name: `Permission`
+
+Requires: `Session/Location`
+
+#### Requesting authorization
+
+Request name: `SignIn`
+
+Requires: `User/IsAuthenticated`
+
+#### Request surface feature
+
+(TODO: work in progress)
+
+#### Requesting place by name
+
+(TODO: work in progress)
+
+#### Adding your own requirements or changing built-in ones
+
+`Mutlivocal.setRequirementsRequest( requirement, requesterFunction )`
+
+Your request function should call `Multivocal.requestDefault( env, name, additionalParameters)`
+at the end.
+
+In most cases, you'll also want to create a Builder that will get the result
+and make sure the environment is populated with the requirement.
 
 ### Counters
 
