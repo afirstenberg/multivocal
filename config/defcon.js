@@ -69,6 +69,16 @@ module.exports = {
           "{{/if}}"
       }
     },
+    "Precondition": {
+      "GooglePing":{
+        "Path": [
+          "Body/originalRequest/inputs",
+          "Body/originalDetectIntentRequest/inputs"
+        ],
+        "Default": [],
+
+      }
+    },
     "Locale": {
       "Path": [
         "Body/originalRequest/data/user/locale",
