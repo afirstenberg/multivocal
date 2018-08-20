@@ -280,6 +280,15 @@ module.exports = {
     "Text": {
       "Template": "{{{join (First Msg.Text Msg.Ssml) ' '}}} {{{join (First Suffix.Text Suffix.Ssml) ' '}}}"
     },
+    "Page":{
+      // You must set Url
+      "Data": {
+        "Path": ["Msg/Page"]
+      },
+      "UrlState": {
+        "Path": "Session/State/PageUrl"
+      }
+    },
     "Context": {
       "PathList": [
         "Requirements/Context",
