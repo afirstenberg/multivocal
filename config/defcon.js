@@ -76,7 +76,7 @@ module.exports = {
           "Body/originalDetectIntentRequest/inputs"
         ],
         "Default": [],
-
+        "ArgumentName": "is_health_check"
       }
     },
     "Locale": {
