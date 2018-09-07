@@ -1,6 +1,6 @@
 {
   "name": "multivocal",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "A node.js library to assist with building best practice, configuration driven, Actions for the Google Assistant.",
   "main": "lib/multivocal.js",
   "directories": {
