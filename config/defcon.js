@@ -72,8 +72,8 @@ module.exports = {
     "Precondition": {
       "GooglePing":{
         "Path": [
-          "Body/originalRequest/inputs",
-          "Body/originalDetectIntentRequest/inputs"
+          "Body/originalRequest/data/inputs",
+          "Body/originalDetectIntentRequest/data/inputs"
         ],
         "Default": [],
         "ArgumentName": "is_health_check"
