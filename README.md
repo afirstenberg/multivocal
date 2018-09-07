@@ -303,9 +303,26 @@ eliminate it, but it is possible if needed.
 
 (TODO: Point to more complete documentation elsewhere)
 
-### Pre-Processing and Prerequisites
+### Pre-Processing and Preconditions
+
+Environment settings built:
+
+* Preprocess
+
+    * Fail
+    
+        True if preprocessing fails and further processing should halt, possibly 
+        returning something.
+    
+    * Msg
 
 (TODO: Work in progress)
+
+#### Actions on Google Ping
+
+If the request matches a pattern determined by the 
+`Config/Setting/Precondition/GooglePing` setting, set the `Preprocess/Fail`
+environment to true and send back a "Pong" message.
 
 ### Processing, the Environment, and Paths
 
