@@ -350,6 +350,8 @@ Environment settings built:
 
 * Session/Consecutive
 
+* Session/StartTime
+
 * Option
 
 * MediaStatus
