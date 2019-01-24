@@ -283,7 +283,7 @@ module.exports = {
     "NoSuffixNeeded": {
       "Criteria":{
         "Terms": [
-          "{{EndsWith (join Msg.Ssml ' ') '?'}}",
+          "{{EndsWith (join (First Msg.Text Msg.Ssml) ' ') '?'}}",
           "{{Response.ShouldClose}}",
           "{{Response.ShouldRepeat}}"
         ],
