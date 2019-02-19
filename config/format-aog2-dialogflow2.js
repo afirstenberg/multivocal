@@ -74,8 +74,8 @@ module.exports = {
     },
     'Send/Card':{
       Debug: '{{JSONstringify Send.Card}}',
-      Target: '{{Send/Data}}/richResponse/items[+]/basicCard',
-      Value: {}
+      Target: '{{Send/Data}}/richResponse/items[+]/basicCard/title',
+      Value: ''
     },
     'Send/Card/Title':{
       Criteria: '{{Send.Card}}',

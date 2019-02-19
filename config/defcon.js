@@ -227,6 +227,12 @@ module.exports = {
           'Context/multivocal_session/parameters/consecutive'
         ],
         "Default": "{}"
+      },
+      "StartTime": {
+        "Path": [
+          "Context/multivocal_session/parameters/startTime"
+        ],
+        "Default": 0
       }
     },
     "User": {
@@ -277,7 +283,7 @@ module.exports = {
     "NoSuffixNeeded": {
       "Criteria":{
         "Terms": [
-          "{{EndsWith (join Msg.Ssml ' ') '?'}}",
+          "{{EndsWith (join (First Msg.Text Msg.Ssml) ' ') '?'}}",
           "{{Response.ShouldClose}}",
           "{{Response.ShouldRepeat}}"
         ],
