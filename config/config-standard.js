@@ -50,11 +50,11 @@ var baselib = {
   Unknown: baselibUnknown
 };
 
-var undWelcome = [
-  {Base:{Ref: 'Config/BaseLib/Welcome/First'}},
-  "Welcome! What would you like to do?",
+var undWelcomeFirst = [
+  "Welcome! What would you like to do?"
+];
 
-  {Base:{Ref: 'Config/BaseLib/Welcome/Returning'}},
+var undWelcome = [
   "Welcome back! What would you like to do?"
 ];
 
@@ -98,7 +98,8 @@ module.exports = {
   Local: {
     und: {
       Response: {
-        "Action.multivocal.welcome": undWelcome,
+        "Action.multivocal.welcome.1": undWelcomeFirst,
+        "Action.multivocal.welcome":   undWelcome,
         "Action.multivocal.about":   undAbout,
         "Action.multivocal.unknown": undUnknown,
         "Action.multivocal.repeat":  undRepeat,
@@ -116,5 +117,11 @@ module.exports = {
         }
       }
     }
+  },
+  Level: {
+    "Action.multivocal.welcome": [
+      "{{eq User.State.NumVisits 1}}",
+      "{{lt User.State.NumVisits 5}}"
+    ]
   }
 };

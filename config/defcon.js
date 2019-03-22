@@ -24,6 +24,14 @@ module.exports = {
       ],
       "Template": "Intent.{{IntentName}}"
     },
+    "IntentLevel": {
+      "Path": [
+        "Config/Level/{{Intent}}",
+        "Config/Level/Default.Intent",
+        "Config/Level/Default"
+      ],
+      "Default": ""
+    },
     "Action": {
       "Path": [
         "Context/multivocal_requirements/parameters/actionName",
@@ -31,6 +39,14 @@ module.exports = {
         "Body/queryResult/action"
       ],
       "Template": "Action.{{ActionName}}"
+    },
+    "ActionLevel": {
+      "Path": [
+        "Config/Level/{{Action}}",
+        "Config/Level/Default.Action",
+        "Config/Level/Default"
+      ],
+      "Default": ""
     },
     "Default": {
       "Template": "Default"
@@ -157,16 +173,25 @@ module.exports = {
     },
     "Response": {
       "Path": [
+        "Config/Local/{{Locale}}/Response/{{Outent}}.{{OutentLevel}}",
         "Config/Local/{{Locale}}/Response/{{Outent}}",
+        "Config/Local/{{Locale}}/Response/{{Intent}}.{{IntentLevel}}",
         "Config/Local/{{Locale}}/Response/{{Intent}}",
+        "Config/Local/{{Locale}}/Response/{{Action}}.{{ActionLevel}}",
         "Config/Local/{{Locale}}/Response/{{Action}}",
         "Config/Local/{{Locale}}/Response/{{Default}}",
+        "Config/Local/{{Lang}}/Response/{{Outent}}.{{OutentLevel}}",
         "Config/Local/{{Lang}}/Response/{{Outent}}",
+        "Config/Local/{{Lang}}/Response/{{Intent}}.{{IntentLevel}}",
         "Config/Local/{{Lang}}/Response/{{Intent}}",
+        "Config/Local/{{Lang}}/Response/{{Action}}.{{ActionLevel}}",
         "Config/Local/{{Lang}}/Response/{{Action}}",
         "Config/Local/{{Lang}}/Response/{{Default}}",
+        "Config/Local/und/Response/{{Outent}}.{{OutentLevel}}",
         "Config/Local/und/Response/{{Outent}}",
+        "Config/Local/und/Response/{{Intent}}.{{IntentLevel}}",
         "Config/Local/und/Response/{{Intent}}",
+        "Config/Local/und/Response/{{Action}}.{{ActionLevel}}",
         "Config/Local/und/Response/{{Action}}",
         "Config/Local/und/Response/{{Default}}"
       ],
@@ -181,16 +206,25 @@ module.exports = {
     },
     "Suffix": {
       "Path": [
+        "Config/Local/{{Locale}}/Suffix/{{Outent}}.{{OutentLevel}}",
         "Config/Local/{{Locale}}/Suffix/{{Outent}}",
+        "Config/Local/{{Locale}}/Suffix/{{Intent}}.{{IntentLevel}}",
         "Config/Local/{{Locale}}/Suffix/{{Intent}}",
+        "Config/Local/{{Locale}}/Suffix/{{Action}}.{{ActionLevel}}",
         "Config/Local/{{Locale}}/Suffix/{{Action}}",
         "Config/Local/{{Locale}}/Suffix/{{Default}}",
+        "Config/Local/{{Lang}}/Suffix/{{Outent}}.{{OutentLevel}}",
         "Config/Local/{{Lang}}/Suffix/{{Outent}}",
+        "Config/Local/{{Lang}}/Suffix/{{Intent}}.{{IntentLevel}}",
         "Config/Local/{{Lang}}/Suffix/{{Intent}}",
+        "Config/Local/{{Lang}}/Suffix/{{Action}}.{{ActionLevel}}",
         "Config/Local/{{Lang}}/Suffix/{{Action}}",
         "Config/Local/{{Lang}}/Suffix/{{Default}}",
+        "Config/Local/und/Suffix/{{Outent}}.{{OutentLevel}}",
         "Config/Local/und/Suffix/{{Outent}}",
+        "Config/Local/und/Suffix/{{Intent}}.{{IntentLevel}}",
         "Config/Local/und/Suffix/{{Intent}}",
+        "Config/Local/und/Suffix/{{Action}}.{{ActionLevel}}",
         "Config/Local/und/Suffix/{{Action}}",
         "Config/Local/und/Suffix/{{Default}}",
         "DefCon/Local/und/Suffix/Default"
@@ -313,5 +347,10 @@ module.exports = {
       ],
       "Default": false
     }
+  },
+  "Level": {
+    "Default.Intent": "{{Session.Consecutive[Intent]}}",
+    "Default.Action": "{{Session.Consecutive[Action]}}",
+    "Default": ""
   }
 };
