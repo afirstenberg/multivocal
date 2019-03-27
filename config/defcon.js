@@ -27,8 +27,9 @@ module.exports = {
     "IntentLevel": {
       "Path": [
         "Config/Level/{{Intent}}",
-        "Config/Level/Default.Intent",
-        "Config/Level/Default"
+        "Config/Level/Intent.Default",
+        "Config/Level/Default",
+        "DefCon/Level/Intent.Default"
       ],
       "Default": ""
     },
@@ -43,8 +44,9 @@ module.exports = {
     "ActionLevel": {
       "Path": [
         "Config/Level/{{Action}}",
-        "Config/Level/Default.Action",
-        "Config/Level/Default"
+        "Config/Level/Action.Default",
+        "Config/Level/Default",
+        "DefCon/Level/Action.Default"
       ],
       "Default": ""
     },
@@ -349,8 +351,7 @@ module.exports = {
     }
   },
   "Level": {
-    "Default.Intent": "{{Session.Consecutive[Intent]}}",
-    "Default.Action": "{{Session.Consecutive[Action]}}",
-    "Default": ""
+    "Intent.Default": "{{lookup Session.Consecutive Intent}}",
+    "Action.Default": "{{lookup Session.Consecutive Action}}"
   }
 };
