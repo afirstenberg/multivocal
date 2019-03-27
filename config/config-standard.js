@@ -1,5 +1,6 @@
-
-
+/*
+ * DEPRECATED in favor of using the Levels defined below
+ */
 var baselibWelcome = {
   First: {
     Base: {Set: true},
@@ -12,6 +13,9 @@ var baselibWelcome = {
   }
 };
 
+/*
+ * DEPRECATED in favor of using the built-in defined Levels
+ */
 var baselibUnknown = {
   First: {
     Base: {Set: true},
@@ -45,9 +49,9 @@ var baselibAbout = {
 };
 
 var baselib = {
-  Welcome: baselibWelcome,
+  Welcome: baselibWelcome, // Deprecated
   About:   baselibAbout,
-  Unknown: baselibUnknown
+  Unknown: baselibUnknown  // Deprecated
 };
 
 var undWelcomeFirst = [
@@ -67,14 +71,19 @@ var undAbout = [
   "There isn't much to say."
 ];
 
+var undUnknownFirst = [
+  "I'm sorry, I didn't get that."
+];
+
+var undUnknownSecond = [
+  "I'm sorry, but I'm not sure I understand."
+];
+
 var undUnknown = [
-  {Base:{Ref: 'Config/BaseLib/Unknown/First'}},
-  "I'm sorry, I didn't get that.",
-
-  {Base:{Ref: 'Config/BaseLib/Unknown/Repeat'}},
-  "I'm sorry, but I'm not sure I understand.",
-
-  {Base:{Ref: 'Config/BaseLib/Unknown/Final'}},
+  {
+    Base: {Set:true},
+    ShouldClose: true
+  },
   "I still didn't understand. Perhaps another time."
 ];
 
@@ -100,11 +109,13 @@ module.exports = {
       Response: {
         "Action.multivocal.welcome.1": undWelcomeFirst,
         "Action.multivocal.welcome":   undWelcome,
-        "Action.multivocal.about":   undAbout,
-        "Action.multivocal.unknown": undUnknown,
-        "Action.multivocal.repeat":  undRepeat,
-        "Action.multivocal.quit":    undQuit,
-        "Default":                   undDefault
+        "Action.multivocal.about":     undAbout,
+        "Action.multivocal.unknown.1": undUnknownFirst,
+        "Action.multivocal.unknown.2": undUnknownSecond,
+        "Action.multivocal.unknown":   undUnknown,
+        "Action.multivocal.repeat":    undRepeat,
+        "Action.multivocal.quit":      undQuit,
+        "Default":                     undDefault
       }
     }
   },
