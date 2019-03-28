@@ -721,7 +721,7 @@ at the end.
 In most cases, you'll also want to create a Builder that will get the result
 and make sure the environment is populated with the requirement.
 
-### Counters
+### Counters and Intent/Action Levels
 
 Session/Counter
 
@@ -730,7 +730,7 @@ Session/Consecutive
 #### Counters set by the system
 
 The system will increment the following Counters as part of the Default
-handler, just before the Response is computed:
+handler, shortly before the Response is computed:
 
 * the handler name, prefixed by 'Handler.'
 * the Action
@@ -757,6 +757,79 @@ if the counter will be incremented since this may take place
 after your Builder or Handler runs.
 It is safe to add the name more than once - the counter will only be
 incremented once per request.
+
+#### Levels and Responses
+
+Levels are computed for the Action and Intent, and can be used to easily set
+the responses for that Action/Intent and Level. For example, you can have one
+set of responses for the first time the user gives a response, a different
+set for the second time, and then a default set for subsequent responses. These
+levels can be flexibly defined, so you can reply multiple times at one level,
+depending how you define it.
+
+The levels are defined in the environment at
+
+* IntentLevel
+* ActionLevel
+
+When looking for responses to use, multivocal will append a period and the level
+after the Intent or Action and search for this in the Response section. If it
+doesn't find one with the level suffix, it looks for one without the suffix,
+so these act as the default for any (or any undefined) level.
+
+For example, if the level for the "example" action is 2, multivocal would 
+look for results named `Action.example.2` and then for `Action.example`.
+
+By default, the level for an Action or Intent is the value of the
+`Session/Consecutive` counter for that Action or Intent. The standard
+configuration for `Action.multivocal.welcome` defines two levels:
+
+1. For the first visit for this user.
+2. For visits 2-4 (inclusive) for this user.
+
+#### Defining Levels for an Action/Intent
+
+Config/Level
+
+contains the rules for levels for an Action or Intent. Rules may either be
+defined as a string, in which case it is evaluated as a template and the
+result is assigned to the level, or as an array. Each element in the array
+is evaluated, in order, as a boolean. The position of the first element that 
+evaluates to `true` determines the value of the level. In this case, the
+first rule, if matched, would be `1`, the second `2` and so forth. (This is
+**not** the index of the array. It is one more than the index of the array.)
+
+The level `0`, or an empty string, or undefined evaluates to "no level".
+
+For example, consider this in the configuration:
+
+```JSON
+  {
+    "Level": {
+      "Action.multivocal.welcome": [
+        "{{eq User.State.NumVisits 1}}",
+        "{{lt User.State.NumVisits 5}}"
+      ],
+      "Action.example": "{{(User.State.NumVisits % 10) +  1}}"
+    }
+  }
+```
+
+If we're evaluating the "multivocal.welcome" Action, this says:
+
+* If the number of user visits is 1, then the level is 1.
+* Otherwise, if the number of user visits is less than 5, then the level
+would be 2.
+* Otherwise, no level is defined.
+
+If we're evaluating the "example" Action, then the template is evaluated and
+produces a level from 1 through 10 (inclusive). You can use this to force
+rotate between responses each time. Note that we have to add 1, since 0
+is "undefined". Levels evaluated this way do not need to be numbers.
+
+You can also explicitly set the `IntentLevel` and/or `ActionLevel` in a builder.
+If already set, multivocal will not try to evaluate it as part of the default
+handler.
 
 ### Post-processing
 
