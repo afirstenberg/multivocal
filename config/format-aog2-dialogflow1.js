@@ -141,6 +141,6 @@ module.exports = {
       Target: '{{Send/Data}}/userStorage',
       ValueType: 'string'
     },
-    'Requirements/Intent':'{{Send/Data}}/systemIntent'
+    'Send/Intent':'{{Send/Data}}/systemIntent'
   }
 };

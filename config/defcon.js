@@ -179,6 +179,13 @@ module.exports = {
           "Path": [
             "Context/actions_intent_sign_in/parameters/SIGN_IN/status"
           ]
+        },
+        "Intent": {
+          "intent": "actions.intent.SIGN_IN",
+          "inputValueData": {
+            "@type": "type.googleapis.com/google.actions.v2.SignInValueSpec",
+            "optContext": "{{Msg/Text}}"
+          }
         }
       }
     },
