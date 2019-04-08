@@ -154,24 +154,40 @@ module.exports = {
         "Config/Local/und/Requirements/{{Action}}",
         "Config/Local/und/Requirements/Default"
       ],
-      "PermissionList": [
-        {
-          "Permission": "NAME",
-          "Target":     "User/Name",
-          "Source":     [
-            "Body/originalRequest/data/user/profile/givenName",
-            "Body/originalDetectIntentRequest/payload/user/profile/givenName"
+      "Permission": {
+        "List": [
+          {
+            "Permission": "NAME",
+            "Target":     "User/Name",
+            "Source":     [
+              "Body/originalRequest/data/user/profile/givenName",
+              "Body/originalDetectIntentRequest/payload/user/profile/givenName"
+            ]
+          },
+          {
+            "Permission": "DEVICE_PRECISE_LOCATION",
+            "Target":     "Session/Location",
+            "Source":     [
+              "Body/originalRequest/data/device/location/coordinates",
+              "Body/originalDetectIntentRequest/payload/device/location/coordinates"
+            ]
+          }
+        ]
+      },
+      "SignIn": {
+        "Status": {
+          "Path": [
+            "Context/actions_intent_sign_in/parameters/SIGN_IN/status"
           ]
         },
-        {
-          "Permission": "DEVICE_PRECISE_LOCATION",
-          "Target":     "Session/Location",
-          "Source":     [
-            "Body/originalRequest/data/device/location/coordinates",
-            "Body/originalDetectIntentRequest/payload/device/location/coordinates"
-          ]
+        "Intent": {
+          "intent": "actions.intent.SIGN_IN",
+          "inputValueData": {
+            "@type": "type.googleapis.com/google.actions.v2.SignInValueSpec",
+            "optContext": "{{Msg/Text}}"
+          }
         }
-      ]
+      }
     },
     "Response": {
       "Path": [
