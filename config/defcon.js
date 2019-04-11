@@ -91,7 +91,7 @@ module.exports = {
       "GooglePing":{
         "Path": [
           "Body/originalRequest/data/inputs",
-          "Body/originalDetectIntentRequest/data/inputs"
+          "Body/originalDetectIntentRequest/payload/inputs"
         ],
         "Default": [],
         "ArgumentName": "is_health_check"
