@@ -342,12 +342,20 @@ module.exports = {
         "Op": "or"
       }
     },
-    "Ssml": {
-      "Template": "{{{join (First Msg.Ssml Msg.Text) ' '}}} {{{join (First Suffix.Ssml Suffix.Text) ' '}}}"
-    },
-    "Text": {
-      "Template": "{{{join (First Msg.Text Msg.Ssml) ' '}}} {{{join (First Suffix.Text Suffix.Ssml) ' '}}}"
-    },
+    "Send": [
+      {
+        "Target": "Ssml",
+        "Template": "{{{join (First Msg.Ssml Msg.Text) ' '}}} {{{join (First Suffix.Ssml Suffix.Text) ' '}}}"
+      },
+      {
+        "Target": "Text",
+        "Template": "{{{join (First Msg.Text Msg.Ssml) ' '}}} {{{join (First Suffix.Text Suffix.Ssml) ' '}}}"
+      },
+      {
+        "Target": "Suggestions",
+        "CopyFirst": ["Msg", "Suffix"]
+      }
+    ],
     "Context": {
       "PathList": [
         "Requirements/Context",

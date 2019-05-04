@@ -135,7 +135,7 @@ module.exports = {
     'Msg/Audio/Body':     '{{Send/Data}}/richResponse/items[=]/mediaResponse/mediaObjects[=]/description',
     'Msg/Audio/IconUrl':  '{{Send/Data}}/richResponse/items[=]/mediaResponse/mediaObjects[=]/icon/url',
     'Msg/Audio/ImageUrl': '{{Send/Data}}/richResponse/items[=]/mediaResponse/mediaObjects[=]/largeImage/url',
-    'Msg/Suggestions': {
+    'Send/Suggestions': {
       Criteria: '{{and (isArray Msg.Suggestions) (length Msg.Suggestions)}}',
       Target: '{{Send/Data}}/richResponse/suggestions',
       Value:
