@@ -356,6 +356,15 @@ module.exports = {
         "CopyFirst": ["Msg", "Suffix"]
       }
     ],
+    "Page":{
+      // You must set Url
+      "Data": {
+        "Path": ["Msg/Page"]
+      },
+      "UrlState": {
+        "Path": "Session/State/PageUrl"
+      }
+    },
     "Context": {
       "PathList": [
         "Requirements/Context",
