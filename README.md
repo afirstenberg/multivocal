@@ -625,6 +625,18 @@ Environment settings:
 
 * Msg/Audio/ImageUrl
 
+#### Full Page Display
+
+This supports the Actions on Google "Immersive Display".
+
+* Setting/Page/Url
+
+    The URL that the full page is loaded from.
+
+* Msg/Page/Data
+
+    A JSON object containing state information or updates for this response.
+
 ### Voices
 
 ### Contexts
