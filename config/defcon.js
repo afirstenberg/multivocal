@@ -357,13 +357,14 @@ module.exports = {
       }
     ],
     "Page":{
-      // You must set Url
+      // You must set Setting/Page/Url yourself
       "Data": {
         "Path": ["Msg/Page"]
       },
       "UrlState": {
         "Path": "Session/State/PageUrl"
-      }
+      },
+      "Criteria": "{{Session/Feature/CUSTOM_STAGE}}"
     },
     "Context": {
       "PathList": [
