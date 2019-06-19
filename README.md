@@ -515,6 +515,10 @@ to the contents of your `package.json` file.
 
 ### Response, Suffix, Localization, and Templates
 
+The `Template` setting for a Response or Suffix is used to generate the `Msg`
+or `Suffix` values for the environment respectively. Appropriate values for
+what is expected for `Msg` or `Suffix` are noted below.
+
 #### Conditions
 
 #### Base responses
@@ -553,6 +557,10 @@ Environment settings:
 * Msg/Suggestions
 
     An array of strings. Each string becomes a suggestion chip text.
+    
+* Suffix/Suggestions
+
+    If `Msg/Suggestions` is not set, this array of strings will be used instead.
 
 #### Lists, Options, and Cards
 
@@ -624,6 +632,18 @@ Environment settings:
 * Msg/Audio/IconUrl
 
 * Msg/Audio/ImageUrl
+
+#### Full Page Display
+
+This supports the Actions on Google "Immersive Display".
+
+* Setting/Page/Url
+
+    The URL that the full page is loaded from.
+
+* Msg/Page/Data
+
+    A JSON object containing state information or updates for this response.
 
 ### Voices
 

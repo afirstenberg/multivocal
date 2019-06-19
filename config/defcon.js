@@ -91,7 +91,7 @@ module.exports = {
       "GooglePing":{
         "Path": [
           "Body/originalRequest/data/inputs",
-          "Body/originalDetectIntentRequest/data/inputs"
+          "Body/originalDetectIntentRequest/payload/inputs"
         ],
         "Default": [],
         "ArgumentName": "is_health_check"
@@ -154,24 +154,40 @@ module.exports = {
         "Config/Local/und/Requirements/{{Action}}",
         "Config/Local/und/Requirements/Default"
       ],
-      "PermissionList": [
-        {
-          "Permission": "NAME",
-          "Target":     "User/Name",
-          "Source":     [
-            "Body/originalRequest/data/user/profile/givenName",
-            "Body/originalDetectIntentRequest/payload/user/profile/givenName"
+      "Permission": {
+        "List": [
+          {
+            "Permission": "NAME",
+            "Target":     "User/Name",
+            "Source":     [
+              "Body/originalRequest/data/user/profile/givenName",
+              "Body/originalDetectIntentRequest/payload/user/profile/givenName"
+            ]
+          },
+          {
+            "Permission": "DEVICE_PRECISE_LOCATION",
+            "Target":     "Session/Location",
+            "Source":     [
+              "Body/originalRequest/data/device/location/coordinates",
+              "Body/originalDetectIntentRequest/payload/device/location/coordinates"
+            ]
+          }
+        ]
+      },
+      "SignIn": {
+        "Status": {
+          "Path": [
+            "Context/actions_intent_sign_in/parameters/SIGN_IN/status"
           ]
         },
-        {
-          "Permission": "DEVICE_PRECISE_LOCATION",
-          "Target":     "Session/Location",
-          "Source":     [
-            "Body/originalRequest/data/device/location/coordinates",
-            "Body/originalDetectIntentRequest/payload/device/location/coordinates"
-          ]
+        "Intent": {
+          "intent": "actions.intent.SIGN_IN",
+          "inputValueData": {
+            "@type": "type.googleapis.com/google.actions.v2.SignInValueSpec",
+            "optContext": "{{Msg/Text}}"
+          }
         }
-      ]
+      }
     },
     "Response": {
       "Path": [
@@ -326,11 +342,29 @@ module.exports = {
         "Op": "or"
       }
     },
-    "Ssml": {
-      "Template": "{{{join (First Msg.Ssml Msg.Text) ' '}}} {{{join (First Suffix.Ssml Suffix.Text) ' '}}}"
-    },
-    "Text": {
-      "Template": "{{{join (First Msg.Text Msg.Ssml) ' '}}} {{{join (First Suffix.Text Suffix.Ssml) ' '}}}"
+    "Send": [
+      {
+        "Target": "Ssml",
+        "Template": "{{{join (First Msg.Ssml Msg.Text) ' '}}} {{{join (First Suffix.Ssml Suffix.Text) ' '}}}"
+      },
+      {
+        "Target": "Text",
+        "Template": "{{{join (First Msg.Text Msg.Ssml) ' '}}} {{{join (First Suffix.Text Suffix.Ssml) ' '}}}"
+      },
+      {
+        "Target": "Suggestions",
+        "CopyFirst": ["Msg", "Suffix"]
+      }
+    ],
+    "Page":{
+      // You must set Setting/Page/Url yourself
+      "Data": {
+        "Path": ["Msg/Page"]
+      },
+      "UrlState": {
+        "Path": "Session/State/PageUrl"
+      },
+      "Criteria": "{{Session/Feature/CUSTOM_STAGE}}"
     },
     "Context": {
       "PathList": [
