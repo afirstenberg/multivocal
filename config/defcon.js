@@ -382,6 +382,10 @@ module.exports = {
         "ResponseSuffix/ShouldClose"
       ],
       "Default": false
+    },
+    "Log": {
+      "Level": "info",
+      "Modules": "multivocal:*"
     }
   },
   "Level": {
