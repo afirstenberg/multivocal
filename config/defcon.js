@@ -364,7 +364,14 @@ module.exports = {
       "UrlState": {
         "Path": "Session/State/PageUrl"
       },
-      "Criteria": "{{Session/Feature/CUSTOM_STAGE}}"
+      "Criteria": "{{Session/Feature/INTERACTIVE_CANVAS}}",
+      "IncludeEnvironment": [
+        "Intent",
+        "Action",
+        "Outent",
+        "Send/Text",
+        "Send/Ssml"
+      ]
     },
     "Context": {
       "PathList": [
