@@ -635,15 +635,38 @@ Environment settings:
 
 #### Full Page Display
 
-This supports the Actions on Google "Immersive Display".
+This supports the Actions on Google 
+"[Interactive Canvas](https://developers.google.com/actions/interactivecanvas/)"
+which allows Assistant devices with screens (such as Android and Smart
+Displays) to display an HTML page that can receive updates as part of the
+responses.
 
 * Setting/Page/Url
 
-    The URL that the full page is loaded from.
+    The URL that the full page is loaded from. There is no default.
+    
+* Setting/Page/IncludeEnvironment
+
+    An array of Environment paths that are copied into the Data sent as
+    part of the response. It defaults to
+    
+    * Intent
+    * Action
+    * Outent
+    * the Text and SSML included in the response
 
 * Msg/Page/Data
 
-    A JSON object containing state information or updates for this response.
+    An object containing state information or updates for this response.
+    By default, it may be empty.
+    
+    The final object Data will include the attributes specified by
+    `Setting/Page/IncludeEnvironment` noted above.
+
+The Data will be sent if both of the following are true:
+
+* The `Setting/Page/Url` is set
+* The proper feature in `Session/Feature` is set by Actions on Google
 
 ### Voices
 
