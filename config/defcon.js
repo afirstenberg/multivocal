@@ -255,6 +255,11 @@ module.exports = {
       }
     },
     "Session": {
+      "Id": {
+        "Path": [
+          "Body/session"
+        ]
+      },
       "Feature": {
         "Path": [
           "Body/originalRequest/data/surface",
