@@ -874,6 +874,42 @@ You can also explicitly set the `IntentLevel` and/or `ActionLevel` in a builder.
 If already set, multivocal will not try to evaluate it as part of the default
 handler.
 
+### Types
+
+Dialogflow supports 
+[Session Entities](https://cloud.google.com/dialogflow/docs/entities-session)
+which allow you to change Entities to customize it for each user. However, the
+Actions on Google support for this appears to be somewhat in flux. Multivocal
+provides support for this based on somewhat 
+[sketchy documentation](https://groups.google.com/d/msg/dialogflow-enterprise-edition-users/K-wSIgRyT90/-BkkFYLfAgAJ),
+but seems to work.
+
+Environment setting:
+
+* Types
+
+    Contains an object with the attribute names being the names of the Types
+    being defined and the value being an object containing the value names
+    as the attribute and a string or array of strings as possible aliases for
+    the value.
+    
+So the Types object might look something like
+
+```json
+{
+  "shape": {
+    "circle": ["oval","sphere"],
+    "square": "rectangle"
+  },
+  "user-color": {
+    "red": [],
+    "purple": "lavender"
+  }
+}
+```
+
+(TODO: Support this for Dialogflow without AoG)
+
 ### Post-processing
 
 (TODO: Work in progress)

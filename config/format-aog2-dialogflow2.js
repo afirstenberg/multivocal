@@ -149,6 +149,7 @@ module.exports = {
       Target: '{{Send/Data}}/userStorage',
       ValueType: 'string'
     },
-    'Send/Intent':'{{Send/Data}}/systemIntent'
+    'Send/Intent':'{{Send/Data}}/systemIntent',
+    'Send/Types': 'sessionEntityTypes'
   }
 };
