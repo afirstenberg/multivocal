@@ -70,7 +70,7 @@ module.exports = {
               "2"+
             "{{/if}}"+
           "{{/if}}",
-        "ActionsSDKVersion": "{{Val 'Req/headers/google-assistant-api-version'}}",
+        "ActionsSDKVersion": "{{FirstVal 'Req/headers/google-assistant-api-version' 'Req/headers/google-actions-api-version'}}",
         "IsActionsSDK": "{{isTruthy Platform.ActionsSDKVersion}}",
         "IsActionsOnGoogle": {
           "Terms":[
@@ -257,6 +257,7 @@ module.exports = {
     "Session": {
       "Id": {
         "Path": [
+          "Body/session/id",
           "Body/session"
         ]
       },
