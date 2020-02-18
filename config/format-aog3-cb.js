@@ -10,17 +10,14 @@ module.exports = {
     'Body/session/id':'session/id',
     'Body/scene/name':'scene/name',
 
-    /* TODO: Context / parameters
     'Send/ContextList': {
-      Target: 'outputContexts',
+      Target: 'session/params',
       Value:
       '{{#each Send.ContextList}}'+
-        '{{#Set "_This[+]/name"}}{{@root.Body.session}}/contexts/{{this.name}}{{/Set}}'+
-        '{{Set  "_This[=]/lifespanCount" this.lifespan}}'+
-        '{{Set  "_This[=]/parameters"    this.parameters}}'+
+        '{{#Set "_Tmp"}}_This/{{this.name}}{{/Set}}'+
+        '{{Set  @root._Tmp this.parameters}}'+
       '{{/each}}'
     },
-    */
 
     'Send/ShouldClose': {
       Criteria: '{{Send.ShouldClose}}',
