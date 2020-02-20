@@ -117,12 +117,19 @@ module.exports = {
       "Counter": "Handler.{{HandlerName}}"
     },
     "Parameters": {
-      "Path": [
-        "Body/result/parameters",       // Dialogflow 1
-        "Body/queryResult/parameters",  // Dialogflow 2
-        "Body/intent/params"            // AoG 3 / CB
-      ],
-      "Default": {}
+      "All":{
+        "Path": [
+          "Body/result/parameters",       // Dialogflow 1
+          "Body/queryResult/parameters",  // Dialogflow 2
+          "Body/intent/params"            // AoG 3 / CB
+        ],
+        "Default": {}
+      },
+      "Value": {
+        "PathList": [
+          "resolved"   // AoG / CB
+        ]
+      }
     },
     "Contexts": {
       "Path": [
