@@ -19,6 +19,7 @@ module.exports = {
       '{{/each}}'
     },
 
+    'NextScene': 'scene/next/name',
     'Send/ShouldClose': {
       Criteria: '{{Send.ShouldClose}}',
       Target: 'scene/next/name',
@@ -167,7 +168,7 @@ module.exports = {
     },
     */
 
-    /* TODO: (What is this?)
+    /* TODO: Requirements / Permissions / "Helper" requests
     'Send/Intent':'{{Send/Data}}/systemIntent',
     */
 
