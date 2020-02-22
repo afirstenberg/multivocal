@@ -161,12 +161,7 @@ module.exports = {
     },
     */
 
-    /* TODO: User storage
-    'User/State':{
-      Target: '{{Send/Data}}/userStorage',
-      ValueType: 'string'
-    },
-    */
+    'User/State': 'user/params'
 
     /* TODO: Requirements / Permissions / "Helper" requests
     'Send/Intent':'{{Send/Data}}/systemIntent',
