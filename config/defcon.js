@@ -70,6 +70,7 @@ module.exports = {
               "2"+
             "{{/if}}"+
           "{{/if}}",
+        "DialogflowIntegration": "{{Val 'Body/originalDetectIntentRequest/source'}}",
         "ActionsSDKVersion": "{{Val 'Req/headers/google-assistant-api-version'}}",
         "IsActionsSDK": "{{isTruthy Platform.ActionsSDKVersion}}",
         "IsActionsOnGoogle": {
