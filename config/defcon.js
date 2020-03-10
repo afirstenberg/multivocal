@@ -298,7 +298,8 @@ module.exports = {
         "Path": [
           "User/State/UserId",
           "Body/originalRequest/data/user/userId",
-          "Body/originalDetectIntentRequest/payload/user/userId"
+          "Body/originalDetectIntentRequest/payload/user/userId",
+          "Body/originalDetectIntentRequest/payload/data/event/user/name"
         ],
         "State": "User/State/UserId",
         "Template": "google:{{User.State.UserId}}"
@@ -311,8 +312,9 @@ module.exports = {
       },
       "Profile":{
         "Path": [
-          "Body/originalRequest/data/user/idToken",
-          "Body/originalDetectIntentRequest/payload/user/idToken"
+          "Body/originalRequest/data/user/idToken",                       // AoG 2, Dialogflow 1
+          "Body/originalDetectIntentRequest/payload/user/idToken",        // AoG 2, Dialogflow 2
+          "Body/originalDetectIntentRequest/payload/data/event/user"      // Hangouts, Dialogflow 2
         ]
       },
       "Feature": {
