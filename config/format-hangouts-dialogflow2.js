@@ -29,7 +29,18 @@ module.exports = {
     },
     */
 
-    'Send/Text': 'fulfillmentText',
+    'Send/Text/Platform': {
+      Criteria: 'true',
+      Target: 'fulfillmentMessages[+]/platform',
+      Value: 'GOOGLE_HANGOUTS'
+    },
+
+    'Send/Text': {
+      Target: [
+        'fulfillmentText',
+        'fulfillmentMessages[=]/text/text[+]'
+      ]
+    },
 
     /* TODO: Repeat
     'Context/multivocal_repeat/parameters/Ssml': {
