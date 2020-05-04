@@ -133,33 +133,27 @@ module.exports = {
     },
     */
 
-    /* TODO: Media Response
-    'Msg/Audio': {
-      Target: '{{Send/Data}}/richResponse/items[+]/mediaResponse/mediaType',
-      Value: 'AUDIO'
-    },
-    'Msg/Audio/Url':      '{{Send/Data}}/richResponse/items[=]/mediaResponse/mediaObjects[+]/contentUrl',
-    'Msg/Audio/Title':    '{{Send/Data}}/richResponse/items[=]/mediaResponse/mediaObjects[=]/name',
-    'Msg/Audio/Body':     '{{Send/Data}}/richResponse/items[=]/mediaResponse/mediaObjects[=]/description',
-    'Msg/Audio/IconUrl':  '{{Send/Data}}/richResponse/items[=]/mediaResponse/mediaObjects[=]/icon/url',
-    'Msg/Audio/ImageUrl': '{{Send/Data}}/richResponse/items[=]/mediaResponse/mediaObjects[=]/largeImage/url',
-    */
+    /* Media Response */
+    'Msg/Audio/Url':      'prompt/content/media/url',
+    'Msg/Audio/Title':    'prompt/content/media/name',
+    'Msg/Audio/Body':     'prompt/content/media/description',
+    'Msg/Audio/IconUrl':  'prompt/content/media/image/icon/url',
+    'Msg/Audio/ImageUrl': 'prompt/content/media/image/large/url',
 
     /* TODO: Interactive Canvas
     'Send/Page/Data':     '{{Send/Data}}/richResponse/items[+]/htmlResponse/updatedState',
     'Send/Page/Url':      '{{Send/Data}}/richResponse/items[=]/htmlResponse/url',
     */
 
-    /* TODO: Suggestion chips
+    /* Suggestion chips */
     'Send/Suggestions': {
       Criteria: '{{and (isArray Msg.Suggestions) (length Msg.Suggestions)}}',
-      Target: '{{Send/Data}}/richResponse/suggestions',
+      Target: 'prompt/suggestions',
       Value:
       '{{#each Msg.Suggestions}}'+
       '{{Set "_This[+]/title" this}}'+
       '{{/each}}'
     },
-    */
 
     'User/State': 'user/params'
 
