@@ -155,14 +155,13 @@ module.exports = {
       '{{/each}}'
     },
 
-    'User/State': 'user/params'
+    'User/State': 'user/params',
 
     /* TODO: Requirements / Permissions / "Helper" requests
     'Send/Intent':'{{Send/Data}}/systemIntent',
     */
 
-    /* TODO: Entity types
-    'Send/Types': 'sessionEntityTypes'
-    */
+    /* Session types */
+    'Send/Types': 'session/typeOverrides'
   }
 };
