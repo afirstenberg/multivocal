@@ -134,16 +134,28 @@ module.exports = {
     */
 
     /* Media Response */
-    'Msg/Audio/Url':      'prompt/content/media/url',
-    'Msg/Audio/Title':    'prompt/content/media/name',
-    'Msg/Audio/Body':     'prompt/content/media/description',
-    'Msg/Audio/IconUrl':  'prompt/content/media/image/icon/url',
-    'Msg/Audio/ImageUrl': 'prompt/content/media/image/large/url',
+    'Msg/Audio/Url':      'prompt/content/media/mediaObjects[+]/url',
+    'Msg/Audio/Title':    'prompt/content/media/mediaObjects[=]/name',
+    'Msg/Audio/Body':     'prompt/content/media/mediaObjects[=]/description',
+    'Msg/Audio/IconUrl':  'prompt/content/media/mediaObjects[=]/image/icon/url',
+    'Msg/Audio/ImageUrl': 'prompt/content/media/mediaObjects[=]/image/large/url',
+    'Msg/Audio/Controls': {
+      Criteria: '{{Msg.Audio.Url}}',
+      Target: 'prompt/content/media/optionalMediaControls',
+      Value:
+        '{{Set "_This[+]" "PAUSED"}}'+
+        '{{Set "_This[+]" "STOPPED"}}'+
+        '{{Set "_This[+]" "NEXT"}}'+
+        '{{Set "_This[+]" "PREVIOUS"}}'
+    },
 
-    /* TODO: Interactive Canvas
-    'Send/Page/Data':     '{{Send/Data}}/richResponse/items[+]/htmlResponse/updatedState',
-    'Send/Page/Url':      '{{Send/Data}}/richResponse/items[=]/htmlResponse/url',
-    */
+    /* Interactive Canvas */
+    'Send/Page/Data':           'prompt/canvas/data',
+    'Send/Page/Url':            'prompt/canvas/url',
+    'Send/Page/SuppressMic':    {
+      Criteria: 'true',
+      Target: 'prompt/canvas/suppressMic'
+    },
 
     /* Suggestion chips */
     'Send/Suggestions': {

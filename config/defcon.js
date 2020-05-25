@@ -391,7 +391,11 @@ module.exports = {
         "Outent",
         "Send/Text",
         "Send/Ssml"
-      ]
+      ],
+      "SuppressMic": {
+        "Path": ["Msg/SuppressMic"],
+        "Default": false
+      }
     },
     "Context": {
       "PathList": [
