@@ -21,7 +21,7 @@ module.exports = {
         "Context/multivocal_requirements/parameters/intentName",
         "Body/result/metadata/intentName",      // Dialogflow 1
         "Body/queryResult/intent/displayName",  // Dialogflow 2
-        "Body/intent/name"                      // AoG 3 / CB
+        "Body/intent/name"                      // AoG 3 / AB
       ],
       "Template": "Intent.{{IntentName}}"
     },
@@ -39,7 +39,7 @@ module.exports = {
         "Context/multivocal_requirements/parameters/actionName",
         "Body/result/action",        // Dialogflow 1
         "Body/queryResult/action",   // Dialogflow 2
-        "Body/handler/name"          // AoG 3 / CB
+        "Body/handler/name"          // AoG 3 / AB
       ],
       "Template": "Action.{{ActionName}}"
     },
@@ -103,7 +103,7 @@ module.exports = {
       "Path": [
         "Body/originalRequest/data/user/locale",                 // Dialogflow 1
         "Body/originalDetectIntentRequest/payload/user/locale",  // Dialogflow 2
-        "Body/user/locale"                                       // AoG 3 / CB
+        "Body/user/locale"                                       // AoG 3 / AB
       ],
       "Default": "und"
     },
@@ -121,13 +121,13 @@ module.exports = {
         "Path": [
           "Body/result/parameters",       // Dialogflow 1
           "Body/queryResult/parameters",  // Dialogflow 2
-          "Body/intent/params"            // AoG 3 / CB
+          "Body/intent/params"            // AoG 3 / AB
         ],
         "Default": {}
       },
       "Value": {
         "PathList": [
-          "resolved"   // AoG / CB
+          "resolved"   // AoG / AB
         ]
       }
     },
@@ -135,7 +135,7 @@ module.exports = {
       "Path": [
         "Body/result/contexts",            // Dialogflow 1
         "Body/queryResult/outputContexts", // Dialogflow 2
-        "Body/session/params"              // AoG 3 / CB
+        "Body/session/params"              // AoG 3 / AB
       ],
       "Default": {}
     },
@@ -269,7 +269,7 @@ module.exports = {
     "Session": {
       "Id": {
         "Path": [
-          "Body/session/id",     // AoG 3 / CB
+          "Body/session/id",     // AoG 3 / AB
           "Body/session"         // Dialogflow
         ]
       },
@@ -277,7 +277,7 @@ module.exports = {
         "Path": [
           "Body/originalRequest/data/surface",                 // Dialogflow 1
           "Body/originalDetectIntentRequest/payload/surface",  // Dialogflow 2
-          "Body/device/capabilities"                           // AoG 3 / CB
+          "Body/device/capabilities"                           // AoG 3 / AB
         ],
         "Default": []
       },
@@ -339,7 +339,7 @@ module.exports = {
         "Path": [
           "Body/originalRequest/data/user/userStorage",                // Dialogflow 1
           "Body/originalDetectIntentRequest/payload/user/userStorage", // Dialogflow 2
-          "Body/user/params"                                           // AoG 3 / CB
+          "Body/user/params"                                           // AoG 3 / AB
         ],
         "Default": "{}"
       }
