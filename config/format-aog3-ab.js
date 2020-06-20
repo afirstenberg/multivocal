@@ -25,15 +25,29 @@ module.exports = {
       Target: 'scene/next/name',
       Value: 'actions.page.END_CONVERSATION'
     },
-    'Send/Ssml': {
+    'Msg/Ssml': {
+      Criteria: '{{or Msg.Ssml Msg.Text}}',
       Target: [
         'prompt/firstSimple/speech'
       ],
-      Value: '{{#Ssml Voice}}{{{Send.Ssml}}}{{/Ssml}}'
+      Value: '{{#Ssml Voice}}{{{First Msg.Ssml Msg.Text}}}{{/Ssml}}'
     },
-    'Send/Text': {
+    'Msg/Text': {
       Target: [
         'prompt/firstSimple/text'
+      ]
+    },
+    'Suffix/Ssml': {
+      Criteria: '{{and (not NoSuffixNeeded) (or Suffix.Ssml Suffix.Text)}}',
+      Target: [
+        'prompt/lastSimple/speech'
+      ],
+      Value: '{{#Ssml Voice}}{{{First Suffix.Ssml Suffix.Text}}}{{/Ssml}}'
+    },
+    'Suffix/Text': {
+      Criteria: '{{and (not NoSuffixNeeded) Suffix.Text}}',
+      Target: [
+        'prompt/lastSimple/text'
       ]
     },
 
