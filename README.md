@@ -663,6 +663,10 @@ responses.
     The final object Data will include the attributes specified by
     `Setting/Page/IncludeEnvironment` noted above.
 
+* Msg/SuppressMic
+
+    If true, the mic will be closed immediately, otherwise, left open as usual.
+
 The Data will be sent if both of the following are true:
 
 * The `Setting/Page/Url` is set
@@ -983,16 +987,21 @@ Actions SDK.
 
 #### What version of Dialogflow does multivocal work with?
 
-Right now, multivocal primarily targets Dialogflow version 1.
+Right now, multivocal primarily targets Dialogflow version 2.
 
-There is support for version 2 (it reports the version in the 
+There is support for version 1 (it reports the version in the 
 environment setting `Platform.DialogflowVersion` and there is a
-JSON formatter that creates output for it), but this isn't the
-primary development target, so it may not have been as fully tested.
+JSON formatter that creates output for it), but this is no longer the
+primary development target, so it may not be fully tested.
+Besides, this version has been deprecated (and possibly shut off) by Google.
 
-#### Does multivocal work with the Action SDK?
+#### Does multivocal work with the Actions SDK or the Actions Builder?
 
-Not yet, but we would like to get support by version 1.0
+Yes, the Actions SDK/Builder version 3 is supported starting with
+Multivocal 0.15.
+
+The prior versions of the Actions SDK are not supported. Version 2 of Actions
+on Google is supported only with Dialogflow.
 
 ### Use, Licensing, and Contributions
 
