@@ -63,8 +63,8 @@ module.exports = {
     },
     */
 
-    /* TODO: rich responses
-    'Send/Table': '{{Send/Data}}/richResponse/items[+]/tableCard',
+    /* rich responses */
+    /*'Send/Table': '{{Send/Data}}/richResponse/items[+]/tableCard',*/
     'Msg/Option/Type': {
       TargetEnv: 'Send/Option',
       Debug: 'isArray={{isArray Msg.Option.Items}} eq1={{equalsLength Msg.Option.Items 1}}',
@@ -91,26 +91,29 @@ module.exports = {
           '{{Set "_This/IsPlural" true}}'+
         '{{/if}}'
     },
+
     'Send/Card':{
       Debug: '{{JSONstringify Send.Card}}',
-      Target: '{{Send/Data}}/richResponse/items[+]/basicCard/title',
+      Target: 'prompt/content/card/title',
       Value: ''
     },
     'Send/Card/Title':{
       Criteria: '{{Send.Card}}',
-      Target: '{{Send/Data}}/richResponse/items[=]/basicCard/title',
+      Target: 'prompt/content/card/title',
       Value: '{{First Msg.Option.Title Send.Card.Title}}'
     },
-    'Send/Card/Body':        '{{Send/Data}}/richResponse/items[=]/basicCard/formattedText',
-    'Send/Card/ImageUrl':    '{{Send/Data}}/richResponse/items[=]/basicCard/image/url',
-    'Send/Card/ImageText':   '{{Send/Data}}/richResponse/items[=]/basicCard/image/accessibilityText',
-    'Send/Card/ImageBorder': '{{Send/Data}}/richResponse/items[=]/basicCard/imageDisplayOptions',
+    'Send/Card/Body':        'prompt/content/card/text',
+    'Send/Card/ImageUrl':    'prompt/content/card/image/url',
+    'Send/Card/ImageText':   'prompt/content/card/image/alt',
+    'Send/Card/ImageBorder': 'prompt/content/card/imageFill',
     'Send/Card/Url':{
-      Target: '{{Send/Data}}/richResponse/items[=]/basicCard/buttons[+]',
+      Target: 'prompt/content/card/button',
       Value:
-        '{{Set "_This/openUrlAction/url" Send.Card.Url}}'+
-        '{{Set "_This/title" (First Send.Card.Title Send.Card.Footer "Visit")}}'
+        '{{Set "_This/open/url" Send.Card.Url}}'+
+        '{{Set "_This/name" (First Send.Card.Title Send.Card.Footer "Visit")}}'
     },
+
+    /* FIXME: Lists/Options related to typeOverrides
     'Msg/Option/Title': {
       Criteria: '{{Send.Option.IsPlural}}',
       Target: '{{Send/Data}}/{{Send.Option.Path}}/{{Send.Option.Type}}/title'
@@ -158,9 +161,7 @@ module.exports = {
       Target: 'prompt/content/media/optionalMediaControls',
       Value:
         '{{Set "_This[+]" "PAUSED"}}'+
-        '{{Set "_This[+]" "STOPPED"}}'+
-        '{{Set "_This[+]" "NEXT"}}'+
-        '{{Set "_This[+]" "PREVIOUS"}}'
+        '{{Set "_This[+]" "STOPPED"}}'
     },
 
     /* Interactive Canvas */
