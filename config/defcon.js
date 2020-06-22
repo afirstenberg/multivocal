@@ -19,8 +19,9 @@ module.exports = {
     "Intent": {
       "Path": [
         "Context/multivocal_requirements/parameters/intentName",
-        "Body/result/metadata/intentName",
-        "Body/queryResult/intent/displayName"
+        "Body/result/metadata/intentName",      // Dialogflow 1
+        "Body/queryResult/intent/displayName",  // Dialogflow 2
+        "Body/intent/name"                      // AoG 3 / AB
       ],
       "Template": "Intent.{{IntentName}}"
     },
@@ -36,8 +37,9 @@ module.exports = {
     "Action": {
       "Path": [
         "Context/multivocal_requirements/parameters/actionName",
-        "Body/result/action",
-        "Body/queryResult/action"
+        "Body/result/action",        // Dialogflow 1
+        "Body/queryResult/action",   // Dialogflow 2
+        "Body/handler/name"          // AoG 3 / AB
       ],
       "Template": "Action.{{ActionName}}"
     },
@@ -71,7 +73,7 @@ module.exports = {
             "{{/if}}"+
           "{{/if}}",
         "DialogflowIntegration": "{{Val 'Body/originalDetectIntentRequest/source'}}",
-        "ActionsSDKVersion": "{{Val 'Req/headers/google-assistant-api-version'}}",
+        "ActionsSDKVersion": "{{FirstVal 'Req/headers/google-assistant-api-version' 'Req/headers/google-actions-api-version'}}",
         "IsActionsSDK": "{{isTruthy Platform.ActionsSDKVersion}}",
         "IsActionsOnGoogle": {
           "Terms":[
@@ -100,8 +102,9 @@ module.exports = {
     },
     "Locale": {
       "Path": [
-        "Body/originalRequest/data/user/locale",
-        "Body/originalDetectIntentRequest/payload/user/locale"
+        "Body/originalRequest/data/user/locale",                 // Dialogflow 1
+        "Body/originalDetectIntentRequest/payload/user/locale",  // Dialogflow 2
+        "Body/user/locale"                                       // AoG 3 / AB
       ],
       "Default": "und"
     },
@@ -115,16 +118,25 @@ module.exports = {
       "Counter": "Handler.{{HandlerName}}"
     },
     "Parameters": {
-      "Path": [
-        "Body/result/parameters",
-        "Body/queryResult/parameters"
-      ],
-      "Default": {}
+      "All":{
+        "Path": [
+          "Body/result/parameters",       // Dialogflow 1
+          "Body/queryResult/parameters",  // Dialogflow 2
+          "Body/intent/params"            // AoG 3 / AB
+        ],
+        "Default": {}
+      },
+      "Value": {
+        "PathList": [
+          "resolved"   // AoG / AB
+        ]
+      }
     },
     "Contexts": {
       "Path": [
-        "Body/result/contexts",
-        "Body/queryResult/outputContexts"
+        "Body/result/contexts",            // Dialogflow 1
+        "Body/queryResult/outputContexts", // Dialogflow 2
+        "Body/session/params"              // AoG 3 / AB
       ],
       "Default": {}
     },
@@ -258,13 +270,15 @@ module.exports = {
     "Session": {
       "Id": {
         "Path": [
-          "Body/session"
+          "Body/session/id",     // AoG 3 / AB
+          "Body/session"         // Dialogflow
         ]
       },
       "Feature": {
         "Path": [
-          "Body/originalRequest/data/surface",
-          "Body/originalDetectIntentRequest/payload/surface"
+          "Body/originalRequest/data/surface",                 // Dialogflow 1
+          "Body/originalDetectIntentRequest/payload/surface",  // Dialogflow 2
+          "Body/device/capabilities"                           // AoG 3 / AB
         ],
         "Default": []
       },
@@ -326,8 +340,9 @@ module.exports = {
       },
       "State": {
         "Path": [
-          "Body/originalRequest/data/user/userStorage",
-          "Body/originalDetectIntentRequest/payload/user/userStorage"
+          "Body/originalRequest/data/user/userStorage",                // Dialogflow 1
+          "Body/originalDetectIntentRequest/payload/user/userStorage", // Dialogflow 2
+          "Body/user/params"                                           // AoG 3 / AB
         ],
         "Default": "{}"
       }
@@ -379,7 +394,11 @@ module.exports = {
         "Outent",
         "Send/Text",
         "Send/Ssml"
-      ]
+      ],
+      "SuppressMic": {
+        "Path": ["Msg/SuppressMic"],
+        "Default": false
+      }
     },
     "Context": {
       "PathList": [
