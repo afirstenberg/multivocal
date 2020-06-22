@@ -9,7 +9,7 @@ by version 1.0.0.)*
 ## What is multivocal?
 
 Multivocal is a library that tries to bring a new approach to helping
-you write webhooks for the Google Assistant (and, hopefully someday,
+you write webhooks for the Google Assistant, Google Chat (and, hopefully someday,
 other voice agents and bots).
 
 ### Why multivocal?
@@ -42,15 +42,21 @@ That evolved into Multivocal.
 
 ### When does it make sense to use multivocal?
 
-We think it makes sense for any application you're writing with
-Dialogflow for the Google Assistant (Actions-on-Google). We hope to
-expand this so it make sense to use for the Action SDK (without
-Dialogflow), for other platforms that use Dialogflow, and for the
-Amazon Alexa.
+We think it makes sense for any application you're writing for
+platforms such as
+
+* Dialogflow with 
+    * The Google Assistant (Actions on Google 2)
+    * Google Chat (formerly Hangouts Chat)
+* The Actions Builder and Actions SDK for the Google Assistant (Actions on Google 3)
+
+We hope to expand the library so it makes sense to use for 
+other platforms that use Dialogflow, for the
+Amazon Alexa, and for Samsung's Bixby.
 
 Right now, it targets webhooks that run on the Firebase Cloud Functions
 platform, but it should work on any platform that uses Express-like
-handling.
+handling or AWS Lambda.
 
 ### Who is behind multivocal?
 
@@ -995,10 +1001,15 @@ JSON formatter that creates output for it), but this is no longer the
 primary development target, so it may not be fully tested.
 Besides, this version has been deprecated (and possibly shut off) by Google.
 
+#### What integrations with Dialogflow are supported?
+
+* Google Assistant (Actions on Google version 2)
+* Hangouts Chat (also named Google Chat)
+
 #### Does multivocal work with the Actions SDK or the Actions Builder?
 
-Yes, the Actions SDK/Builder version 3 is supported starting with
-Multivocal 0.15.
+Yes, the Actions SDK/Builder (Actions-on-Google version 3) is supported
+starting with Multivocal 0.15.
 
 The prior versions of the Actions SDK are not supported. Version 2 of Actions
 on Google is supported only with Dialogflow.
