@@ -144,6 +144,10 @@ We can roughly break this into three parts:
     else, you can build the environment yourself, call the processing,
     and send the JSON response.
     
+A very similar configuration could be written for an Actions Builder project,
+and mostly be structured the same way. (The biggest difference is that 
+handler names aren't allowed to have a dot in them.)
+    
 ## Features
 
 ### Naming Convention
@@ -435,27 +439,36 @@ Environment settings built (if appropriate):
 ### Intents, Actions, and Outents
 
 User actions in Dialogflow are represented by two things: The Intent
-name and the Action name. Multivocal uses these to determine which
-handler should be called to do any additional processing and what
-should be sent in response. Multivocal prefixes these with "Intent."
-and "Action." respectively and stores them in the following environment
-values:
+name and the Action name. Multivocal prefixes these with "Intent."
+and "Action." respectively and stores them in the environment values below.
+
+In Actions Builder, in addition to an Intent name which may be available,
+there is also the Scene name and the Handler name. For consistency, the
+Handler name is prefixed with "Action.". The Scene name is available through
+the Body environment, but isn't otherwise stored.
+
+In general, for either platform, you should be planning on the "Action".
 
 * ActionName
     The action name provided from Dialogflow
+    or the handler name provided from Actions Builder
 * Action
     The action name prefixed with "Action."
 * IntentName
-    The intent name provided from Dialogflow
+    The intent name provided from Dialogflow or Actions Builder
 * Intent
     The Intent name prefixed with "Intent."
+
+Multivocal uses these to determine which
+handler should be called to do any additional processing and what
+should be sent in response. 
 
 Additionally, Multivocal defines the concept of an "Outent". You can
 set this environment setting in a handler to provide additional
 choices for responses which may be different than the default ones you
 provide for the intent or action. You do not need to prefix it with
 "Outent.", although you're allowed to do so. You're not required to set
-one at all, if if you do, it should be in the environment setting:
+one at all, but if you do, it should be in the environment setting:
 
 * Outent
 
@@ -886,13 +899,9 @@ handler.
 
 ### Types
 
-Dialogflow supports 
+Dialogflow and Actions Builder support 
 [Session Entities](https://cloud.google.com/dialogflow/docs/entities-session)
-which allow you to change Entities to customize it for each user. However, the
-Actions on Google support for this appears to be somewhat in flux. Multivocal
-provides support for this based on somewhat 
-[sketchy documentation](https://groups.google.com/d/msg/dialogflow-enterprise-edition-users/K-wSIgRyT90/-BkkFYLfAgAJ),
-but seems to work.
+which allow you to change Entities to customize it for each user.
 
 Environment setting:
 
@@ -940,7 +949,7 @@ Yes. In your index.js file, you would have something like
 
     exports.webhook = Multivocal.processFirebaseWebhook;
     
-and your Dialogflow webhook would be set to the URL that calls this.
+and your Dialogflow or Actions Builder webhook would be set to the URL that calls this.
 
 #### Does multivocal work on Google Cloud Platform?
 
@@ -949,7 +958,7 @@ file would have a line
 
     exports.webhook = Multivocal.processGCFWebhook;
     
-and your Dialogflow webhook would be set to the URL that calls this.
+and your Dialogflow or Actions Builder webhook would be set to the URL that calls this.
 
 If you're doing this some other way (using App Engine, Compute Engine,
 or a Docker or Kubernetes image - any of which can run node.js), 
@@ -966,13 +975,13 @@ of it might look something like this:
 
     app.post( '/webhook', Multivocal.processExpressWebhook );
     
-and you should set your Dialogflow webhook to the URL that would match
+and you should set your Dialogflow or Actions Builder webhook to the URL that would match
 this route.
 
 #### Does multivocal work with AWS Lambda?
 
 Yes, you can use the `Multivocal.processLambdaWebhook` function and
-have your Dialogflow webhook fulfillment set to an AWS API Gateway.
+have your Dialogflow or Actions Builder webhook fulfillment set to an AWS API Gateway.
  
 #### Does multivocal work with Alexa?
 
@@ -1008,7 +1017,7 @@ Besides, this version has been deprecated (and possibly shut off) by Google.
 
 #### Does multivocal work with the Actions SDK or the Actions Builder?
 
-Yes, the Actions SDK/Builder (Actions-on-Google version 3) is supported
+Yes, the Actions SDK/Builder (Actions on Google version 3) is supported
 starting with Multivocal 0.15.
 
 The prior versions of the Actions SDK are not supported. Version 2 of Actions
