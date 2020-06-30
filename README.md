@@ -9,7 +9,7 @@ by version 1.0.0.)*
 ## What is multivocal?
 
 Multivocal is a library that tries to bring a new approach to helping
-you write webhooks for the Google Assistant (and, hopefully someday,
+you write webhooks for the Google Assistant, Google Chat (and, hopefully someday,
 other voice agents and bots).
 
 ### Why multivocal?
@@ -42,15 +42,21 @@ That evolved into Multivocal.
 
 ### When does it make sense to use multivocal?
 
-We think it makes sense for any application you're writing with
-Dialogflow for the Google Assistant (Actions-on-Google). We hope to
-expand this so it make sense to use for the Action SDK (without
-Dialogflow), for other platforms that use Dialogflow, and for the
-Amazon Alexa.
+We think it makes sense for any application you're writing for
+platforms such as
+
+* Dialogflow with 
+    * The Google Assistant (Actions on Google 2)
+    * Google Chat (formerly Hangouts Chat)
+* The Actions Builder and Actions SDK for the Google Assistant (Actions on Google 3)
+
+We hope to expand the library so it makes sense to use for 
+other platforms that use Dialogflow, for the
+Amazon Alexa, and for Samsung's Bixby.
 
 Right now, it targets webhooks that run on the Firebase Cloud Functions
 platform, but it should work on any platform that uses Express-like
-handling.
+handling or AWS Lambda.
 
 ### Who is behind multivocal?
 
@@ -137,6 +143,10 @@ We can roughly break this into three parts:
     function, or if you're using AWS Lambda. If you're using something
     else, you can build the environment yourself, call the processing,
     and send the JSON response.
+    
+A very similar configuration could be written for an Actions Builder project,
+and mostly be structured the same way. (The biggest difference is that 
+handler names aren't allowed to have a dot in them.)
     
 ## Features
 
@@ -429,27 +439,36 @@ Environment settings built (if appropriate):
 ### Intents, Actions, and Outents
 
 User actions in Dialogflow are represented by two things: The Intent
-name and the Action name. Multivocal uses these to determine which
-handler should be called to do any additional processing and what
-should be sent in response. Multivocal prefixes these with "Intent."
-and "Action." respectively and stores them in the following environment
-values:
+name and the Action name. Multivocal prefixes these with "Intent."
+and "Action." respectively and stores them in the environment values below.
+
+In Actions Builder, in addition to an Intent name which may be available,
+there is also the Scene name and the Handler name. For consistency, the
+Handler name is prefixed with "Action.". The Scene name is available through
+the Body environment, but isn't otherwise stored.
+
+In general, for either platform, you should be planning on the "Action".
 
 * ActionName
     The action name provided from Dialogflow
+    or the handler name provided from Actions Builder
 * Action
     The action name prefixed with "Action."
 * IntentName
-    The intent name provided from Dialogflow
+    The intent name provided from Dialogflow or Actions Builder
 * Intent
     The Intent name prefixed with "Intent."
+
+Multivocal uses these to determine which
+handler should be called to do any additional processing and what
+should be sent in response. 
 
 Additionally, Multivocal defines the concept of an "Outent". You can
 set this environment setting in a handler to provide additional
 choices for responses which may be different than the default ones you
 provide for the intent or action. You do not need to prefix it with
 "Outent.", although you're allowed to do so. You're not required to set
-one at all, if if you do, it should be in the environment setting:
+one at all, but if you do, it should be in the environment setting:
 
 * Outent
 
@@ -662,6 +681,10 @@ responses.
     
     The final object Data will include the attributes specified by
     `Setting/Page/IncludeEnvironment` noted above.
+
+* Msg/SuppressMic
+
+    If true, the mic will be closed immediately, otherwise, left open as usual.
 
 The Data will be sent if both of the following are true:
 
@@ -876,13 +899,9 @@ handler.
 
 ### Types
 
-Dialogflow supports 
+Dialogflow and Actions Builder support 
 [Session Entities](https://cloud.google.com/dialogflow/docs/entities-session)
-which allow you to change Entities to customize it for each user. However, the
-Actions on Google support for this appears to be somewhat in flux. Multivocal
-provides support for this based on somewhat 
-[sketchy documentation](https://groups.google.com/d/msg/dialogflow-enterprise-edition-users/K-wSIgRyT90/-BkkFYLfAgAJ),
-but seems to work.
+which allow you to change Entities to customize it for each user.
 
 Environment setting:
 
@@ -930,7 +949,7 @@ Yes. In your index.js file, you would have something like
 
     exports.webhook = Multivocal.processFirebaseWebhook;
     
-and your Dialogflow webhook would be set to the URL that calls this.
+and your Dialogflow or Actions Builder webhook would be set to the URL that calls this.
 
 #### Does multivocal work on Google Cloud Platform?
 
@@ -939,7 +958,7 @@ file would have a line
 
     exports.webhook = Multivocal.processGCFWebhook;
     
-and your Dialogflow webhook would be set to the URL that calls this.
+and your Dialogflow or Actions Builder webhook would be set to the URL that calls this.
 
 If you're doing this some other way (using App Engine, Compute Engine,
 or a Docker or Kubernetes image - any of which can run node.js), 
@@ -956,13 +975,13 @@ of it might look something like this:
 
     app.post( '/webhook', Multivocal.processExpressWebhook );
     
-and you should set your Dialogflow webhook to the URL that would match
+and you should set your Dialogflow or Actions Builder webhook to the URL that would match
 this route.
 
 #### Does multivocal work with AWS Lambda?
 
 Yes, you can use the `Multivocal.processLambdaWebhook` function and
-have your Dialogflow webhook fulfillment set to an AWS API Gateway.
+have your Dialogflow or Actions Builder webhook fulfillment set to an AWS API Gateway.
  
 #### Does multivocal work with Alexa?
 
@@ -983,16 +1002,26 @@ Actions SDK.
 
 #### What version of Dialogflow does multivocal work with?
 
-Right now, multivocal primarily targets Dialogflow version 1.
+Right now, multivocal primarily targets Dialogflow version 2.
 
-There is support for version 2 (it reports the version in the 
+There is support for version 1 (it reports the version in the 
 environment setting `Platform.DialogflowVersion` and there is a
-JSON formatter that creates output for it), but this isn't the
-primary development target, so it may not have been as fully tested.
+JSON formatter that creates output for it), but this is no longer the
+primary development target, so it may not be fully tested.
+Besides, this version has been deprecated (and possibly shut off) by Google.
 
-#### Does multivocal work with the Action SDK?
+#### What integrations with Dialogflow are supported?
 
-Not yet, but we would like to get support by version 1.0
+* Google Assistant (Actions on Google version 2)
+* Hangouts Chat (also named Google Chat)
+
+#### Does multivocal work with the Actions SDK or the Actions Builder?
+
+Yes, the Actions SDK/Builder (Actions on Google version 3) is supported
+starting with Multivocal 0.15.
+
+The prior versions of the Actions SDK are not supported. Version 2 of Actions
+on Google is supported only with Dialogflow.
 
 ### Use, Licensing, and Contributions
 
