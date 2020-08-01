@@ -122,13 +122,15 @@ module.exports = {
         "Path": [
           "Body/result/parameters",       // Dialogflow 1
           "Body/queryResult/parameters",  // Dialogflow 2
-          "Body/intent/params"            // AoG 3 / AB
+          "Body/intent/params",           // AoG 3 / AB
+          "Body/scene/slots"              // AoG 3 / AB
         ],
         "Default": {}
       },
       "Value": {
         "PathList": [
-          "resolved"   // AoG / AB
+          "resolved",   // AoG 3 / AB
+          "value"       // AoG 3 / AB
         ]
       }
     },
@@ -142,10 +144,12 @@ module.exports = {
     },
     "Option": {
       "Path": [
-        "Body/originalRequest/data/inputs[0]/arguments[0]/textValue",
-        "Body/originalDetectIntentRequest/payload/inputs[0]/arguments[0]/textValue"
+        "Body/originalRequest/data/inputs[0]/arguments[0]/textValue",                // Dialogflow 1
+        "Body/originalDetectIntentRequest/payload/inputs[0]/arguments[0]/textValue", // Dialogflow 2
+        "Parameter/multivocalOption"      // AoG 3 / AB default
       ],
-      "Prefix": "OPTION_"
+      "Prefix": "OPTION_",
+      "TypeName": "MultivocalOption"      // AoG 3
     },
     "MediaStatus": {
       "Inputs": {

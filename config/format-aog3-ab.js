@@ -63,6 +63,10 @@ module.exports = {
     },
     */
 
+    /* Session types */
+    /* Needs to be before list/options, since those change session/typeOverrides */
+    'Send/Types': 'session/typeOverrides',
+
     /* rich responses */
     /*'Send/Table': '{{Send/Data}}/richResponse/items[+]/tableCard',*/
     'Msg/Option/Type': {
@@ -79,17 +83,18 @@ module.exports = {
             '{{Set "_This/IsRichResponse" true}}'+
             '{{Set "_This/IsPlural" true}}'+
           '{{/if}}'+
-        '{{else if (eq Msg.Option.Type "carousel")}}'+
-          '{{Set "_This/Path" "systemIntent/data"}}'+
-          '{{Set "_This/Type" "carouselSelect"}}'+
-          '{{Set "_This/IsSystemIntent" true}}'+
+        '{{else if (or (eq Msg.Option.Type "carousel") (eq Msg.Option.Type "collection"))}}'+
+          '{{log "carousel"}}'+
+          '{{Set "_This/Path" "prompt/content"}}'+
+          '{{Set "_This/Type" "collection"}}'+
           '{{Set "_This/IsPlural" true}}'+
         '{{else}}'+
-          '{{Set "_This/Path" "systemIntent/data"}}'+
-          '{{Set "_This/Type" "listSelect"}}'+
-          '{{Set "_This/IsSystemIntent" true}}'+
+          '{{log "list"}}'+
+          '{{Set "_This/Path" "prompt/content"}}'+
+          '{{Set "_This/Type" "list"}}'+
           '{{Set "_This/IsPlural" true}}'+
-        '{{/if}}'
+        '{{/if}}'+
+        '{{{log "_This %s" (JSONstringify _This)}}}'
     },
 
     'Send/Card':{
@@ -113,42 +118,51 @@ module.exports = {
         '{{Set "_This/name" (First Send.Card.Title Send.Card.Footer "Visit")}}'
     },
 
-    /* FIXME: Lists/Options related to typeOverrides
+    /* Lists/Options related to typeOverrides */
     'Msg/Option/Title': {
       Criteria: '{{Send.Option.IsPlural}}',
-      Target: '{{Send/Data}}/{{Send.Option.Path}}/{{Send.Option.Type}}/title'
+      Debug: 'IsPlural={{Send.Option.IsPlural}} Title={{Msg.Option.Title}} target={{Send.Option.Path}}/{{Send.Option.Type}}/title',
+      Target: '{{Send.Option.Path}}/{{Send.Option.Type}}/title'
     },
-    'Msg/Option/Items': {
+    'Msg/Options/Items/Key': {
       Criteria: '{{Send.Option.IsPlural}}',
-      Target: '{{Send/Data}}/{{Send.Option.Path}}/{{Send.Option.Type}}/items',
+      Target: '{{Send.Option.Path}}/{{Send.Option.Type}}/items',
+      Value:
+        '{{#each Msg.Option.Items}}'+
+          '{{#Set "_This[+]/key"}}{{Setting "Option/Prefix"}}{{@index}}{{/Set}}'+
+        '{{/each}}'
+    },
+    'Msg/Options/Type/Name': {
+      Criteria: '{{Send.Option.IsPlural}}',
+      Target: "session/typeOverrides[+]/name",
+      Value: "{{Setting.Option.TypeName}}"
+    },
+    'Msg/Options/Type/Mode': {
+      Criteria: '{{Send.Option.IsPlural}}',
+      Target: "session/typeOverrides[=]/typeOverrideMode",
+      Value: "TYPE_REPLACE"
+    },
+    'Msg/Option/Type/Items': {
+      Criteria: '{{Send.Option.IsPlural}}',
+      Target: 'session/typeOverrides[=]/synonym/entries',
       Value:
       '{{#each Msg.Option.Items}}'+
-        '{{Set "_This[+]/title"                   this.Title}}'+
-        '{{Set "_This[=]/description"             this.Body}}'+
-        '{{#if (Val "Send/Option/IsSystemIntent")}}'+
-          '{{#Set "_This[=]/optionInfo/key"}}{{Setting "Option/Prefix"}}{{@index}}{{/Set}}'+
+        '{{#Set "_This[+]/name"}}{{Setting "Option/Prefix"}}{{@index}}{{/Set}}'+
+        '{{Set "_This[=]/synonyms[+]"          this.Title}}'+
+        '{{Set "_This[=]/display/title"        this.Title}}'+
+        '{{#if this.Body}}'+
+          '{{Set "_This[=]/display/description"  this.Body}}'+
         '{{/if}}'+
         '{{#if (and this.ImageUrl this.ImageText)}}'+
-          '{{Set "_This[=]/image/url"               this.ImageUrl}}'+
-          '{{Set "_This[=]/image/accessibilityText" this.ImageText}}'+
+          '{{Set "_This[=]/display/image/url"    this.ImageUrl}}'+
+          '{{Set "_This[=]/display/image/alt"    this.ImageText}}'+
         '{{/if}}'+
-        '{{#if (Val "Send/Option/IsRichResponse")}}'+
-          '{{Set "_This[=]/openUrlAction/url"       this.Url}}'+
-          '{{Set "_This[=]/footer"                  this.Footer}}'+
-        '{{/if}}'+
-      '{{/each}}'
+      '{{/each}}'+
+      ''
     },
-    'Msg/Option/SelectType/Type': {
-      Criteria: '{{Send.Option.IsSystemIntent}}',
-      Target: '{{Send/Data}}/systemIntent/data/@type',
-      Value: 'type.googleapis.com/google.actions.v2.OptionValueSpec'
-    },
-    'Msg/Option/SelectType/Intent': {
-      Criteria: '{{Send.Option.IsSystemIntent}}',
-      Target: '{{Send/Data}}/systemIntent/intent',
-      Value: 'actions.intent.OPTION'
-    },
-    */
+
+    /* FIXME: Browsing carousel */
+
 
     /* Media Response */
     'Msg/Audio/Url':      'prompt/content/media/mediaObjects[+]/url',
@@ -182,13 +196,11 @@ module.exports = {
       '{{/each}}'
     },
 
-    'User/State': 'user/params',
+    'User/State': 'user/params'
 
     /* TODO: Requirements / Permissions / "Helper" requests
     'Send/Intent':'{{Send/Data}}/systemIntent',
     */
 
-    /* Session types */
-    'Send/Types': 'session/typeOverrides'
   }
 };
