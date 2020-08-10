@@ -363,6 +363,7 @@ Environment settings built:
 * Session/StartTime
 
 * Option
+    See "Lists, Options, and Cards"
 
 * MediaStatus
 
@@ -583,11 +584,12 @@ Environment settings:
 
 #### Lists, Options, and Cards
 
-Environment settings:
+Environment settings to generate a list or a card:
 
 * Msg/Option/Type
 
-    Should be either "list" or "carousel".
+    Should be either "list" or "carousel". The value "collection" is equivalent
+    to "carousel" for AoG v3.
     
 * Msg/Option/Title
 
@@ -612,6 +614,21 @@ Environment settings:
     
     * Msg/Options/Items[]/Url
         (for Browsing Carousel and Card only)
+
+When processing the option result:
+
+* Option
+    Set with the index of the result. 
+
+##### AoG v3 implementation
+
+AoG v3 uses a Session Type to organize the possible responses. You must define the
+Type in the Builder/SDK. By default, this type is `MultivocalOption`, but you
+can change this in the settings in `Settings/Option/TypeName`.
+
+You must have a Slot for your Scene of this Type, and the prompt for this
+slot should be what sends the list or collection. The slot should be named
+`multivocalOption`, unless you change the path in `Settings/Option/Path`.
 
 #### Table
 
