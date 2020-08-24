@@ -151,13 +151,27 @@ module.exports = {
       "Prefix": "OPTION_",
       "TypeName": "MultivocalOption"      // AoG 3
     },
-    "MediaStatus": {
-      "Inputs": {
+    "Media": {
+      "Status": {
         "Path": [
-          "Body/originalRequest/data/inputs",
-          "Body/originalDetectIntentRequest/payload/inputs"
+          "Body/intent/params/MEDIA_STATUS/resolved"           // AoG 3
+        ],
+        "Inputs": {
+          "Path": [
+            "Body/originalRequest/data/inputs",                // Dialogflow 1
+            "Body/originalDetectIntentRequest/payload/inputs"  // Dialogflow 2
+          ]
+        }
+      },
+      "Progress": {
+        "Path": [
+          "Body/context/media/progress"    // AoG 3
         ]
-      }
+      },
+      "Controls": [
+        "PAUSED",
+        "STOPPED"
+      ]
     },
     "Requirements": {
       "Path": [

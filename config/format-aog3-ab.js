@@ -165,17 +165,23 @@ module.exports = {
 
 
     /* Media Response */
+    'Msg/Audio/Ack': {
+      Target: 'prompt/content/media/mediaType',
+      Value: "MEDIA_STATUS_ACK"
+    },
     'Msg/Audio/Url':      'prompt/content/media/mediaObjects[+]/url',
+    'Msg/Audio/Offset':   'prompt/content/media/startOffset',
     'Msg/Audio/Title':    'prompt/content/media/mediaObjects[=]/name',
     'Msg/Audio/Body':     'prompt/content/media/mediaObjects[=]/description',
     'Msg/Audio/IconUrl':  'prompt/content/media/mediaObjects[=]/image/icon/url',
     'Msg/Audio/ImageUrl': 'prompt/content/media/mediaObjects[=]/image/large/url',
-    'Msg/Audio/Controls': {
-      Criteria: '{{Msg.Audio.Url}}',
-      Target: 'prompt/content/media/optionalMediaControls',
-      Value:
-        '{{Set "_This[+]" "PAUSED"}}'+
-        '{{Set "_This[+]" "STOPPED"}}'
+    'DefCon/Setting/Media/Controls': {
+      Criteria: '{{and Msg.Audio.Url (not Config.Setting.Media.Controls)}}',
+      Target: 'prompt/content/media/optionalMediaControls'
+    },
+    'Config/Setting/Media/Controls': {
+      Criteria: '{{and Msg.Audio.Url (not DefCon.Setting.Media.Controls)}}',
+      Target: 'prompt/content/media/optionalMediaControls'
     },
 
     /* Interactive Canvas */
