@@ -52,6 +52,12 @@ module.exports = {
       ],
       "Default": ""
     },
+    "Node": {
+      "Path": [
+        "Body/scene/name"            // AoG 3 / AB
+      ],
+      "Template": "Node.{{NodeName}}"
+    },
     "Default": {
       "Template": "Default"
     },
@@ -409,6 +415,7 @@ module.exports = {
       "IncludeEnvironment": [
         "Intent",
         "Action",
+        "Node",
         "Outent",
         "Send/Text",
         "Send/Ssml"

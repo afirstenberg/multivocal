@@ -19,7 +19,7 @@ module.exports = {
       '{{/each}}'
     },
 
-    'NextScene': 'scene/next/name',
+    'NextNode': 'scene/next/name',
     'Send/ShouldClose': {
       Criteria: '{{Send.ShouldClose}}',
       Target: 'scene/next/name',

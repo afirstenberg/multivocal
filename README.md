@@ -443,11 +443,6 @@ User actions in Dialogflow are represented by two things: The Intent
 name and the Action name. Multivocal prefixes these with "Intent."
 and "Action." respectively and stores them in the environment values below.
 
-In Actions Builder, in addition to an Intent name which may be available,
-there is also the Scene name and the Handler name. For consistency, the
-Handler name is prefixed with "Action.". The Scene name is available through
-the Body environment, but isn't otherwise stored.
-
 In general, for either platform, you should be planning on the "Action".
 
 * ActionName
@@ -459,10 +454,15 @@ In general, for either platform, you should be planning on the "Action".
     The intent name provided from Dialogflow or Actions Builder
 * Intent
     The Intent name prefixed with "Intent."
+* NodeName
+    The scene name provided by the Actions Builder
+* Node
+    The Node name prefixed with "Node."
 
-Multivocal uses these to determine which
+Multivocal uses the Intent and Action to determine which
 handler should be called to do any additional processing and what
-should be sent in response. 
+should be sent in response. The Node value is not used to determine 
+the handler or response.
 
 Additionally, Multivocal defines the concept of an "Outent". You can
 set this environment setting in a handler to provide additional
@@ -688,6 +688,7 @@ responses.
     
     * Intent
     * Action
+    * Node
     * Outent
     * the Text and SSML included in the response
 
@@ -707,6 +708,19 @@ The Data will be sent if both of the following are true:
 
 * The `Setting/Page/Url` is set
 * The proper feature in `Session/Feature` is set by Actions on Google
+
+#### Transitions or end of conversation
+
+Usually these will be set as part of a response, and usually as part of
+a Base response, although you can set them manually as well. 
+They should not be part of a Template.
+
+* ShouldClose
+   For Dialogflow with Actions on Google or Actions Builder, setting
+   this to true will close the Action after the response.
+
+* NextNode
+   For Actions Builder, if set, this is the name of the scene to transition to.
 
 ### Voices
 
@@ -816,6 +830,7 @@ The system will increment the following Counters as part of the Default
 handler, shortly before the Response is computed:
 
 * the handler name, prefixed by 'Handler.'
+* the Node
 * the Action
 * the Intent
 * the Outent
