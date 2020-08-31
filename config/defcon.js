@@ -56,6 +56,7 @@ module.exports = {
     },
     "Node": {
       "Path": [
+        "Body/pageInfo/currentPage", // FIXME: Dialogflow 3
         "Body/scene/name"            // AoG 3 / AB
       ],
       "Template": "Node.{{NodeName}}"

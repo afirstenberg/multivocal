@@ -45,9 +45,10 @@ That evolved into Multivocal.
 We think it makes sense for any application you're writing for
 platforms such as
 
-* Dialogflow with 
+* Dialogflow ES (Dialogflow 2) with 
     * The Google Assistant (Actions on Google 2)
     * Google Chat (formerly Hangouts Chat)
+* Experimenting with Dialogflow CX (Dialogflow 3)
 * The Actions Builder and Actions SDK for the Google Assistant (Actions on Google 3)
 
 We hope to expand the library so it makes sense to use for 
@@ -439,14 +440,15 @@ Environment settings built (if appropriate):
 
 ### Intents, Actions, and Outents
 
-User actions in Dialogflow are represented by two things: The Intent
-name and the Action name. Multivocal prefixes these with "Intent."
+User actions are represented by two things: The Intent name and the Action name. 
+Multivocal prefixes these with "Intent."
 and "Action." respectively and stores them in the environment values below.
 
-In general, for either platform, you should be planning on the "Action".
+In general, for most platforms, you should be planning on the "Action".
 
 * ActionName
-    The action name provided from Dialogflow
+    The action name provided from Dialogflow 1 or 2,
+    the fulfillment key provided for Dialogflow 3,
     or the handler name provided from Actions Builder
 * Action
     The action name prefixed with "Action."
@@ -456,6 +458,7 @@ In general, for either platform, you should be planning on the "Action".
     The Intent name prefixed with "Intent."
 * NodeName
     The scene name provided by the Actions Builder
+    or the page name provided by Dialogflow 3.
 * Node
     The Node name prefixed with "Node."
 
@@ -1042,10 +1045,18 @@ JSON formatter that creates output for it), but this is no longer the
 primary development target, so it may not be fully tested.
 Besides, this version has been deprecated (and possibly shut off) by Google.
 
+There is also *preliminary* support for Dialogflow version 3 (Dialogflow CX),
+but since there are no default integrations and several gaps in the actual 
+webhook support (many things need to be represented by ID rather than by name),
+this is subject to change.
+
 #### What integrations with Dialogflow are supported?
 
+Dialogflow 2 integrations supported are
 * Google Assistant (Actions on Google version 2)
 * Hangouts Chat (also named Google Chat)
+
+Dialogflow 3 does not have any integrations yet to support.
 
 #### Does multivocal work with the Actions SDK or the Actions Builder?
 
