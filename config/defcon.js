@@ -462,6 +462,13 @@ module.exports = {
       ],
       "Default": false
     },
+    "NextNode": {
+      "Path": [
+        "NextNode",
+        "Response/NextNode",
+        "ResponseSuffix/NextNode"
+      ]
+    },
     "Log": {
       "Level": "info",
       "Modules": "multivocal:*"
