@@ -20,9 +20,8 @@ module.exports = {
         '{{/each}}'
     },
 
-    /* TODO: transitions to transition/target_page or transition/target_flow
-    'NextScene': 'scene/next/name',
-    */
+    /* TODO: transitions to transition/target_page or transition/target_flow */
+    "Send/NextNode": 'transition/targetPage',
 
     /* TODO: Should close?
     'Send/ShouldClose': {

@@ -335,6 +335,15 @@ module.exports = {
         ],
         "Default": "{}"
       },
+      "Stack": {
+        "Path": [
+          'Context/multivocal_session/parameters/stack'
+        ],
+        "Default": "{}",
+        "Size": {
+          "NodeName": 5
+        }
+      },
       "StartTime": {
         "Path": [
           "Context/multivocal_session/parameters/startTime"
