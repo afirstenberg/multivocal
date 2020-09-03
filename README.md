@@ -368,6 +368,8 @@ Environment settings built:
 
 * MediaStatus
 
+* MediaProgress
+
 * Session/Feature
 
 * User/Feature
@@ -664,6 +666,8 @@ Environment settings:
 
 * Msg/Audio/Url
 
+* Msg/Audio/Offset
+
 * Msg/Audio/Title
 
 * Msg/Audio/Body
@@ -671,6 +675,8 @@ Environment settings:
 * Msg/Audio/IconUrl
 
 * Msg/Audio/ImageUrl
+
+* Setting/Media/Controls
 
 #### Full Page Display
 
