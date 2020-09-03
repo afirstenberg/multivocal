@@ -723,7 +723,23 @@ They should not be part of a Template.
    this to true will close the Action after the response.
 
 * NextNode
-   For Actions Builder, if set, this is the name of the scene to transition to.
+   For Actions Builder, if set, this is the name of the scene to transition to
+   or special values (indicated below) indicating recent nodes to transition
+   to.
+   
+##### Special transition values
+
+Multivocal stores recent `NodeName`s in the `Session/Stack/NodeName` stack
+and uses this to allow for "relative" names consisting of one or more periods
+to indicate how far back in the stack should be returned to (and removing those
+entries from the stack).
+
+* `.` would transition to the same node. While this seems identical to not
+    transitioning at all, Actions Builder would re-trigger the `onEntry`
+    event if transitioned to, and would not otherwise.
+* `..` would transition to the immediately previous node before calling this
+    node.
+* and so forth
 
 ### Voices
 
@@ -821,11 +837,25 @@ at the end.
 In most cases, you'll also want to create a Builder that will get the result
 and make sure the environment is populated with the requirement.
 
-### Counters and Intent/Action Levels
+### Counters, Stacks, and Intent/Action Levels
 
-Session/Counter
+Multivocal will keep track of both how many times some events have happened,
+and some information about recent events.
 
-Session/Consecutive
+* Session/Counter
+
+    How many times some events have happened during the session.
+
+* Session/Consecutive
+
+    How many times those same events tracked by `Session/Counter` have 
+    happened in a row. When that event doesn't happen in the current round
+    of a session, it is removed from the `Session/Consecutive` list (and,
+    obviously, not incremented in the `Session/Counter`)
+
+* Session/Stack
+
+    For some events, the most recent non-consecutive values.
 
 #### Counters set by the system
 
@@ -858,6 +888,22 @@ if the counter will be incremented since this may take place
 after your Builder or Handler runs.
 It is safe to add the name more than once - the counter will only be
 incremented once per request.
+
+#### Tracking recent information on the stack
+
+The system keeps track of the N most recent changed values for the
+following environment values set:
+
+* the NodeName
+
+The stack is implemented as an array with the most recent (ie - current) value
+added in the 0th position during the default handler. If the current value
+matches the value on the top of the stack, it is not added. If the stack is
+greater than the maximum stack size, items are removed from the bottom of the
+stack.
+
+The stack is used by the system for handling relative transitions
+with `NextNode`.
 
 #### Levels and Responses
 
