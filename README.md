@@ -45,9 +45,10 @@ That evolved into Multivocal.
 We think it makes sense for any application you're writing for
 platforms such as
 
-* Dialogflow with 
+* Dialogflow ES (Dialogflow 2) with 
     * The Google Assistant (Actions on Google 2)
     * Google Chat (formerly Hangouts Chat)
+* Experimenting with Dialogflow CX (Dialogflow 3)
 * The Actions Builder and Actions SDK for the Google Assistant (Actions on Google 3)
 
 We hope to expand the library so it makes sense to use for 
@@ -367,6 +368,8 @@ Environment settings built:
 
 * MediaStatus
 
+* MediaProgress
+
 * Session/Feature
 
 * User/Feature
@@ -439,19 +442,15 @@ Environment settings built (if appropriate):
 
 ### Intents, Actions, and Outents
 
-User actions in Dialogflow are represented by two things: The Intent
-name and the Action name. Multivocal prefixes these with "Intent."
+User actions are represented by two things: The Intent name and the Action name. 
+Multivocal prefixes these with "Intent."
 and "Action." respectively and stores them in the environment values below.
 
-In Actions Builder, in addition to an Intent name which may be available,
-there is also the Scene name and the Handler name. For consistency, the
-Handler name is prefixed with "Action.". The Scene name is available through
-the Body environment, but isn't otherwise stored.
-
-In general, for either platform, you should be planning on the "Action".
+In general, for most platforms, you should be planning on the "Action".
 
 * ActionName
-    The action name provided from Dialogflow
+    The action name provided from Dialogflow 1 or 2,
+    the fulfillment key provided for Dialogflow 3,
     or the handler name provided from Actions Builder
 * Action
     The action name prefixed with "Action."
@@ -459,10 +458,16 @@ In general, for either platform, you should be planning on the "Action".
     The intent name provided from Dialogflow or Actions Builder
 * Intent
     The Intent name prefixed with "Intent."
+* NodeName
+    The scene name provided by the Actions Builder
+    or the page name provided by Dialogflow 3.
+* Node
+    The Node name prefixed with "Node."
 
-Multivocal uses these to determine which
+Multivocal uses the Intent and Action to determine which
 handler should be called to do any additional processing and what
-should be sent in response. 
+should be sent in response. The Node value is not used to determine 
+the handler or response.
 
 Additionally, Multivocal defines the concept of an "Outent". You can
 set this environment setting in a handler to provide additional
@@ -661,6 +666,8 @@ Environment settings:
 
 * Msg/Audio/Url
 
+* Msg/Audio/Offset
+
 * Msg/Audio/Title
 
 * Msg/Audio/Body
@@ -668,6 +675,8 @@ Environment settings:
 * Msg/Audio/IconUrl
 
 * Msg/Audio/ImageUrl
+
+* Setting/Media/Controls
 
 #### Full Page Display
 
@@ -688,6 +697,7 @@ responses.
     
     * Intent
     * Action
+    * Node
     * Outent
     * the Text and SSML included in the response
 
@@ -707,6 +717,35 @@ The Data will be sent if both of the following are true:
 
 * The `Setting/Page/Url` is set
 * The proper feature in `Session/Feature` is set by Actions on Google
+
+#### Transitions or end of conversation
+
+Usually these will be set as part of a response, and usually as part of
+a Base response, although you can set them manually as well. 
+They should not be part of a Template.
+
+* ShouldClose
+   For Dialogflow with Actions on Google or Actions Builder, setting
+   this to true will close the Action after the response.
+
+* NextNode
+   For Actions Builder, if set, this is the name of the scene to transition to
+   or special values (indicated below) indicating recent nodes to transition
+   to.
+   
+##### Special transition values
+
+Multivocal stores recent `NodeName`s in the `Session/Stack/NodeName` stack
+and uses this to allow for "relative" names consisting of one or more periods
+to indicate how far back in the stack should be returned to (and removing those
+entries from the stack).
+
+* `.` would transition to the same node. While this seems identical to not
+    transitioning at all, Actions Builder would re-trigger the `onEntry`
+    event if transitioned to, and would not otherwise.
+* `..` would transition to the immediately previous node before calling this
+    node.
+* and so forth
 
 ### Voices
 
@@ -804,11 +843,25 @@ at the end.
 In most cases, you'll also want to create a Builder that will get the result
 and make sure the environment is populated with the requirement.
 
-### Counters and Intent/Action Levels
+### Counters, Stacks, and Intent/Action Levels
 
-Session/Counter
+Multivocal will keep track of both how many times some events have happened,
+and some information about recent events.
 
-Session/Consecutive
+* Session/Counter
+
+    How many times some events have happened during the session.
+
+* Session/Consecutive
+
+    How many times those same events tracked by `Session/Counter` have 
+    happened in a row. When that event doesn't happen in the current round
+    of a session, it is removed from the `Session/Consecutive` list (and,
+    obviously, not incremented in the `Session/Counter`)
+
+* Session/Stack
+
+    For some events, the most recent non-consecutive values.
 
 #### Counters set by the system
 
@@ -816,6 +869,7 @@ The system will increment the following Counters as part of the Default
 handler, shortly before the Response is computed:
 
 * the handler name, prefixed by 'Handler.'
+* the Node
 * the Action
 * the Intent
 * the Outent
@@ -840,6 +894,22 @@ if the counter will be incremented since this may take place
 after your Builder or Handler runs.
 It is safe to add the name more than once - the counter will only be
 incremented once per request.
+
+#### Tracking recent information on the stack
+
+The system keeps track of the N most recent changed values for the
+following environment values set:
+
+* the NodeName
+
+The stack is implemented as an array with the most recent (ie - current) value
+added in the 0th position during the default handler. If the current value
+matches the value on the top of the stack, it is not added. If the stack is
+greater than the maximum stack size, items are removed from the bottom of the
+stack.
+
+The stack is used by the system for handling relative transitions
+with `NextNode`.
 
 #### Levels and Responses
 
@@ -1027,10 +1097,18 @@ JSON formatter that creates output for it), but this is no longer the
 primary development target, so it may not be fully tested.
 Besides, this version has been deprecated (and possibly shut off) by Google.
 
+There is also *preliminary* support for Dialogflow version 3 (Dialogflow CX),
+but since there are no default integrations and several gaps in the actual 
+webhook support (many things need to be represented by ID rather than by name),
+this is subject to change.
+
 #### What integrations with Dialogflow are supported?
 
+Dialogflow 2 integrations supported are
 * Google Assistant (Actions on Google version 2)
 * Hangouts Chat (also named Google Chat)
+
+Dialogflow 3 does not have any integrations yet to support.
 
 #### Does multivocal work with the Actions SDK or the Actions Builder?
 

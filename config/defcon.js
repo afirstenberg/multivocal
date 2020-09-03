@@ -21,6 +21,7 @@ module.exports = {
         "Context/multivocal_requirements/parameters/intentName",
         "Body/result/metadata/intentName",      // Dialogflow 1
         "Body/queryResult/intent/displayName",  // Dialogflow 2
+        "Body/intentInfo/lastMatchedIntent",    // FIXME: Dialogflow 3
         "Body/intent/name"                      // AoG 3 / AB
       ],
       "Template": "Intent.{{IntentName}}"
@@ -39,6 +40,7 @@ module.exports = {
         "Context/multivocal_requirements/parameters/actionName",
         "Body/result/action",        // Dialogflow 1
         "Body/queryResult/action",   // Dialogflow 2
+        "Body/fulfillmentInfo/tag",  // Dialogflow 3
         "Body/handler/name"          // AoG 3 / AB
       ],
       "Template": "Action.{{ActionName}}"
@@ -52,6 +54,13 @@ module.exports = {
       ],
       "Default": ""
     },
+    "Node": {
+      "Path": [
+        "Body/pageInfo/currentPage", // FIXME: Dialogflow 3
+        "Body/scene/name"            // AoG 3 / AB
+      ],
+      "Template": "Node.{{NodeName}}"
+    },
     "Default": {
       "Template": "Default"
     },
@@ -60,7 +69,8 @@ module.exports = {
         "IsDialogflow": {
           "Terms":[
             "{{isTruthy Body.originalRequest}}",
-            "{{isTruthy Body.originalDetectIntentRequest}}"
+            "{{isTruthy Body.originalDetectIntentRequest}}",
+            "{{isTruthy Body.detectIntentResponseId}}"
           ],
           "Op": "or"
         },
@@ -68,8 +78,10 @@ module.exports = {
           "{{#if Platform.IsDialogflow}}"+
             "{{#if (isTruthy Body.originalRequest)}}"+
               "1"+
-            "{{else}}"+
+            "{{else if (isTruthy Body.originalDetectIntentRequest)}}"+
               "2"+
+            "{{else}}"+
+              "3"+
             "{{/if}}"+
           "{{/if}}",
         "DialogflowIntegration": "{{Val 'Body/originalDetectIntentRequest/source'}}",
@@ -104,6 +116,7 @@ module.exports = {
       "Path": [
         "Body/originalRequest/data/user/locale",                 // Dialogflow 1
         "Body/originalDetectIntentRequest/payload/user/locale",  // Dialogflow 2
+                                                                 // FIXME: Dialogflow 3
         "Body/user/locale"                                       // AoG 3 / AB
       ],
       "Default": "und"
@@ -122,6 +135,8 @@ module.exports = {
         "Path": [
           "Body/result/parameters",       // Dialogflow 1
           "Body/queryResult/parameters",  // Dialogflow 2
+          "Body/intentInfo/parameters",   // Dialogflow 3
+                                          // TODO: Dialogflow 3 form parameters
           "Body/intent/params",           // AoG 3 / AB
           "Body/scene/slots"              // AoG 3 / AB
         ],
@@ -138,6 +153,7 @@ module.exports = {
       "Path": [
         "Body/result/contexts",            // Dialogflow 1
         "Body/queryResult/outputContexts", // Dialogflow 2
+        "Body/sessionInfo/parameters",     // Dialogflow 3
         "Body/session/params"              // AoG 3 / AB
       ],
       "Default": {}
@@ -151,13 +167,27 @@ module.exports = {
       "Prefix": "OPTION_",
       "TypeName": "MultivocalOption"      // AoG 3
     },
-    "MediaStatus": {
-      "Inputs": {
+    "Media": {
+      "Status": {
         "Path": [
-          "Body/originalRequest/data/inputs",
-          "Body/originalDetectIntentRequest/payload/inputs"
+          "Body/intent/params/MEDIA_STATUS/resolved"           // AoG 3
+        ],
+        "Inputs": {
+          "Path": [
+            "Body/originalRequest/data/inputs",                // Dialogflow 1
+            "Body/originalDetectIntentRequest/payload/inputs"  // Dialogflow 2
+          ]
+        }
+      },
+      "Progress": {
+        "Path": [
+          "Body/context/media/progress"    // AoG 3
         ]
-      }
+      },
+      "Controls": [
+        "PAUSED",
+        "STOPPED"
+      ]
     },
     "Requirements": {
       "Path": [
@@ -274,8 +304,9 @@ module.exports = {
     "Session": {
       "Id": {
         "Path": [
-          "Body/session/id",     // AoG 3 / AB
-          "Body/session"         // Dialogflow
+          "Body/session/id",           // AoG 3 / AB
+          "Body/session",              // Dialogflow 1 and 2
+          "Body/sessionInfo/session"   // Dialogflow 3
         ]
       },
       "Feature": {
@@ -303,6 +334,15 @@ module.exports = {
           'Context/multivocal_session/parameters/consecutive'
         ],
         "Default": "{}"
+      },
+      "Stack": {
+        "Path": [
+          'Context/multivocal_session/parameters/stack'
+        ],
+        "Default": "{}",
+        "Size": {
+          "NodeName": 5
+        }
       },
       "StartTime": {
         "Path": [
@@ -395,6 +435,7 @@ module.exports = {
       "IncludeEnvironment": [
         "Intent",
         "Action",
+        "Node",
         "Outent",
         "Send/Text",
         "Send/Ssml"
@@ -420,6 +461,13 @@ module.exports = {
         "ResponseSuffix/ShouldClose"
       ],
       "Default": false
+    },
+    "NextNode": {
+      "Path": [
+        "NextNode",
+        "Response/NextNode",
+        "ResponseSuffix/NextNode"
+      ]
     },
     "Log": {
       "Level": "info",
