@@ -236,31 +236,35 @@ module.exports = {
         }
       }
     },
-    "Response": {
-      "Path": [
-        "Config/Local/{{Locale}}/Response/{{Outent}}.{{OutentLevel}}",
-        "Config/Local/{{Locale}}/Response/{{Outent}}",
-        "Config/Local/{{Locale}}/Response/{{Intent}}.{{IntentLevel}}",
-        "Config/Local/{{Locale}}/Response/{{Intent}}",
-        "Config/Local/{{Locale}}/Response/{{Action}}.{{ActionLevel}}",
-        "Config/Local/{{Locale}}/Response/{{Action}}",
-        "Config/Local/{{Locale}}/Response/{{Default}}",
-        "Config/Local/{{Lang}}/Response/{{Outent}}.{{OutentLevel}}",
-        "Config/Local/{{Lang}}/Response/{{Outent}}",
-        "Config/Local/{{Lang}}/Response/{{Intent}}.{{IntentLevel}}",
-        "Config/Local/{{Lang}}/Response/{{Intent}}",
-        "Config/Local/{{Lang}}/Response/{{Action}}.{{ActionLevel}}",
-        "Config/Local/{{Lang}}/Response/{{Action}}",
-        "Config/Local/{{Lang}}/Response/{{Default}}",
-        "Config/Local/und/Response/{{Outent}}.{{OutentLevel}}",
-        "Config/Local/und/Response/{{Outent}}",
-        "Config/Local/und/Response/{{Intent}}.{{IntentLevel}}",
-        "Config/Local/und/Response/{{Intent}}",
-        "Config/Local/und/Response/{{Action}}.{{ActionLevel}}",
-        "Config/Local/und/Response/{{Action}}",
-        "Config/Local/und/Response/{{Default}}"
+    "FlexResponse": {
+      "Targets": [
+        "Response"
       ],
-      "EnvField": "Response",
+      "Path": [
+        "Config/Local/{{Locale}}/{{_Target}}/{{Outent}}.{{OutentLevel}}",
+        "Config/Local/{{Locale}}/{{_Target}}/{{Outent}}",
+        "Config/Local/{{Locale}}/{{_Target}}/{{Intent}}.{{IntentLevel}}",
+        "Config/Local/{{Locale}}/{{_Target}}/{{Intent}}",
+        "Config/Local/{{Locale}}/{{_Target}}/{{Action}}.{{ActionLevel}}",
+        "Config/Local/{{Locale}}/{{_Target}}/{{Action}}",
+        "Config/Local/{{Locale}}/{{_Target}}/{{Default}}",
+        "Config/Local/{{Lang}}/{{_Target}}/{{Outent}}.{{OutentLevel}}",
+        "Config/Local/{{Lang}}/{{_Target}}/{{Outent}}",
+        "Config/Local/{{Lang}}/{{_Target}}/{{Intent}}.{{IntentLevel}}",
+        "Config/Local/{{Lang}}/{{_Target}}/{{Intent}}",
+        "Config/Local/{{Lang}}/{{_Target}}/{{Action}}.{{ActionLevel}}",
+        "Config/Local/{{Lang}}/{{_Target}}/{{Action}}",
+        "Config/Local/{{Lang}}/{{_Target}}/{{Default}}",
+        "Config/Local/und/{{_Target}}/{{Outent}}.{{OutentLevel}}",
+        "Config/Local/und/{{_Target}}/{{Outent}}",
+        "Config/Local/und/{{_Target}}/{{Intent}}.{{IntentLevel}}",
+        "Config/Local/und/{{_Target}}/{{Intent}}",
+        "Config/Local/und/{{_Target}}/{{Action}}.{{ActionLevel}}",
+        "Config/Local/und/{{_Target}}/{{Action}}",
+        "Config/Local/und/{{_Target}}/{{Default}}"
+      ]
+    },
+    "Response": {
       "Base": {
         "TemplateEnvMap": {
           "Template": "Msg",
