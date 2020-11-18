@@ -265,12 +265,9 @@ module.exports = {
       ]
     },
     "Response": {
-      "Base": {
-        "TemplateEnvMap": {
-          "Template": "Msg",
-          "TemplateCard": "Card",
-          "TemplateSuggestions": "Suggestions"
-        }
+      "EnvField": "Response",
+      "TemplateResponseMap":{
+        "Template": "Msg"
       }
     },
     "Suffix": {
@@ -299,10 +296,8 @@ module.exports = {
         "DefCon/Local/und/Suffix/Default"
       ],
       "EnvField": "ResponseSuffix",
-      "Base": {
-        "TemplateEnvMap": {
-          "Template": "Suffix"
-        }
+      "TemplateResponseMap": {
+        "Template": "Suffix"
       }
     },
     "Session": {
