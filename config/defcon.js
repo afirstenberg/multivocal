@@ -268,7 +268,8 @@ module.exports = {
       "EnvField": "Response",
       "TemplateResponseMap":{
         "Template": "Msg"
-      }
+      },
+      "RawParameterName": "Text"
     },
     "Suffix": {
       "Path": [
@@ -298,7 +299,8 @@ module.exports = {
       "EnvField": "ResponseSuffix",
       "TemplateResponseMap": {
         "Template": "Suffix"
-      }
+      },
+      "RawParameterName": "Text"
     },
     "Session": {
       "Id": {

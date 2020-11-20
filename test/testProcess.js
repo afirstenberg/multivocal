@@ -18,6 +18,7 @@ new Multivocal.Config.Simple({
       step1: {
         Default: [
           {
+            Criteria: "false",
             Template: {
               foo: "bar"
             }
@@ -32,9 +33,14 @@ new Multivocal.Config.Simple({
       },
       Response: {
         Default: [
-          {Base: {Ref: "step1Response", Set:true}},
-          "{{step1.Text}} {{step2.Text}}",
-          "{{step1.Text}}-{{step2.Text}}"
+          {
+            Base: {Ref: "step1Response"},
+            Template: {
+              Ssml: "just: {{step2}}"
+            }
+          },
+          "{{step1.foo}} {{step2}}",
+          "{{step1.foo}}-{{step2}}"
         ]
       }
     }
