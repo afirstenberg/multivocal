@@ -540,9 +540,50 @@ to the contents of your `package.json` file.
 
 ### Response, Suffix, Localization, and Templates
 
-The `Template` setting for a Response or Suffix is used to generate the `Msg`
-or `Suffix` values for the environment respectively. Appropriate values for
-what is expected for `Msg` or `Suffix` are noted below.
+Multivocal has several steps to determine what should be sent as part of the
+Response and Suffix:
+
+1. A list of items containing `Template` parameters (or just strings) is fetched 
+   from the configuration based on various factors, including the Locale, 
+   Intent, Action, Outent, and Levels.
+   
+2. Some processing is done on these templates, including loading some templates
+   from elsewhere in the configuration, evaluating template settings that will
+   apply for future templates in the list, and filtering out some possible
+   results based on criteria that are set.
+   
+   If the template just consists of a string, it is at this point that it is
+   converted into a `Template` object.
+   
+   The processing does **not** include applying values to the template at this point.
+   
+3. One of the templates is selected at random to be the `Response`.
+
+4. The Response-type object is evaluated as a template to apply other values 
+   in the environment. The results of doing this are mapped to the environment
+   based on other settings described below. 
+   
+   For the `Response` configuration, the Template used will be in the
+   `Response` environment setting and, once evaluated, will be in the `Msg`
+   environment setting.
+   
+   For the `Suffix` configuration, the Template is saved in `SuffixResponse`
+   and evaluated into `Suffix`.
+
+#### Localization and the Path
+
+All the Responses are contained under the `Config/Local` environment path, to
+emphasize that these are expected to be localized responses. You can store
+anything that you expect to be localized under this path as well (and there
+are some ways to automatically have these processed as well, as we'll see
+below).
+
+Under this, there are a number of components to the path:
+
+* `Locale`, `Lang`, and then the undefined language "und"
+* The target (such as "response", but more details below)
+* The `Outent`, `Intent`, and `Action` values or "Default"
+* The `OutentLevel`, `InetntLevel`, and `ActionLevel` as appropriate
 
 #### Conditions
 
@@ -563,6 +604,60 @@ Response settings:
 * _This
 
 * _Result
+
+#### FlexResponse configuration setting
+
+Although `Msg` and `Suffix` are generated in the environment based on the
+Response and Suffix settings, the system can apply these concepts (and the
+steps outlined above) to create any environment values you wish. 
+This is handled through a number of different configuration settings:
+
+* Setting/FlexResponse/Targets
+
+    The list of targets to evaluate. This initially defaults to "Response", but
+    you can add other targets to evaluate additional values. When doing so,
+    "Response" should probably be last on this list.
+
+* Setting/FlexResponse/Path
+
+    A series of paths that are evaluated both using the environment (to fill in
+    values) and against the environment (once the path is determined - to get the
+    value at that path). The first path that contains values will be used, even
+    if all the values are later filtered out.
+
+* _Target
+
+    While evaluating each target in `Setting/FlexResponse/Targets`, the specific
+    name being evaluated. This probably isn't very useful, but it is a crucial
+    component in the Path.
+    
+* Setting/{{_Target}}/RawParameterName
+
+    If you provide a string in the response instead of an object, multivocal
+    will create a Template object with a single attribute with this name and
+    a value of the string.
+    
+    By default, this is the value "_This", which means that the template
+    (when ultimately evaluated) will attempt to map the resulting value to
+    the target environment.
+    
+    The Response target, however, has this set to "Text", so an object
+    containing a Text attribute will be set to the Msg environment
+
+* Setting/{{_Target}}/EnvField
+
+    What environment setting will contain the Response.
+    
+    By default, this will be a name similar to *target*Response. For the
+    Response setting, however, this is mapped to "Response".
+
+* Setting/{{_Target}}/TemplateResponseMap
+
+    What parts of the Response object will be treated as a template, and what
+    environment setting will hold the results. This is a map from the template
+    name to the environment name. By default, this maps from "Template" to
+    the name of the target, however for the Response object, this maps from
+    "Template" to "Msg".
 
 ### Sending
 
