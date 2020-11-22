@@ -553,14 +553,17 @@ Response and Suffix:
    results based on criteria that are set.
    
    If the template just consists of a string, it is at this point that it is
-   converted into a `Template` object.
+   converted into a `Template` object by creating an object with a `Markdown`
+   attribute set to the value of the string.
    
    The processing does **not** include applying values to the template at this point.
    
 3. One of the templates is selected at random to be the `Response`.
 
 4. The Response-type object is evaluated as a template to apply other values 
-   in the environment. The results of doing this are mapped to the environment
+   in the environment, and other transformations are also done (for example,
+   to handle Text or SSML attributes). 
+   The results of doing this are mapped to the environment
    based on other settings described below. 
    
    For the `Response` configuration, the Template used will be in the
@@ -597,7 +600,58 @@ Response settings:
 
 * Base/Condition
 
+#### Template and other transformations
+
+The Response selected is transformed into a value after applying a series
+of functions, taking the results of one step and feeding it into the next:
+
+1. Each text string in the Template object is treated as a 
+   [Handlebars](https://handlebarsjs.com/)
+   template string, with the entire environment passed in and available
+   to the templating engine. (See below about available template functions
+   and some special environment settings available.)
+   
+2. If the only attribute in the resultant value is named '_Value', then it's
+   value becomes the result value.
+   
+3. If there is a `Markdown` field, it is used to create a `Text` or `Ssml`
+   field if that field isn't present by passing it to the 
+   [Speech Markdown](https://github.com/speechmarkdown/speechmarkdown-js)
+   library. If a field *is* present, then it won't be overridden by 
+   `Markdown`.   
+
+4. If there is a `Text` or `Ssml` field, but not the other, then one is
+   converted into the other using some simple transformations (converting the
+   &, <, and > representations).
+   
 #### Template functions
+
+In addition to functions available from 
+[handlebars-helpers](https://github.com/helpers/handlebars-helpers),
+multivocal provides several that are useful in your templates (and some that
+are really only useful for multivocal itself).
+
+##### Ssml
+
+##### Oxford
+
+##### Val
+
+##### FirstVal
+
+##### First
+
+##### Shuffled
+
+##### Pick
+
+##### PickVal
+
+##### Set
+
+##### EndsWith
+
+##### Setting
 
 #### Template special environment settings
 
