@@ -18,7 +18,7 @@ new Multivocal.Config.Simple({
       step1: {
         Default: [
           {
-            Criteria: "false",
+            Criteria: "true",
             Template: {
               foo: "bar"
             }
