@@ -39,7 +39,7 @@ new Multivocal.Config.Simple({
               Ssml: "<p>just:</p> <p>{{step2}}</p>"
             }
           },
-          "{{step1.foo}} {{step2}}",
+          "{{step1.foo}} [2s] {{step2}}",
           "{{step1.foo}}&{{step2}}"
         ]
       }
@@ -47,10 +47,13 @@ new Multivocal.Config.Simple({
   }
 })
 
+var headers = {
+  "google-actions-api-version": 3
+};
 var body = {
 
 };
-MultivocalTest.processTest( body ).then( env => processResult(env) );
+MultivocalTest.processTest( headers, body ).then( env => processResult(env) );
 
 var processResult = function( env ){
   var e = {};

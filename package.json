@@ -29,13 +29,14 @@
   "homepage": "https://github.com/afirstenberg/multivocal#readme",
   "dependencies": {
     "debug": "^4.1.1",
-    "firebase-admin": "^8.12.1",
+    "firebase-admin": "^8.13.0",
     "firebase-functions": "^3.6.1",
     "handlebars": "^4.7.6",
     "handlebars-helpers": "^0.10.0",
     "jsonwebtoken": "^8.5.1",
     "jwk-to-pem": "^2.0.3",
     "object-assign-deep": "^0.3.1",
-    "request-promise-native": "^1.0.8"
+    "request-promise-native": "^1.0.8",
+    "speechmarkdown-js": "^1.6.0"
   }
 }
