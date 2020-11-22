@@ -36,11 +36,11 @@ new Multivocal.Config.Simple({
           {
             Base: {Ref: "step1Response"},
             Template: {
-              Ssml: "just: {{step2}}"
+              Ssml: "<p>just:</p> <p>{{step2}}</p>"
             }
           },
           "{{step1.foo}} {{step2}}",
-          "{{step1.foo}}-{{step2}}"
+          "{{step1.foo}}&{{step2}}"
         ]
       }
     }
