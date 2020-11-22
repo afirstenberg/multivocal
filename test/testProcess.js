@@ -18,7 +18,7 @@ new Multivocal.Config.Simple({
       step1: {
         Default: [
           {
-            Criteria: "false",
+            Criteria: "true",
             Template: {
               foo: "bar"
             }
@@ -36,21 +36,24 @@ new Multivocal.Config.Simple({
           {
             Base: {Ref: "step1Response"},
             Template: {
-              Ssml: "just: {{step2}}"
+              Ssml: "<p>just:</p> <p>{{step2}}</p>"
             }
           },
-          "{{step1.foo}} {{step2}}",
-          "{{step1.foo}}-{{step2}}"
+          "{{step1.foo}} [2s] {{step2}}",
+          "{{step1.foo}}&{{step2}}"
         ]
       }
     }
   }
 })
 
+var headers = {
+  "google-actions-api-version": 3
+};
 var body = {
 
 };
-MultivocalTest.processTest( body ).then( env => processResult(env) );
+MultivocalTest.processTest( headers, body ).then( env => processResult(env) );
 
 var processResult = function( env ){
   var e = {};

@@ -269,7 +269,7 @@ module.exports = {
       "TemplateResponseMap":{
         "Template": "Msg"
       },
-      "RawParameterName": "Text"
+      "RawParameterName": "Markdown"
     },
     "Suffix": {
       "Path": [
@@ -300,7 +300,7 @@ module.exports = {
       "TemplateResponseMap": {
         "Template": "Suffix"
       },
-      "RawParameterName": "Text"
+      "RawParameterName": "Markdown"
     },
     "Session": {
       "Id": {

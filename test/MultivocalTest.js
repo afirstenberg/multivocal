@@ -1,8 +1,12 @@
 var Multivocal = require( '../lib/multivocal' );
 
-var processTestBody = function( body ){
+var processTestBody = function( headers, body ){
   var env = {
-    Body: body
+    Body: body,
+    Req: {
+      headers,
+      body
+    }
   };
   return Promise.resolve( env );
 }
@@ -12,8 +16,8 @@ var processTestResponse = function( env ){
   return Promise.resolve( env );
 }
 
-var processTest = function( body ){
-  return processTestBody( body )
+var processTest = function( headers, body ){
+  return processTestBody( headers, body )
     .then( env => Multivocal.preprocess( env ) )
     .then( env => Multivocal.process( env ) )
     .then( env => processTestResponse( env ) )
