@@ -236,8 +236,32 @@ module.exports = {
         }
       }
     },
-    "SpeechMarkdown": {
-      "SanitizeSsml": true
+    "Transform": {
+      "List": [
+        "TemplateTransformer",
+        "ThisTransformer",
+        "SpeechMarkdownTransformer",
+        "SimpleTextToSsmlTransformer",
+        "SimpleSsmlToTextTransformer"
+      ],
+      "SsmlToText": {
+        "Rewrite": [
+          {"Regex": "<.*?>", "To": ""},
+          {"Regex": "&gt;",  "To": ">"},
+          {"Regex": "&lt;",  "To": "<"},
+          {"Regex": "&amp;", "To": "&"}
+        ]
+      },
+      "TextToSsml": {
+        "Rewrite": [
+          {"Regex": "&",  "To": "&amp;"},
+          {"Regex": ">",  "To": "&gt;"},
+          {"Regex": "<",  "To": "&lt;"}
+        ]
+      },
+      "SpeechMarkdown": {
+        "SanitizeSsml": true
+      }
     },
     "FlexResponse": {
       "Targets": [
@@ -265,13 +289,6 @@ module.exports = {
         "Config/Local/und/{{_Target}}/{{Action}}.{{ActionLevel}}",
         "Config/Local/und/{{_Target}}/{{Action}}",
         "Config/Local/und/{{_Target}}/{{Default}}"
-      ],
-      "Transformers": [
-        "TemplateTransformer",
-        "ThisTransformer",
-        "SpeechMarkdownTransformer",
-        "SimpleTextToSsmlTransformer",
-        "SimpleSsmlToTextTransformer"
       ]
     },
     "Response": {
