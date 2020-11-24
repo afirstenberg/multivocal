@@ -236,6 +236,9 @@ module.exports = {
         }
       }
     },
+    "SpeechMarkdown": {
+      "SanitizeSsml": true
+    },
     "FlexResponse": {
       "Targets": [
         "Response"
@@ -262,6 +265,13 @@ module.exports = {
         "Config/Local/und/{{_Target}}/{{Action}}.{{ActionLevel}}",
         "Config/Local/und/{{_Target}}/{{Action}}",
         "Config/Local/und/{{_Target}}/{{Default}}"
+      ],
+      "Transformers": [
+        "TemplateTransformer",
+        "ThisTransformer",
+        "SpeechMarkdownTransformer",
+        "SimpleTextToSsmlTransformer",
+        "SimpleSsmlToTextTransformer"
       ]
     },
     "Response": {
