@@ -590,6 +590,23 @@ Under this, there are a number of components to the path:
 
 #### Conditions
 
+#### Debug response
+
+Response settings:
+
+* Debug
+
+  Typically an object (although just a string is allowed) that is evaluated
+  as a template. The results are generally saved in the environment setting
+  `Debug/*target*`, so if you're evaluating the `Response` configuration, the
+  target is `Msg` so any debug information would be in `Debug/Msg`.
+  
+  When `Debug` is present, `Debug/Index` is also set with the response number.
+  
+Although you can specify `Debug` for each response (and sometimes you want to),
+there is a shortcut that if a response contains *only* a Debug attribute, then
+it will be used for all subsequent responses, similar to a `Base` response.
+
 #### Base responses
 
 Response settings:

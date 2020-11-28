@@ -19,6 +19,7 @@ new Multivocal.Config.Simple({
         Default: [
           {
             Criteria: "true",
+            Debug: "step1",
             Template: {
               foo: "bar"
             }
@@ -27,6 +28,12 @@ new Multivocal.Config.Simple({
       },
       step2: {
         Default: [
+          {
+            Debug: {
+              step2: "step2",
+              step2a: "whee"
+            }
+          },
           "charlie",
           "delta"
         ]
@@ -35,7 +42,9 @@ new Multivocal.Config.Simple({
         Default: [
           {
             Base: {Ref: "step1Response"},
-            Debug: "{{step2}}",
+            Debug: {
+              response: "{{step2}}"
+            },
             Template: {
               Ssml: "<p>just:</p> <p>{{step2}}</p>"
             }
