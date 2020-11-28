@@ -294,7 +294,8 @@ module.exports = {
     "Response": {
       "EnvField": "Response",
       "TemplateResponseMap":{
-        "Template": "Msg"
+        "Template": "Msg",
+        "Debug": "Debug/Msg"
       },
       "RawParameterName": "Markdown"
     },
@@ -325,7 +326,8 @@ module.exports = {
       ],
       "EnvField": "ResponseSuffix",
       "TemplateResponseMap": {
-        "Template": "Suffix"
+        "Template": "Suffix",
+        "Debug": "Debug/Suffix"
       },
       "RawParameterName": "Markdown"
     },
@@ -473,11 +475,21 @@ module.exports = {
         "Default": false
       }
     },
+    "Debug": {
+      "PathList": [
+        "Intent",
+        "Action",
+        "Node",
+        "Outent",
+        "Debug"
+      ]
+    },
     "Context": {
       "PathList": [
         "Requirements/Context",
         "Send/Session",
         "Send/Remember",
+        "Send/Debug",
         "Response/Context",
         "ResponseSuffix/Context"
       ]

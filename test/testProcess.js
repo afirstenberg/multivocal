@@ -35,6 +35,7 @@ new Multivocal.Config.Simple({
         Default: [
           {
             Base: {Ref: "step1Response"},
+            Debug: "{{step2}}",
             Template: {
               Ssml: "<p>just:</p> <p>{{step2}}</p>"
             }
@@ -63,7 +64,8 @@ var processResult = function( env ){
     "step2",
     "step2Response",
     "Response",
-    "Msg"
+    "Msg",
+    "Send/Context/multivocal_debug"
   ];
   paths.forEach( path => Util.setObjPath(e, path, Util.objPath( env, path ) ) );
   /*
