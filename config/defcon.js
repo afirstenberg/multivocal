@@ -110,6 +110,26 @@ module.exports = {
         ],
         "Default": [],
         "ArgumentName": "is_health_check"
+      },
+      "Verify": {
+        "Rules": {
+          "AoG3": {
+            "Criteria": [
+              "{{Platform.IsActionsOnGoogle}}",
+              "{{eq Platform.ActionsSDKVersion '3'}}"
+            ],
+            "Path": [
+              "Req/headers/google-assistant-signature"   // AoG 3 / AB
+            ],
+            "Processor": "JWTProcessor",
+            "Auth": {
+              "https://accounts.google.com": {
+                "KeysUrl": "https://www.googleapis.com/oauth2/v3/certs",
+                "aud": ["SET THIS TO YOUR CLIENT ID"]
+              }
+            }
+          }
+        }
       }
     },
     "Locale": {
