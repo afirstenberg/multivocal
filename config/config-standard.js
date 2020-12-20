@@ -127,6 +127,20 @@ module.exports = {
           "aud": "SET THIS TO YOUR CLIENT ID"
         }
       }
+    },
+    Precondition: {
+      Verify: {
+        Rules: {
+          AoG3: {
+            "Auth": {
+              "https://accounts.google.com": {
+                "KeysUrl": "https://www.googleapis.com/oauth2/v3/certs",
+                "aud": ["SET THIS TO YOUR CLIENT ID"]
+              }
+            }
+          }
+        }
+      }
     }
   },
   Level: {

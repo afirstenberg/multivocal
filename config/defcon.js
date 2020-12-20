@@ -121,13 +121,8 @@ module.exports = {
             "Path": [
               "Req/headers/google-assistant-signature"   // AoG 3 / AB
             ],
-            "Processor": "JWTProcessor",
-            "Auth": {
-              "https://accounts.google.com": {
-                "KeysUrl": "https://www.googleapis.com/oauth2/v3/certs",
-                "aud": ["SET THIS TO YOUR CLIENT ID"]
-              }
-            }
+            "Processor": "JWTProcessor"
+            // Auth is set in config-standard
           }
         }
       }
