@@ -127,6 +127,9 @@ module.exports = {
         }
       }
     },
+    "Hostname": {
+      "Template": "{{First (Val 'Req/headers/x-forwarded-host') Req.hostname}}"
+    },
     "Locale": {
       "Path": [
         "Body/originalRequest/data/user/locale",                 // Dialogflow 1

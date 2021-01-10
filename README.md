@@ -345,6 +345,8 @@ Environment settings built:
 
 * Platform
 
+* Hostname
+
 * Locale
 
 * Lang
