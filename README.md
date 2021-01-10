@@ -335,6 +335,20 @@ If the request matches a pattern determined by the
 `Config/Setting/Precondition/GooglePing` setting, set the `Preprocess/Fail`
 environment to true and send back a "Pong" message.
 
+#### Actions on Google v3 JWT verification
+
+The "iss" auth keys listed under `Config/Setting/Precondition/Verify/Rules/AoG3`
+will be evaluated to find a matching auth and confirm the signature. It will
+also verify one of the "aud" values match, and you must set this to include
+the project ID.
+
+This is enabled by default, so you should include this. See `config-standard.js`
+for details.
+
+To disable the check completely, you can set 
+`Config/Setting/Precondition/Verify/Rules/AoG3/Criteria`
+to the string "false". But don't do that.
+
 ### Processing, the Environment, and Paths
 
 #### Platform detection
