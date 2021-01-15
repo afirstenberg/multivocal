@@ -121,8 +121,10 @@ module.exports = {
             "Path": [
               "Req/headers/google-assistant-signature"   // AoG 3 / AB
             ],
-            "Processor": "JWTProcessor"
-            // Auth is set in config-standard
+            "Processor": "JWTProcessor",
+            "Auth": [
+              "Google"
+            ]
           }
         }
       }
@@ -252,7 +254,10 @@ module.exports = {
             "optContext": "{{Msg/Text}}"
           }
         }
-      }
+      },
+      "Auth": [
+        "Google"
+      ]
     },
     "Transform": {
       "List": [
