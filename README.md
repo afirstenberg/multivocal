@@ -87,7 +87,7 @@ or at https://multivocal.info/
 
 ## Hello World
 
-Using multivocal to implement a basic fulfillment webhook for a Dialogflow
+Using multivocal to implement a basic fulfillment webhook for an Actions Builder
 based action built on Firebase Cloud Functions is straightforward with just
 a little boilerplate.
 
@@ -135,7 +135,7 @@ We can roughly break this into three parts:
     Building the configuration automatically adds it to Multivocal's
     configuration.
    
-3.  Register the function to be called when a request comes in from Dialogflow
+3.  Register the function to be called when a request comes in from Google
     and have multivocal process it.
     
     In this case, we're using the Firebase webhook processor to process
@@ -337,13 +337,14 @@ environment to true and send back a "Pong" message.
 
 #### Actions on Google v3 JWT verification
 
-The "iss" auth keys listed under `Config/Setting/Precondition/Verify/Rules/AoG3`
-will be evaluated to find a matching auth and confirm the signature. It will
-also verify one of the "aud" values match, and you must set this to include
-the project ID.
+This verifies the signed JWT sent by Google as part of each request against
+the `JWTAuth/Google` setting to verify the request comes from Google.
 
-This is enabled by default, so you should include this. See `config-standard.js`
-for details.
+By default, this uses the project's Google Cloud or Firebase project id read
+from the system environment. If this is incorrect, you can update 
+`Config/Setting/JWTAuth/Google/aud` to include your project
+ID (or a list of valid project IDs), since this is one of the fields that is
+verified.
 
 To disable the check completely, you can set 
 `Config/Setting/Precondition/Verify/Rules/AoG3/Criteria`
