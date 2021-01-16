@@ -195,6 +195,37 @@ var config = {
 new Multivocal.Config.Simple( config );
 ```
 
+#### Key/Value configuration
+
+Configuration can also be loaded in from a set of key/value pairs (such as a
+property file or the `process.env` value that contains the OS environment
+parameters). This is a little more complicated than the Simple Object
+configuration in two ways:
+
+1. Keys may have separator characters to represent some hierarchy.
+
+    You can specify a `pathSeparator` option and it will turn this into
+    an actual hierarchy in the configuration. By default, no path separator
+    is assumed.
+
+2. Values are expected to be strings, not objects.
+
+    To parse values as JSON values, where possible, you can set the `parseJson`
+    option. Things that aren't parsable as JSON are returned as-is as strings.
+    This defaults to `true`.
+
+3. They may be loaded at a different point in the configuration hierarchy.
+
+    Do this with the `root` option. By default, it is loaded directly under
+    the `Config` setting in the environment.
+    
+For example, `process.env` is added to the configuration under
+`Config/Process/Env` using something like:
+
+```javascript
+new Multivocal.Config.KeyValue( process.env, {root:'Process/Env'} );
+```
+
 #### Firebase realtime database configuration
 
 Firebase represents its entire realtime database as a JSON tree, with
