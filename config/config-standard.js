@@ -120,12 +120,11 @@ module.exports = {
     }
   },
   Setting:{
-    Requirements: {
-      "Auth": {
-        "https://accounts.google.com": {
-          "KeysUrl": "https://www.googleapis.com/oauth2/v3/certs",
-          "aud": "SET THIS TO YOUR CLIENT ID"
-        }
+    JWTAuth: {
+      "Google": {
+        "iss": ["https://accounts.google.com"],
+        "KeysUrl": "https://www.googleapis.com/oauth2/v3/certs",
+        "aud": ["{{Config.Process.Env.GCLOUD_PROJECT}}"]
       }
     }
   },

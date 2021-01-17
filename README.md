@@ -87,7 +87,7 @@ or at https://multivocal.info/
 
 ## Hello World
 
-Using multivocal to implement a basic fulfillment webhook for a Dialogflow
+Using multivocal to implement a basic fulfillment webhook for an Actions Builder
 based action built on Firebase Cloud Functions is straightforward with just
 a little boilerplate.
 
@@ -135,7 +135,7 @@ We can roughly break this into three parts:
     Building the configuration automatically adds it to Multivocal's
     configuration.
    
-3.  Register the function to be called when a request comes in from Dialogflow
+3.  Register the function to be called when a request comes in from Google
     and have multivocal process it.
     
     In this case, we're using the Firebase webhook processor to process
@@ -193,6 +193,37 @@ var config = {
   }
 };
 new Multivocal.Config.Simple( config );
+```
+
+#### Key/Value configuration
+
+Configuration can also be loaded in from a set of key/value pairs (such as a
+property file or the `process.env` value that contains the OS environment
+parameters). This is a little more complicated than the Simple Object
+configuration in two ways:
+
+1. Keys may have separator characters to represent some hierarchy.
+
+    You can specify a `pathSeparator` option and it will turn this into
+    an actual hierarchy in the configuration. By default, no path separator
+    is assumed.
+
+2. Values are expected to be strings, not objects.
+
+    To parse values as JSON values, where possible, you can set the `parseJson`
+    option. Things that aren't parsable as JSON are returned as-is as strings.
+    This defaults to `true`.
+
+3. They may be loaded at a different point in the configuration hierarchy.
+
+    Do this with the `root` option. By default, it is loaded directly under
+    the `Config` setting in the environment.
+    
+For example, `process.env` is added to the configuration under
+`Config/Process/Env` using something like:
+
+```javascript
+new Multivocal.Config.KeyValue( process.env, {root:'Process/Env'} );
 ```
 
 #### Firebase realtime database configuration
@@ -335,6 +366,21 @@ If the request matches a pattern determined by the
 `Config/Setting/Precondition/GooglePing` setting, set the `Preprocess/Fail`
 environment to true and send back a "Pong" message.
 
+#### Actions on Google v3 JWT verification
+
+This verifies the signed JWT sent by Google as part of each request against
+the `JWTAuth/Google` setting to verify the request comes from Google.
+
+By default, this uses the project's Google Cloud or Firebase project id read
+from the system environment. If this is incorrect, you can update 
+`Config/Setting/JWTAuth/Google/aud` to include your project
+ID (or a list of valid project IDs), since this is one of the fields that is
+verified.
+
+To disable the check completely, you can set 
+`Config/Setting/Precondition/Verify/Rules/AoG3/Criteria`
+to the string "false". But don't do that.
+
 ### Processing, the Environment, and Paths
 
 #### Platform detection
@@ -344,6 +390,8 @@ environment to true and send back a "Pong" message.
 Environment settings built:
 
 * Platform
+
+* Hostname
 
 * Locale
 
@@ -540,11 +588,72 @@ to the contents of your `package.json` file.
 
 ### Response, Suffix, Localization, and Templates
 
-The `Template` setting for a Response or Suffix is used to generate the `Msg`
-or `Suffix` values for the environment respectively. Appropriate values for
-what is expected for `Msg` or `Suffix` are noted below.
+Multivocal has several steps to determine what should be sent as part of the
+Response and Suffix:
+
+1. A list of items containing `Template` parameters (or just strings) is fetched 
+   from the configuration based on various factors, including the Locale, 
+   Intent, Action, Outent, and Levels.
+   
+2. Some processing is done on these templates, including loading some templates
+   from elsewhere in the configuration, evaluating template settings that will
+   apply for future templates in the list, and filtering out some possible
+   results based on criteria that are set.
+   
+   If the template just consists of a string, it is at this point that it is
+   converted into a `Template` object by creating an object with a `Markdown`
+   attribute set to the value of the string.
+   
+   The processing does **not** include applying values to the template at this point.
+   
+3. One of the templates is selected at random to be the `Response`.
+
+4. The Response-type object is evaluated as a template to apply other values 
+   in the environment, and other transformations are also done (for example,
+   to handle Text or SSML attributes). 
+   The results of doing this are mapped to the environment
+   based on other settings described below. 
+   
+   For the `Response` configuration, the Template used will be in the
+   `Response` environment setting and, once evaluated, will be in the `Msg`
+   environment setting.
+   
+   For the `Suffix` configuration, the Template is saved in `SuffixResponse`
+   and evaluated into `Suffix`.
+
+#### Localization and the Path
+
+All the Responses are contained under the `Config/Local` environment path, to
+emphasize that these are expected to be localized responses. You can store
+anything that you expect to be localized under this path as well (and there
+are some ways to automatically have these processed as well, as we'll see
+below).
+
+Under this, there are a number of components to the path:
+
+* `Locale`, `Lang`, and then the undefined language "und"
+* The target (such as "response", but more details below)
+* The `Outent`, `Intent`, and `Action` values or "Default"
+* The `OutentLevel`, `InetntLevel`, and `ActionLevel` as appropriate
 
 #### Conditions
+
+#### Debug response
+
+Response settings:
+
+* Debug
+
+  Typically an object (although just a string is allowed) that is evaluated
+  as a template. The results are generally saved in the environment setting
+  `Debug/*target*`, so if you're evaluating the `Response` configuration, the
+  target is `Msg` so any debug information would be in `Debug/Msg`.
+  
+  When `Debug` is present, `Debug/Index` is also set with the response number.
+  
+Although you can specify `Debug` for each response (and sometimes you want to),
+there is a shortcut that if a response contains *only* a Debug attribute, then
+it will be used for all subsequent responses, similar to a `Base` response.
 
 #### Base responses
 
@@ -556,13 +665,118 @@ Response settings:
 
 * Base/Condition
 
+#### Template and other transformations
+
+The Response selected is transformed into a value after applying a series
+of functions, taking the results of one step and feeding it into the next:
+
+1. Each text string in the Template object is treated as a 
+   [Handlebars](https://handlebarsjs.com/)
+   template string, with the entire environment passed in and available
+   to the templating engine. (See below about available template functions
+   and some special environment settings available.)
+   
+2. If the only attribute in the resultant value is named '_Value', then it's
+   value becomes the result value.
+   
+3. If there is a `Markdown` field, it is used to create a `Text` or `Ssml`
+   field if that field isn't present by passing it to the 
+   [Speech Markdown](https://github.com/speechmarkdown/speechmarkdown-js)
+   library. If a field *is* present, then it won't be overridden by 
+   `Markdown`.   
+
+4. If there is a `Text` or `Ssml` field, but not the other, then one is
+   converted into the other using some simple transformations (converting the
+   &, <, and > representations).
+   
 #### Template functions
+
+In addition to functions available from 
+[handlebars-helpers](https://github.com/helpers/handlebars-helpers),
+multivocal provides several that are useful in your templates (and some that
+are really only useful for multivocal itself).
+
+##### Ssml
+
+##### Oxford
+
+##### Val
+
+##### FirstVal
+
+##### First
+
+##### Shuffled
+
+##### Pick
+
+##### PickVal
+
+##### Set
+
+##### EndsWith
+
+##### Setting
 
 #### Template special environment settings
 
 * _This
 
 * _Result
+
+#### FlexResponse configuration setting
+
+Although `Msg` and `Suffix` are generated in the environment based on the
+Response and Suffix settings, the system can apply these concepts (and the
+steps outlined above) to create any environment values you wish. 
+This is handled through a number of different configuration settings:
+
+* Setting/FlexResponse/Targets
+
+    The list of targets to evaluate. This initially defaults to "Response", but
+    you can add other targets to evaluate additional values. When doing so,
+    "Response" should probably be last on this list.
+
+* Setting/FlexResponse/Path
+
+    A series of paths that are evaluated both using the environment (to fill in
+    values) and against the environment (once the path is determined - to get the
+    value at that path). The first path that contains values will be used, even
+    if all the values are later filtered out.
+
+* _Target
+
+    While evaluating each target in `Setting/FlexResponse/Targets`, the specific
+    name being evaluated. This probably isn't very useful, but it is a crucial
+    component in the Path.
+    
+* Setting/{{_Target}}/RawParameterName
+
+    If you provide a string in the response instead of an object, multivocal
+    will create a Template object with a single attribute with this name and
+    a value of the string.
+    
+    By default, this is the value "_This", which means that the template
+    (when ultimately evaluated) will attempt to map the resulting value to
+    the target environment.
+    
+    The Response target, however, has this set to "Text", so an object
+    containing a Text attribute will be set to the Msg environment
+
+* Setting/{{_Target}}/EnvField
+
+    What environment setting will contain the Response.
+    
+    By default, this will be a name similar to *target*Response. For the
+    Response setting, however, this is mapped to "Response".
+
+* Setting/{{_Target}}/TemplateResponseMap
+
+    What parts of the Response object will be treated as a template, and what
+    environment setting will hold the results. This is a map from the template
+    name to the environment name. By default, this maps from "Template" to
+    the name of the target, however for the Response object, this maps from
+    "Template" to "Msg".
 
 ### Sending
 

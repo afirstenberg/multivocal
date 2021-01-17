@@ -110,7 +110,27 @@ module.exports = {
         ],
         "Default": [],
         "ArgumentName": "is_health_check"
+      },
+      "Verify": {
+        "Rules": {
+          "AoG3": {
+            "Criteria": [
+              "{{Platform.IsActionsOnGoogle}}",
+              "{{eq Platform.ActionsSDKVersion '3'}}"
+            ],
+            "Path": [
+              "Req/headers/google-assistant-signature"   // AoG 3 / AB
+            ],
+            "Processor": "JWTProcessor",
+            "Auth": [
+              "Google"
+            ]
+          }
+        }
       }
+    },
+    "Hostname": {
+      "Template": "{{First (Val 'Req/headers/x-forwarded-host') Req.hostname}}"
     },
     "Locale": {
       "Path": [
@@ -234,40 +254,73 @@ module.exports = {
             "optContext": "{{Msg/Text}}"
           }
         }
+      },
+      "Auth": [
+        "Google"
+      ]
+    },
+    "Transform": {
+      "List": [
+        "TemplateTransformer",
+        "ThisTransformer",
+        "SpeechMarkdownTransformer",
+        "SimpleTextToSsmlTransformer",
+        "SimpleSsmlToTextTransformer"
+      ],
+      "SsmlToText": {
+        "Rewrite": [
+          {"Regex": "<.*?>", "To": ""},
+          {"Regex": "&gt;",  "To": ">"},
+          {"Regex": "&lt;",  "To": "<"},
+          {"Regex": "&amp;", "To": "&"}
+        ]
+      },
+      "TextToSsml": {
+        "Rewrite": [
+          {"Regex": "&",  "To": "&amp;"},
+          {"Regex": ">",  "To": "&gt;"},
+          {"Regex": "<",  "To": "&lt;"}
+        ]
+      },
+      "SpeechMarkdown": {
+        "SanitizeSsml": true
       }
     },
-    "Response": {
-      "Path": [
-        "Config/Local/{{Locale}}/Response/{{Outent}}.{{OutentLevel}}",
-        "Config/Local/{{Locale}}/Response/{{Outent}}",
-        "Config/Local/{{Locale}}/Response/{{Intent}}.{{IntentLevel}}",
-        "Config/Local/{{Locale}}/Response/{{Intent}}",
-        "Config/Local/{{Locale}}/Response/{{Action}}.{{ActionLevel}}",
-        "Config/Local/{{Locale}}/Response/{{Action}}",
-        "Config/Local/{{Locale}}/Response/{{Default}}",
-        "Config/Local/{{Lang}}/Response/{{Outent}}.{{OutentLevel}}",
-        "Config/Local/{{Lang}}/Response/{{Outent}}",
-        "Config/Local/{{Lang}}/Response/{{Intent}}.{{IntentLevel}}",
-        "Config/Local/{{Lang}}/Response/{{Intent}}",
-        "Config/Local/{{Lang}}/Response/{{Action}}.{{ActionLevel}}",
-        "Config/Local/{{Lang}}/Response/{{Action}}",
-        "Config/Local/{{Lang}}/Response/{{Default}}",
-        "Config/Local/und/Response/{{Outent}}.{{OutentLevel}}",
-        "Config/Local/und/Response/{{Outent}}",
-        "Config/Local/und/Response/{{Intent}}.{{IntentLevel}}",
-        "Config/Local/und/Response/{{Intent}}",
-        "Config/Local/und/Response/{{Action}}.{{ActionLevel}}",
-        "Config/Local/und/Response/{{Action}}",
-        "Config/Local/und/Response/{{Default}}"
+    "FlexResponse": {
+      "Targets": [
+        "Response"
       ],
+      "Path": [
+        "Config/Local/{{Locale}}/{{_Target}}/{{Outent}}.{{OutentLevel}}",
+        "Config/Local/{{Locale}}/{{_Target}}/{{Outent}}",
+        "Config/Local/{{Locale}}/{{_Target}}/{{Intent}}.{{IntentLevel}}",
+        "Config/Local/{{Locale}}/{{_Target}}/{{Intent}}",
+        "Config/Local/{{Locale}}/{{_Target}}/{{Action}}.{{ActionLevel}}",
+        "Config/Local/{{Locale}}/{{_Target}}/{{Action}}",
+        "Config/Local/{{Locale}}/{{_Target}}/{{Default}}",
+        "Config/Local/{{Lang}}/{{_Target}}/{{Outent}}.{{OutentLevel}}",
+        "Config/Local/{{Lang}}/{{_Target}}/{{Outent}}",
+        "Config/Local/{{Lang}}/{{_Target}}/{{Intent}}.{{IntentLevel}}",
+        "Config/Local/{{Lang}}/{{_Target}}/{{Intent}}",
+        "Config/Local/{{Lang}}/{{_Target}}/{{Action}}.{{ActionLevel}}",
+        "Config/Local/{{Lang}}/{{_Target}}/{{Action}}",
+        "Config/Local/{{Lang}}/{{_Target}}/{{Default}}",
+        "Config/Local/und/{{_Target}}/{{Outent}}.{{OutentLevel}}",
+        "Config/Local/und/{{_Target}}/{{Outent}}",
+        "Config/Local/und/{{_Target}}/{{Intent}}.{{IntentLevel}}",
+        "Config/Local/und/{{_Target}}/{{Intent}}",
+        "Config/Local/und/{{_Target}}/{{Action}}.{{ActionLevel}}",
+        "Config/Local/und/{{_Target}}/{{Action}}",
+        "Config/Local/und/{{_Target}}/{{Default}}"
+      ]
+    },
+    "Response": {
       "EnvField": "Response",
-      "Base": {
-        "TemplateEnvMap": {
-          "Template": "Msg",
-          "TemplateCard": "Card",
-          "TemplateSuggestions": "Suggestions"
-        }
-      }
+      "TemplateResponseMap":{
+        "Template": "Msg",
+        "Debug": "Debug/Msg"
+      },
+      "RawParameterName": "Markdown"
     },
     "Suffix": {
       "Path": [
@@ -295,11 +348,11 @@ module.exports = {
         "DefCon/Local/und/Suffix/Default"
       ],
       "EnvField": "ResponseSuffix",
-      "Base": {
-        "TemplateEnvMap": {
-          "Template": "Suffix"
-        }
-      }
+      "TemplateResponseMap": {
+        "Template": "Suffix",
+        "Debug": "Debug/Suffix"
+      },
+      "RawParameterName": "Markdown"
     },
     "Session": {
       "Id": {
@@ -445,11 +498,21 @@ module.exports = {
         "Default": false
       }
     },
+    "Debug": {
+      "PathList": [
+        "Intent",
+        "Action",
+        "Node",
+        "Outent",
+        "Debug"
+      ]
+    },
     "Context": {
       "PathList": [
         "Requirements/Context",
         "Send/Session",
         "Send/Remember",
+        "Send/Debug",
         "Response/Context",
         "ResponseSuffix/Context"
       ]
