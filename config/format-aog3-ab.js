@@ -194,12 +194,15 @@ module.exports = {
 
     /* Suggestion chips */
     'Send/Suggestions': {
-      Criteria: '{{and (isArray Msg.Suggestions) (length Msg.Suggestions)}}',
+      Criteria: '{{or (and (isArray Msg.Suggestions) (length Msg.Suggestions)) (and (isArray Suffix.Suggestions) (length Suffix.Suggestions))}}',
       Target: 'prompt/suggestions',
       Value:
-      '{{#each Msg.Suggestions}}'+
-      '{{Set "_This[+]/title" this}}'+
-      '{{/each}}'
+        '{{#each Msg.Suggestions}}'+
+          '{{#if (length this)}}{{Set "_This[+]/title" this}}{{/if}}'+
+        '{{/each}}'+
+        '{{#each Suffix.Suggestions}}'+
+          '{{#if (length this)}}{{Set "_This[+]/title" this}}{{/if}}'+
+        '{{/each}}'
     },
 
     'User/State': 'user/params'
