@@ -103,13 +103,19 @@ module.exports = {
       }
     },
     "Precondition": {
-      "GooglePing":{
+      "DialogflowPing":{
         "Path": [
           "Body/originalRequest/data/inputs",
           "Body/originalDetectIntentRequest/payload/inputs"
         ],
         "Default": [],
         "ArgumentName": "is_health_check"
+      },
+      "GooglePing":{
+        "Path": [
+          "Body/session/id"
+        ],
+        "ExpectedValue": "actions.session.HEALTH_CHECK"
       },
       "Verify": {
         "Rules": {
