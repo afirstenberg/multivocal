@@ -360,9 +360,15 @@ Environment settings built:
 
 (TODO: Work in progress)
 
-#### Actions on Google Ping
+#### Dialogflow Ping
 
 If the request matches a pattern determined by the 
+`Config/Setting/Precondition/DialogflowPing` setting, set the `Preprocess/Fail`
+environment to true and send back a "pong" message.
+
+#### Actions on Google Ping
+
+If the request matches an expected value in a parameter determined by the 
 `Config/Setting/Precondition/GooglePing` setting, set the `Preprocess/Fail`
 environment to true and send back a "Pong" message.
 
