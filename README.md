@@ -387,6 +387,34 @@ To disable the check completely, you can set
 `Config/Setting/Precondition/Verify/Rules/AoG3/Criteria`
 to the string "false". But don't do that.
 
+#### Other verifications
+
+At least one verification must resolve to true. In order to guarantee this, you
+may want to institute other verification tests (for example, to check a header
+value against a constant). To do this, you can add a named rule under
+`Config/Setting/Precondition/Verify/Rules` that contains the following properties:
+
+* Criteria
+
+    A string or array of strings that will be evaluated and then ANDed together.
+    The results of these evaluations will be the results of the verification.
+
+* Processor
+
+    Set to the string "SimpleProcessor".
+
+For example, this rule would always resolve to true, and thus ensure
+verification would succeed. (This is unwise for production code.)
+
+```javascript
+  "true": {
+    "Criteria": [
+      "true"
+    ],
+    "Processor": "SimpleProcessor"
+  }
+```
+
 ### Processing, the Environment, and Paths
 
 #### Platform detection
