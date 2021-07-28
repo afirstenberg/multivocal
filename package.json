@@ -1,6 +1,6 @@
 {
   "name": "multivocal",
-  "version": "0.16.2",
+  "version": "0.16.4",
   "description": "A node.js library to assist with building best practice, configuration driven, Actions for the Google Assistant.",
   "main": "lib/multivocal.js",
   "directories": {
@@ -30,12 +30,12 @@
   "dependencies": {
     "axios": "^0.21.1",
     "debug": "^4.1.1",
-    "firebase-admin": "^9.4.2",
-    "firebase-functions": "^3.13.1",
-    "handlebars": "^4.7.6",
+    "firebase-admin": "^9.11.0",
+    "firebase-functions": "^3.14.1",
+    "handlebars": "^4.7.7",
     "handlebars-helpers": "^0.10.0",
     "jsonwebtoken": "^8.5.1",
-    "jwk-to-pem": "^2.0.3",
+    "jwk-to-pem": "^2.0.5",
     "object-assign-deep": "^0.3.1",
     "speechmarkdown-js": "^1.8.0",
     "uuid": "^8.3.2"
