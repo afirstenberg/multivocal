@@ -16,8 +16,10 @@ The JWT validator does not try to validate the "email" field, but instead has
 the webhook endpoint as one of the valid "aud" fields. If this doesn't match
 for some reason, you may need to add it yourself in `Config/Setting/JWTAuth/Google/aud`.
 
+## Locale
 
+Dialogflow sends the language/locale information in a `languageCode` field in
+the body, however this may either specify a language (without locale), or a 
+language and locale where the locale is in lowercase letters.
 
-
-
-
+In the latter case, Multivocal normalizes this to use uppercase letters.

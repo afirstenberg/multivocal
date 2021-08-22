@@ -155,7 +155,7 @@ module.exports = {
       "Path": [
         "Body/originalRequest/data/user/locale",                 // Dialogflow 1
         "Body/originalDetectIntentRequest/payload/user/locale",  // Dialogflow 2
-                                                                 // FIXME: Dialogflow 3
+        "Body/languageCode",                                     // Dialogflow 3
         "Body/user/locale"                                       // AoG 3 / AB
       ],
       "Default": "und"
