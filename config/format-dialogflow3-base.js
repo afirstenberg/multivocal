@@ -1,7 +1,8 @@
 module.exports = {
   criteria: {
     Terms: [
-      "{{eq Platform.DialogflowVersion '3'}}"
+      "{{eq Platform.DialogflowVersion '3'}}",
+      "false"
     ],
     Op: "and"
   },
