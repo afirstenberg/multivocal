@@ -84,7 +84,19 @@ module.exports = {
               "3"+
             "{{/if}}"+
           "{{/if}}",
-        "DialogflowIntegration": "{{Val 'Body/originalDetectIntentRequest/source'}}",
+        "Dialogflow2Integration": "{{Val 'Body/originalDetectIntentRequest/source'}}",
+        "Dialogflow3Integration":
+          "{{#if (occurrences Body.sessionInfo.session 'sessions/dfMessenger-')}}"+
+            "dfMessenger"+
+          "{{else}}"+
+            "generic"+
+          "{{/if}}",
+        "DialogflowIntegration":
+          "{{#if (eq Platform.DialogflowVersion '2')}}"+
+            "{{Platform.Dialogflow2Integration}}"+
+          "{{else if (eq Platform.DialogflowVersion '3')}}"+
+            "{{Platform.Dialogflow3Integration}}"+
+          "{{/if}}",
         "ActionsSDKVersion": "{{FirstVal 'Req/headers/google-assistant-api-version' 'Req/headers/google-actions-api-version'}}",
         "IsActionsSDK": "{{isTruthy Platform.ActionsSDKVersion}}",
         "IsActionsOnGoogle": {

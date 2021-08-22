@@ -23,3 +23,17 @@ the body, however this may either specify a language (without locale), or a
 language and locale where the locale is in lowercase letters.
 
 In the latter case, Multivocal normalizes this to use uppercase letters.
+
+## Integrations
+
+The following integrations are detected:
+
+* [dfMessenger](https://cloud.google.com/dialogflow/cx/docs/concept/integration/dialogflow-messenger)
+
+    This assumes that the session ID either begins with "dfMessenger-", which is
+    what the default generated ID uses.
+
+* generic (ie - everything else)
+
+Note that the detection method is somewhat hacky, since Dialogflow does not
+provide a standard way to get this information.
