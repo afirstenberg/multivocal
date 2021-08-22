@@ -131,6 +131,19 @@ module.exports = {
             "Auth": [
               "Google"
             ]
+          },
+          "Dialogflow3": {
+            "Criteria": [
+              "{{Platform.IsDialogflow}}",
+              "{{eq Platform.DialogflowVersion '3'}}"
+            ],
+            "Path": [
+              "Req/headers/authorization"
+            ],
+            "Processor": "JWTProcessor",
+            "Auth": [
+              "Google"
+            ]
           }
         }
       }
