@@ -37,3 +37,13 @@ The following integrations are detected:
 
 Note that the detection method is somewhat hacky, since Dialogflow does not
 provide a standard way to get this information.
+
+### Dialogflow Messenger (dfMessenger)
+
+This assumes that the session ID begins with "dfMessenger-", which is what
+the default generated ID uses.
+
+RichMedia supported:
+
+* Suggestion chips with `Msg/Suggesion` and `Suffix/Suggestion` arrays.
+  Only the text is supported. Images and link-outs are not.
