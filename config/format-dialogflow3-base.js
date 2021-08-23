@@ -40,7 +40,7 @@ module.exports = {
     },
     */
 
-    'Send/Text': 'fulfillment_response/messages[+]/text/text[+]',
+    'Send/Text': 'fulfillmentResponse/messages[+]/text/text[+]',
 
     /* TODO: Repeat
     'Context/multivocal_repeat/parameters/Ssml': {
