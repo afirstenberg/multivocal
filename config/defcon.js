@@ -88,6 +88,10 @@ module.exports = {
         "Dialogflow3Integration":
           "{{#if (occurrences Body.sessionInfo.session 'sessions/dfMessenger-')}}"+
             "dfMessenger"+
+          "{{else if (isTruthy Body.payload.telephony)}}"+
+            "telephony"+
+          "{{else if (isTruthy Body.transcript)}}"+
+            "telephony"+
           "{{else}}"+
             "generic"+
           "{{/if}}",
@@ -314,7 +318,23 @@ module.exports = {
         ]
       },
       "SpeechMarkdown": {
-        "SanitizeSsml": true
+        "SanitizeSsml": true,
+        "Platform": {
+          "CriteriaMatch": [
+            {
+              "Criteria": "{{Platform.IsActionsOnGoogle}}",
+              "Value": "google-assistant"
+            },
+            {
+              "Criteria": [
+                "{{Platform.IsDialogflow}}",
+                "{{eq Platform.DialogflowVersion '3'}}",
+                "{{eq Platform.DialogflowIntegration 'telephony'}}"
+              ],
+              "Value": "google-assistant"
+            }
+          ]
+        }
       }
     },
     "FlexResponse": {

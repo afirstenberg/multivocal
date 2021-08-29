@@ -29,10 +29,7 @@ In the latter case, Multivocal normalizes this to use uppercase letters.
 The following integrations are detected:
 
 * [dfMessenger](https://cloud.google.com/dialogflow/cx/docs/concept/integration/dialogflow-messenger)
-
-    This assumes that the session ID either begins with "dfMessenger-", which is
-    what the default generated ID uses.
-
+* telephony
 * generic (ie - everything else)
 
 Note that the detection method is somewhat hacky, since Dialogflow does not
@@ -47,3 +44,16 @@ RichMedia supported:
 
 * Suggestion chips with `Msg/Suggesion` and `Suffix/Suggestion` arrays.
   Only the text is supported. Images and link-outs are not.
+
+### Telephony
+
+This has been tested with the [Diallogflow CX Phone Gateway](https://cloud.google.com/dialogflow/cx/docs/concept/integration/phone-gateway),
+but may work for other telephony integrations. It relies on either a 
+"telephony" payload or a "transcript" provided in the request.
+
+Responses supported:
+
+* SSML with the "outputAudioText" message. Although it isn't clear if the
+  Dialogflow CX Phone Gateway supports this.
+
+ 
