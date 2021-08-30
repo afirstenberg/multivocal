@@ -1,7 +1,8 @@
 module.exports = {
   criteria: {
     Terms: [
-      "{{eq Platform.DialogflowVersion '3'}}"
+      "{{eq Platform.DialogflowVersion '3'}}",
+      "false"
     ],
     Op: "and"
   },
@@ -39,7 +40,7 @@ module.exports = {
     },
     */
 
-    'Send/Text': 'fulfillment_response/messages[+]/text/text[+]',
+    'Send/Text': 'fulfillmentResponse/messages[+]/text/text[+]',
 
     /* TODO: Repeat
     'Context/multivocal_repeat/parameters/Ssml': {

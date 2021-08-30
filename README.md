@@ -48,7 +48,7 @@ platforms such as
 * Dialogflow ES (Dialogflow 2) with 
     * The Google Assistant (Actions on Google 2)
     * Google Chat (formerly Hangouts Chat)
-* Experimenting with Dialogflow CX (Dialogflow 3)
+* Dialogflow CX (Dialogflow 3)
 * The Actions Builder and Actions SDK for the Google Assistant (Actions on Google 3)
 
 We hope to expand the library so it makes sense to use for 
@@ -58,6 +58,9 @@ Amazon Alexa, and for Samsung's Bixby.
 Right now, it targets webhooks that run on the Firebase Cloud Functions
 platform, but it should work on any platform that uses Express-like
 handling or AWS Lambda.
+
+For details and caveats about each platform, see the 
+[docs](docs) directory for platform-specific notes.
 
 ### Who is behind multivocal?
 
@@ -588,8 +591,6 @@ for your project.
 
 Increments the `User/State/NumVisits` environment value.
 
-(TODO: Handle (possibly short-circuit?) Google's health check ping)
-
 ##### Action: quit and multivocal.quit
 
 Sets the `Response/ShouldQuit` environment setting to true
@@ -814,12 +815,18 @@ This is handled through a number of different configuration settings:
 
 ### Sending
 
+Not all platforms support sending all types of responses - see the platform
+specific documentation for details about what is supported or how some features
+may be represented in a platform-specific way.
+
 #### Message
 
 Environment settings:
 
+* Msg/Markdown
 * Msg/Ssml
 * Msg/Text
+* Suffix/Markdown
 * Suffix/Ssml
 * Suffix/Text
 
@@ -1234,7 +1241,7 @@ handler.
 
 ### Types
 
-Dialogflow and Actions Builder support 
+Dialogflow with Actions on Google and Actions Builder support 
 [Session Entities](https://cloud.google.com/dialogflow/docs/entities-session)
 which allow you to change Entities to customize it for each user.
 
@@ -1337,7 +1344,12 @@ Actions SDK.
 
 #### What version of Dialogflow does multivocal work with?
 
-Right now, multivocal primarily targets Dialogflow version 2.
+Dialogflow version 2 (Dialogflow ES) was the primary development platform for
+multivocal for a while, so it is fairly well-supported.
+
+Support for Dialogflow version 3 (Dialogflow CX), is still relatively new
+and there are some issues and gaps with it. 
+See the [platform notes](docs/notes-dialogflow3.md) for details.
 
 There is support for version 1 (it reports the version in the 
 environment setting `Platform.DialogflowVersion` and there is a
@@ -1345,18 +1357,14 @@ JSON formatter that creates output for it), but this is no longer the
 primary development target, so it may not be fully tested.
 Besides, this version has been deprecated (and possibly shut off) by Google.
 
-There is also *preliminary* support for Dialogflow version 3 (Dialogflow CX),
-but since there are no default integrations and several gaps in the actual 
-webhook support (many things need to be represented by ID rather than by name),
-this is subject to change.
-
 #### What integrations with Dialogflow are supported?
 
 Dialogflow 2 integrations supported are
 * Google Assistant (Actions on Google version 2)
 * Hangouts Chat (also named Google Chat)
 
-Dialogflow 3 does not have any integrations yet to support.
+See the [platform notes](docs/notes-dialogflow3.md) for details about
+the state of Dialogflow 3 integrations.
 
 #### Does multivocal work with the Actions SDK or the Actions Builder?
 
@@ -1382,4 +1390,4 @@ Make sure you've opened an issue for it first (and maybe discussed it
 with us), then submit the pull request at 
 https://github.com/afirstenberg/multivocal/pulls.
 
-Make sure you're ok with the license we'll be distirbuting it under.
+Make sure you're ok with the license we'll be distributing it under.

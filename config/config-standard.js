@@ -124,7 +124,10 @@ module.exports = {
       "Google": {
         "iss": ["https://accounts.google.com"],
         "KeysUrl": "https://www.googleapis.com/oauth2/v3/certs",
-        "aud": ["{{Config.Process.Env.GCLOUD_PROJECT}}"]
+        "aud": [
+          "{{Config.Process.Env.GCLOUD_PROJECT}}",
+          "https://{{First (Val 'Req/headers/x-forwarded-host') Req.hostname}}{{Req.path}}"
+        ]
       }
     }
   },

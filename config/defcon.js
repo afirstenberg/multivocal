@@ -84,7 +84,23 @@ module.exports = {
               "3"+
             "{{/if}}"+
           "{{/if}}",
-        "DialogflowIntegration": "{{Val 'Body/originalDetectIntentRequest/source'}}",
+        "Dialogflow2Integration": "{{Val 'Body/originalDetectIntentRequest/source'}}",
+        "Dialogflow3Integration":
+          "{{#if (occurrences Body.sessionInfo.session 'sessions/dfMessenger-')}}"+
+            "dfMessenger"+
+          "{{else if (isTruthy Body.payload.telephony)}}"+
+            "telephony"+
+          "{{else if (isTruthy Body.transcript)}}"+
+            "telephony"+
+          "{{else}}"+
+            "generic"+
+          "{{/if}}",
+        "DialogflowIntegration":
+          "{{#if (eq Platform.DialogflowVersion '2')}}"+
+            "{{Platform.Dialogflow2Integration}}"+
+          "{{else if (eq Platform.DialogflowVersion '3')}}"+
+            "{{Platform.Dialogflow3Integration}}"+
+          "{{/if}}",
         "ActionsSDKVersion": "{{FirstVal 'Req/headers/google-assistant-api-version' 'Req/headers/google-actions-api-version'}}",
         "IsActionsSDK": "{{isTruthy Platform.ActionsSDKVersion}}",
         "IsActionsOnGoogle": {
@@ -131,6 +147,19 @@ module.exports = {
             "Auth": [
               "Google"
             ]
+          },
+          "Dialogflow3": {
+            "Criteria": [
+              "{{Platform.IsDialogflow}}",
+              "{{eq Platform.DialogflowVersion '3'}}"
+            ],
+            "Path": [
+              "Req/headers/authorization"
+            ],
+            "Processor": "JWTProcessor",
+            "Auth": [
+              "Google"
+            ]
           }
         }
       }
@@ -142,7 +171,7 @@ module.exports = {
       "Path": [
         "Body/originalRequest/data/user/locale",                 // Dialogflow 1
         "Body/originalDetectIntentRequest/payload/user/locale",  // Dialogflow 2
-                                                                 // FIXME: Dialogflow 3
+        "Body/languageCode",                                     // Dialogflow 3
         "Body/user/locale"                                       // AoG 3 / AB
       ],
       "Default": "und"
@@ -289,7 +318,23 @@ module.exports = {
         ]
       },
       "SpeechMarkdown": {
-        "SanitizeSsml": true
+        "SanitizeSsml": true,
+        "Platform": {
+          "CriteriaMatch": [
+            {
+              "Criteria": "{{Platform.IsActionsOnGoogle}}",
+              "Value": "google-assistant"
+            },
+            {
+              "Criteria": [
+                "{{Platform.IsDialogflow}}",
+                "{{eq Platform.DialogflowVersion '3'}}",
+                "{{eq Platform.DialogflowIntegration 'telephony'}}"
+              ],
+              "Value": "google-assistant"
+            }
+          ]
+        }
       }
     },
     "FlexResponse": {
