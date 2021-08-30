@@ -1,6 +1,6 @@
 # multivocal
 A node.js library to assist with building best practice, configuration driven, 
-Actions for the Google Assistant.
+Actions for the Google Assistant and webhooks for Dialogflow.
 
 *(This README is a work in progress, although it documents much of
 the platform, there are gaps. The intent is to have it completed
@@ -9,8 +9,9 @@ by version 1.0.0.)*
 ## What is multivocal?
 
 Multivocal is a library that tries to bring a new approach to helping
-you write webhooks for the Google Assistant, Google Chat (and, hopefully someday,
-other voice agents and bots).
+you write webhooks for the Google Assistant, Dialogflow ES,
+and Dialogflow CX. (With hopes to expand to other bot and voice
+platforms in the future.)
 
 ### Why multivocal?
 
