@@ -115,7 +115,23 @@ module.exports = {
           "{{#if (isTruthy Platform.IsActionsSDK)}}{{Platform.ActionsSDKVersion}}"+
           "{{else if (eq Platform.DialogflowVersion '1')}}{{Body.originalRequest.version}}"+
           "{{else}}{{Body.originalDetectIntentRequest.version}}"+
-          "{{/if}}"
+          "{{/if}}",
+        "Markdown": {
+          "CriteriaMatch": [
+            {
+              "Criteria": "{{Platform.IsActionsOnGoogle}}",
+              "Value": "google-assistant"
+            },
+            {
+              "Criteria": [
+                "{{Platform.IsDialogflow}}",
+                "{{eq Platform.DialogflowVersion '3'}}",
+                "{{eq Platform.DialogflowIntegration 'telephony'}}"
+              ],
+              "Value": "google-assistant"
+            }
+          ]
+        }
       }
     },
     "Precondition": {
@@ -318,23 +334,7 @@ module.exports = {
         ]
       },
       "SpeechMarkdown": {
-        "SanitizeSsml": true,
-        "Platform": {
-          "CriteriaMatch": [
-            {
-              "Criteria": "{{Platform.IsActionsOnGoogle}}",
-              "Value": "google-assistant"
-            },
-            {
-              "Criteria": [
-                "{{Platform.IsDialogflow}}",
-                "{{eq Platform.DialogflowVersion '3'}}",
-                "{{eq Platform.DialogflowIntegration 'telephony'}}"
-              ],
-              "Value": "google-assistant"
-            }
-          ]
-        }
+        "SanitizeSsml": true
       }
     },
     "FlexResponse": {
