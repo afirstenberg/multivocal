@@ -9,11 +9,9 @@ module.exports = {
         ]
       },
       "Voice": {
-        "Default": [
-          {
-            "Name": "Default"
-          }
-        ]
+        "Default": {
+          "Default": {}
+        }
       }
     }
   },
