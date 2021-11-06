@@ -38,12 +38,16 @@ module.exports = {
     "Action": {
       "Path": [
         "Context/multivocal_requirements/parameters/actionName",
+        "Config/Setting/Action/FromIntent/{{Intent}}",
         "Body/result/action",        // Dialogflow 1
         "Body/queryResult/action",   // Dialogflow 2
         "Body/fulfillmentInfo/tag",  // Dialogflow 3
-        "Body/handler/name"          // AoG 3 / AB
+        "Body/handler/name",         // AoG 3 / AB
+        "DefCon/Setting/Action/FromIntent/{{Intent}}",
       ],
-      "Template": "Action.{{ActionName}}"
+      "Template": "Action.{{ActionName}}",
+      "FromIntent":{
+      }
     },
     "ActionLevel": {
       "Path": [
