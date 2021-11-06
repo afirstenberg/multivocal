@@ -8,11 +8,13 @@ module.exports = {
           }
         ]
       },
-      "Voice": [
-        {
-          "Name": "Default"
-        }
-      ]
+      "Voice": {
+        "Default": [
+          {
+            "Name": "Default"
+          }
+        ]
+      }
     }
   },
   "Setting": {
@@ -524,10 +526,13 @@ module.exports = {
     },
     "Voice": {
       "Path": [
-        "Config/Local/{{Locale}}/Voice",
-        "Config/Local/{{Lang}}/Voice",
-        "Config/Local/und/Voice",
-        "DefCon/Local/und/Voice"
+        "Config/Local/{{Locale}}/Voice/{{Platform.Markdown}}",
+        "Config/Local/{{Lang}}/Voice/{{Platform.Markdown}}",
+        "Config/Local/und/Voice/{{Platform.Markdown}}",
+        "Config/Local/{{Locale}}/Voice/Default",
+        "Config/Local/{{Lang}}/Voice/Default",
+        "Config/Local/und/Voice/Default",
+        "DefCon/Local/und/Voice/Default"
       ]
     },
     "NoSuffixNeeded": {
