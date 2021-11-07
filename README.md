@@ -1095,6 +1095,11 @@ of the methods above, and then the SpeechMarkdown `[voice]` tag to indicate
 the new voice. The same names you define for multivocal are available through
 SpeechMarkdown as well.
 
+Environment:
+
+* VoiceName - The name of the voice that has been selected.
+* Voice - The configuration of the voice.
+
 ### Contexts
 
 ### User and Session Storage
