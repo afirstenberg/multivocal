@@ -523,15 +523,25 @@ module.exports = {
       }
     },
     "Voice": {
-      "Path": [
-        "Config/Local/{{Locale}}/Voice/{{Platform.Markdown}}",
-        "Config/Local/{{Lang}}/Voice/{{Platform.Markdown}}",
-        "Config/Local/und/Voice/{{Platform.Markdown}}",
-        "Config/Local/{{Locale}}/Voice/Default",
-        "Config/Local/{{Lang}}/Voice/Default",
-        "Config/Local/und/Voice/Default",
-        "DefCon/Local/und/Voice/Default"
-      ]
+      "Voices": {
+        "Path": [
+          "Config/Local/{{Locale}}/Voice/{{Platform.Markdown}}",
+          "Config/Local/{{Lang}}/Voice/{{Platform.Markdown}}",
+          "Config/Local/und/Voice/{{Platform.Markdown}}",
+          "Config/Local/{{Locale}}/Voice/Default",
+          "Config/Local/{{Lang}}/Voice/Default",
+          "Config/Local/und/Voice/Default",
+          "DefCon/Local/und/Voice/Default"
+        ]
+      },
+      "Name": {
+        "Path": [
+          "VoiceRequested",
+          "Session/State/Voice",
+          "Config/Setting/Voice/Default"
+        ],
+        "Default": "{{Pick 1 (ValKeys 'Voices')}}"  // Pick one at random from the available Voices
+      }
     },
     "NoSuffixNeeded": {
       "Criteria":{
