@@ -1005,6 +1005,96 @@ entries from the stack).
 
 ### Voices
 
+When replying using SSML (possibly via Markdown), it is often useful to reply
+with multiple "voices" - either as part of the same response, different responses
+in the same session, or between sessions. These voices are defined with a name
+that you assign, but which may map to different characteristics on different
+platforms.
+
+#### Setting Available Voices
+
+Multivocal searches for the voice configuration map under the `Config/Local`
+environment setting. This is similar, but not identical, to how it searches
+for a response. Under this path, it has a number of components:
+
+* `Locale`, `Lang`, and then the undefined language "und". (Same as for responses.)
+* The "Voice" target
+* The platform named used by SpeechMarkdown, stored in `Platform/Markdown` or "Default"
+
+Environment:
+
+* Voices - contains the voice configuration.
+
+#### Voice Configuration
+
+Voice configuration is a map from a name (that you choose) to an object that
+contains attributes for that name. Most attributes that start with a capital letter
+are turned into SSML tags, while those that start with a lowercase letter are
+allowed for your use. This lets you set other attributes about each voice (which
+you can use to define the persona attached to that voice, etc).
+
+Attributes being turned into SSML tags have a value which is the object
+containing attribute/value pairs for that tag.
+
+For example
+
+```json
+{
+  "Local": {
+    "und": {
+      "Voice": {
+        "Default": {
+          "Scott": {
+            "Prosody": {
+              "rate": "fast",
+              "volume": "loud"
+            },
+            "food": "chocolate"
+          },
+          "Eric": {
+            "Prosody": {
+              "rate": "slow",
+              "volume": "soft"
+            },
+            "food": "noodles"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+Defines two voices. Each has SSML that will be used when they "speak", plus
+another attribute defining their favorite food (which is, we assume, relevant
+to something else in the conversation).
+
+* Scott will have his SSML text wrapped in a `<prosody rate="fast" volume="loud">`
+  tag and really likes chocolate.
+* Eric will have his SSML text wrapped in a `<prosody rate="slow" volume="soft">`
+  tag and enjoys noodles.
+
+#### Selecting a voice to use
+
+For a response, multivocal searches several locations in the environment for
+the name of a voice to use:
+
+* The `VoiceRequested` environment setting, which lets you set it as part
+  of a response.
+* The `Session/State/Voice` path, which contains the name of the voice used
+  for the previous response, with the assumption that you usually want to
+  use the same voice each time during a conversation.
+* The value at `Config/Setting/Voice/Default` to set an initial voice to
+  use for the conversation.
+* If none of these are found, multivocal pics a voice at random from the
+  list of voices available at `Voices`. This will be set in the session state
+  so it is used in subsequent rounds of the conversation.
+
+To use multiple voices in a response, you can set the base voice using one
+of the methods above, and then the SpeechMarkdown `[voice]` tag to indicate
+the new voice. The same names you define for multivocal are available through
+SpeechMarkdown as well.
+
 ### Contexts
 
 ### User and Session Storage
