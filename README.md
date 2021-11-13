@@ -1080,7 +1080,14 @@ For a response, multivocal searches several locations in the environment for
 the name of a voice to use:
 
 * The `VoiceRequested` environment setting, which lets you set it as part
-  of a response.
+  of a response as part of your handler
+* Through the `Response` or `ResponseSuffix` objects that resolve when
+  determining and generating a response, and
+  thus the `Msg` and `Suffix` objects as well after the templates have been
+  resolved, the `VoiceRequested` field from those. So you would set one of
+  these in the `Response` or `Suffix` objects for your Intent, Action, or Outent:
+  * `VoiceRequested`
+  * `Template/VoiceRequested`
 * The `Session/State/Voice` path, which contains the name of the voice used
   for the previous response, with the assumption that you usually want to
   use the same voice each time during a conversation.

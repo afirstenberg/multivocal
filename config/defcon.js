@@ -537,10 +537,26 @@ module.exports = {
       "Name": {
         "Path": [
           "VoiceRequested",
+          "Msg/VoiceRequested",
+          "Response/VoiceRequested",
+          "Suffix/VoiceRequested",
+          "ResponseSuffix/VoiceRequested",
           "Session/State/Voice",
           "Config/Setting/Voice/Default"
         ],
         "Default": "{{Pick 1 (ValKeys 'Voices')}}"  // Pick one at random from the available Voices
+      },
+      "ShouldReload": {
+        "Criteria": {
+          "Terms": [
+            "{{isTruthy VoiceRequested}}",
+            "{{isTruthy Msg.VoiceRequested}}",
+            "{{isTruthy Response.VoiceRequested}}",
+            "{{isTruthy Suffix.VoiceRequested}}",
+            "{{isTruthy ResponseSuffix.VoiceRequested}}"
+          ],
+          "Op": "or"
+        }
       }
     },
     "NoSuffixNeeded": {
