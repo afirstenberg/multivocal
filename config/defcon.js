@@ -8,11 +8,11 @@ module.exports = {
           }
         ]
       },
-      "Voice": [
-        {
-          "Name": "Default"
+      "Voice": {
+        "Default": {
+          "Default": {}
         }
-      ]
+      }
     }
   },
   "Setting": {
@@ -523,12 +523,41 @@ module.exports = {
       }
     },
     "Voice": {
-      "Path": [
-        "Config/Local/{{Locale}}/Voice",
-        "Config/Local/{{Lang}}/Voice",
-        "Config/Local/und/Voice",
-        "DefCon/Local/und/Voice"
-      ]
+      "Voices": {
+        "Path": [
+          "Config/Local/{{Locale}}/Voice/{{Platform.Markdown}}",
+          "Config/Local/{{Lang}}/Voice/{{Platform.Markdown}}",
+          "Config/Local/und/Voice/{{Platform.Markdown}}",
+          "Config/Local/{{Locale}}/Voice/Default",
+          "Config/Local/{{Lang}}/Voice/Default",
+          "Config/Local/und/Voice/Default",
+          "DefCon/Local/und/Voice/Default"
+        ]
+      },
+      "Name": {
+        "Path": [
+          "VoiceRequested",
+          "Msg/VoiceRequested",
+          "Response/VoiceRequested",
+          "Suffix/VoiceRequested",
+          "ResponseSuffix/VoiceRequested",
+          "Session/State/Voice",
+          "Config/Setting/Voice/Default"
+        ],
+        "Default": "{{Pick 1 (ValKeys 'Voices')}}"  // Pick one at random from the available Voices
+      },
+      "ShouldReload": {
+        "Criteria": {
+          "Terms": [
+            "{{isTruthy VoiceRequested}}",
+            "{{isTruthy Msg.VoiceRequested}}",
+            "{{isTruthy Response.VoiceRequested}}",
+            "{{isTruthy Suffix.VoiceRequested}}",
+            "{{isTruthy ResponseSuffix.VoiceRequested}}"
+          ],
+          "Op": "or"
+        }
+      }
     },
     "NoSuffixNeeded": {
       "Criteria":{
