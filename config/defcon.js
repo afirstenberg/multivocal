@@ -8,11 +8,11 @@ module.exports = {
           }
         ]
       },
-      "Voice": [
-        {
-          "Name": "Default"
+      "Voice": {
+        "Default": {
+          "Default": {}
         }
-      ]
+      }
     }
   },
   "Setting": {
@@ -38,12 +38,20 @@ module.exports = {
     "Action": {
       "Path": [
         "Context/multivocal_requirements/parameters/actionName",
+        "Config/Setting/Action/FromIntent/{{Node}}/{{Intent}}",
+        "Config/Setting/Action/FromIntent/Global/{{Intent}}",
         "Body/result/action",        // Dialogflow 1
         "Body/queryResult/action",   // Dialogflow 2
         "Body/fulfillmentInfo/tag",  // Dialogflow 3
-        "Body/handler/name"          // AoG 3 / AB
+        "Body/handler/name",         // AoG 3 / AB
+        "DefCon/Setting/Action/FromIntent/{{Node}}/{{Intent}}",
+        "DefCon/Setting/Action/FromIntent/Global/{{Intent}}",
       ],
-      "Template": "Action.{{ActionName}}"
+      "Template": "Action.{{ActionName}}",
+      "FromIntent":{
+        "Global": {
+        }
+      }
     },
     "ActionLevel": {
       "Path": [
@@ -74,33 +82,56 @@ module.exports = {
           ],
           "Op": "or"
         },
-        "DialogflowVersion":
-          "{{#if Platform.IsDialogflow}}"+
-            "{{#if (isTruthy Body.originalRequest)}}"+
-              "1"+
-            "{{else if (isTruthy Body.originalDetectIntentRequest)}}"+
-              "2"+
-            "{{else}}"+
-              "3"+
-            "{{/if}}"+
-          "{{/if}}",
+        "DialogflowVersion": {
+          "CriteriaMatch": [
+            {
+              "Criteria": [
+                "{{Platform.IsDialogFlow}}",
+                "{{isTruthy Body.originalRequest}}"
+              ],
+              "Value": "1"
+            },
+            {
+              "Criteria": [
+                "{{Platform.IsDialogFlow}}",
+                "{{isTruthy Body.originalDetectIntentRequest}}"
+              ],
+              "Value": "2"
+            },
+            {
+              "Criteria": [
+                "{{Platform.IsDialogFlow}}"
+              ],
+              "Value": "3"
+            }
+          ]
+        },
         "Dialogflow2Integration": "{{Val 'Body/originalDetectIntentRequest/source'}}",
-        "Dialogflow3Integration":
-          "{{#if (occurrences Body.sessionInfo.session 'sessions/dfMessenger-')}}"+
-            "dfMessenger"+
-          "{{else if (isTruthy Body.payload.telephony)}}"+
-            "telephony"+
-          "{{else if (isTruthy Body.transcript)}}"+
-            "telephony"+
-          "{{else}}"+
-            "generic"+
-          "{{/if}}",
-        "DialogflowIntegration":
-          "{{#if (eq Platform.DialogflowVersion '2')}}"+
-            "{{Platform.Dialogflow2Integration}}"+
-          "{{else if (eq Platform.DialogflowVersion '3')}}"+
-            "{{Platform.Dialogflow3Integration}}"+
-          "{{/if}}",
+        "Dialogflow3Integration": {
+          "CriteriaMatch": [
+            {
+              "Criteria": "{{occurrences Body.sessionInfo.session 'sessions/dfMessenger-'}}",
+              "Value": "dfMessenger"
+            },
+            {
+              "Criteria": "{{isTruthy Body.payload.telephony}}",
+              "Value": "telephony"
+            }
+          ],
+          "Default": "generic"
+        },
+        "DialogflowIntegration": {
+          "CriteriaMatch": [
+            {
+              "Criteria": "{{eq Platform.DialogflowVersion '2'}}",
+              "Value": "{{Platform.Dialogflow2Integration}}"
+            },
+            {
+              "Criteria": "{{eq Platform.DialogflowVersion '3'}}",
+              "Value": "{{Platform.Dialogflow3Integration}}"
+            }
+          ]
+        },
         "ActionsSDKVersion": "{{FirstVal 'Req/headers/google-assistant-api-version' 'Req/headers/google-actions-api-version'}}",
         "IsActionsSDK": "{{isTruthy Platform.ActionsSDKVersion}}",
         "IsActionsOnGoogle": {
@@ -115,7 +146,23 @@ module.exports = {
           "{{#if (isTruthy Platform.IsActionsSDK)}}{{Platform.ActionsSDKVersion}}"+
           "{{else if (eq Platform.DialogflowVersion '1')}}{{Body.originalRequest.version}}"+
           "{{else}}{{Body.originalDetectIntentRequest.version}}"+
-          "{{/if}}"
+          "{{/if}}",
+        "Markdown": {
+          "CriteriaMatch": [
+            {
+              "Criteria": "{{Platform.IsActionsOnGoogle}}",
+              "Value": "google-assistant"
+            },
+            {
+              "Criteria": [
+                "{{Platform.IsDialogflow}}",
+                "{{eq Platform.DialogflowVersion '3'}}",
+                "{{eq Platform.DialogflowIntegration 'telephony'}}"
+              ],
+              "Value": "google-assistant"
+            }
+          ]
+        }
       }
     },
     "Precondition": {
@@ -318,23 +365,7 @@ module.exports = {
         ]
       },
       "SpeechMarkdown": {
-        "SanitizeSsml": true,
-        "Platform": {
-          "CriteriaMatch": [
-            {
-              "Criteria": "{{Platform.IsActionsOnGoogle}}",
-              "Value": "google-assistant"
-            },
-            {
-              "Criteria": [
-                "{{Platform.IsDialogflow}}",
-                "{{eq Platform.DialogflowVersion '3'}}",
-                "{{eq Platform.DialogflowIntegration 'telephony'}}"
-              ],
-              "Value": "google-assistant"
-            }
-          ]
-        }
+        "SanitizeSsml": true
       }
     },
     "FlexResponse": {
@@ -496,12 +527,41 @@ module.exports = {
       }
     },
     "Voice": {
-      "Path": [
-        "Config/Local/{{Locale}}/Voice",
-        "Config/Local/{{Lang}}/Voice",
-        "Config/Local/und/Voice",
-        "DefCon/Local/und/Voice"
-      ]
+      "Voices": {
+        "Path": [
+          "Config/Local/{{Locale}}/Voice/{{Platform.Markdown}}",
+          "Config/Local/{{Lang}}/Voice/{{Platform.Markdown}}",
+          "Config/Local/und/Voice/{{Platform.Markdown}}",
+          "Config/Local/{{Locale}}/Voice/Default",
+          "Config/Local/{{Lang}}/Voice/Default",
+          "Config/Local/und/Voice/Default",
+          "DefCon/Local/und/Voice/Default"
+        ]
+      },
+      "Name": {
+        "Path": [
+          "VoiceRequested",
+          "Msg/VoiceRequested",
+          "Response/VoiceRequested",
+          "Suffix/VoiceRequested",
+          "ResponseSuffix/VoiceRequested",
+          "Session/State/Voice",
+          "Config/Setting/Voice/Default"
+        ],
+        "Default": "{{Pick 1 (ValKeys 'Voices')}}"  // Pick one at random from the available Voices
+      },
+      "ShouldReload": {
+        "Criteria": {
+          "Terms": [
+            "{{isTruthy VoiceRequested}}",
+            "{{isTruthy Msg.VoiceRequested}}",
+            "{{isTruthy Response.VoiceRequested}}",
+            "{{isTruthy Suffix.VoiceRequested}}",
+            "{{isTruthy ResponseSuffix.VoiceRequested}}"
+          ],
+          "Op": "or"
+        }
+      }
     },
     "NoSuffixNeeded": {
       "Criteria":{
