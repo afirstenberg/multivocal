@@ -147,6 +147,12 @@ module.exports = {
           "{{else if (eq Platform.DialogflowVersion '1')}}{{Body.originalRequest.version}}"+
           "{{else}}{{Body.originalDetectIntentRequest.version}}"+
           "{{/if}}",
+        "IsAlexa": {
+          "Terms": [
+            "{{#startsWith 'amzn1.echo-api' Body.request.requestId}}true{{else}}{{/startsWith}}"
+          ],
+          "Op": "or"
+        },
         "Markdown": {
           "CriteriaMatch": [
             {
@@ -160,6 +166,12 @@ module.exports = {
                 "{{eq Platform.DialogflowIntegration 'telephony'}}"
               ],
               "Value": "google-assistant"
+            },
+            {
+              "Criteria": [
+                "{{Platform.IsAlexa}}"
+              ],
+              "Value": "amazon-alexa"
             }
           ]
         }
