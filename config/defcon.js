@@ -22,7 +22,9 @@ module.exports = {
         "Body/result/metadata/intentName",      // Dialogflow 1
         "Body/queryResult/intent/displayName",  // Dialogflow 2
         "Body/intentInfo/lastMatchedIntent",    // FIXME: Dialogflow 3
-        "Body/intent/name"                      // AoG 3 / AB
+        "Body/intent/name",                     // AoG 3 / AB
+        "Body/request/intent/name",             // Alexa
+        "Body/request/type"                     // Alexa
       ],
       "Template": "Intent.{{IntentName}}"
     },
@@ -219,6 +221,12 @@ module.exports = {
             "Auth": [
               "Google"
             ]
+          },
+          "Alexa1": {
+            "Criteria": [
+              "{{Platform.IsAlexa}}"
+            ],
+            "Processor": "SimpleProcessor"  // FIXME - Implement a real processor for Alexa
           }
         }
       }
@@ -231,7 +239,8 @@ module.exports = {
         "Body/originalRequest/data/user/locale",                 // Dialogflow 1
         "Body/originalDetectIntentRequest/payload/user/locale",  // Dialogflow 2
         "Body/languageCode",                                     // Dialogflow 3
-        "Body/user/locale"                                       // AoG 3 / AB
+        "Body/user/locale",                                      // AoG 3 / AB
+        "Body/request/locale"                                    // Alexa
       ],
       "Default": "und"
     },
@@ -253,6 +262,7 @@ module.exports = {
                                           // TODO: Dialogflow 3 form parameters
           "Body/intent/params",           // AoG 3 / AB
           "Body/scene/slots"              // AoG 3 / AB
+                                          // TODO: Alexa
         ],
         "Default": {}
       },
@@ -451,6 +461,7 @@ module.exports = {
     "Session": {
       "Id": {
         "Path": [
+          "Body/session/sessionId",    // Alexa
           "Body/session/id",           // AoG 3 / AB
           "Body/session",              // Dialogflow 1 and 2
           "Body/sessionInfo/session"   // Dialogflow 3
@@ -504,7 +515,8 @@ module.exports = {
           "User/State/UserId",
           "Body/originalRequest/data/user/userId",
           "Body/originalDetectIntentRequest/payload/user/userId",
-          "Body/originalDetectIntentRequest/payload/data/event/user/name"
+          "Body/originalDetectIntentRequest/payload/data/event/user/name",
+          "Body/session/user/userId"   // TODO: Is this user or who is talking?
         ],
         "State": "User/State/UserId",
         "Template": "google:{{User.State.UserId}}"
