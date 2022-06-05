@@ -1425,25 +1425,30 @@ this route.
 
 #### Does multivocal work with AWS Lambda?
 
-Yes, you can use the `Multivocal.processLambdaWebhook` function and
-have your Dialogflow or Actions Builder webhook fulfillment set to an AWS API Gateway.
- 
+If you are using a webhook with an AWS API Gateway and Lambda,
+you can use the `Multivocal.processLambdaWebhook` function.
+This works with most webhook-based fulfillment methods including Dialogflow,
+Action Builder, and Alexa. This would look something like
+
+```javascript
+  exports.handler = Multivocal.processLambdaWebhook;
+```
+
+If you are using an Alexa-hosted skill, you should use the
+`Multivocal.processLambdaEvent` function instead:
+
+```javascript
+  exports.handler = Multivocal.processLambdaEvent;
+``` 
+
+In both cases, Lambda "freezes" the function after the response is sent, so
+postprocessing is done before the response is sent.
+
 #### Does multivocal work with Alexa?
 
-Not currently, but this is on our long-term roadmap.
+Yes, although this is relatively new and still in progress.
 
-In theory, it shouldn't be **too** hard. In theory. The tasks involved
-pretty much boil down to:
-
-* Identifying the paths to use to get values for the environment builder.
-* Creating a formatter to save things in the correct format.
-* Finding a reasonable way to map Alexa concepts into the concepts
-    we're using (such as figuring out how to handle contexts).
-    
-Some of these tasks are the same as what needs to be done for the
-Actions SDK.
-
-(Are you interested in helping?)
+See the [platform notes](docs/notes-alexa.md) for details.
 
 #### What version of Dialogflow does multivocal work with?
 
